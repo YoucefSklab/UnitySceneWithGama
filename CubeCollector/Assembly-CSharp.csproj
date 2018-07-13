@@ -86,6 +86,7 @@
      <Compile Include="Assets\Script MQTT\Utility\QueueExtension.cs" />
      <Compile Include="Assets\Script MQTT\Utility\Trace.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
+     <Compile Include="Assets\Scripts\GamaMethods.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\Rotator.cs" />
  <Reference Include="Facebook.Unity.Settings">

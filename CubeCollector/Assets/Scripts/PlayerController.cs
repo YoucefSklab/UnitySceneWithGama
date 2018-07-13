@@ -8,6 +8,7 @@ using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using uPLibrary.Networking.M2Mqtt.Utility;
 using uPLibrary.Networking.M2Mqtt.Exceptions;
+using ummisco.gama.unity;
 
 using System;
 
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour {
 	private int  count;
 
 	private MqttClient client;
+	private GamaMethods gama; 
 
 
 	void Start ()
@@ -32,7 +34,7 @@ public class PlayerController : MonoBehaviour {
 		count = 0;
 		SetCountText ();
 		winText.text = "";
-
+		gama = new GamaMethods ();
 		// MQTT client Initialization 
 		// --------------------------
 
@@ -47,6 +49,8 @@ public class PlayerController : MonoBehaviour {
 		client.Connect(clientId); 
 
 		client.Subscribe(new string[] { "Unity" }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
+
+
 	}
 
 	void FixedUpdate ()
@@ -74,7 +78,7 @@ public class PlayerController : MonoBehaviour {
 
 	void SetCountText ()
 	{
-		countText.text = "Count: " + count.ToString ();
+		countText.text = "Count: " + count.ToString ();//+" - "+gama.getGamaVersion();
 		if (count >= 5)
 		{
 			winText.text = "You Win!";
@@ -86,6 +90,8 @@ public class PlayerController : MonoBehaviour {
 		string receivedMessage = System.Text.Encoding.UTF8.GetString (e.Message);
 		Debug.Log("Received: " +  receivedMessage );
 		Debug.Log("Good... Done!");
+		Debug.Log (gama.getGamaVersion ());
+
 		receivedMqttMessage.text = receivedMessage;
 	}
 
@@ -94,6 +100,8 @@ public class PlayerController : MonoBehaviour {
 			Debug.Log("sending... SKLAB");
 			client.Publish("Gama", System.Text.Encoding.UTF8.GetBytes("Sending from Unity3D!!! Good"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
 			Debug.Log("Message sent!");
+			Debug.Log (gama.getGamaVersion ());
+			gama.getAllSceneGameObject();
 		}
 	}
 
