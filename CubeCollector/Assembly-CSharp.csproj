@@ -53,6 +53,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\Rotator.cs" />
  <Reference Include="Facebook.Unity.Settings">
  <HintPath>/Users/sklab/Documents/Job Tools/UnitySceneWithGama/CubeCollector/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
  </Reference>
