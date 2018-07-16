@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour {
 	private GamaMethods gama; 
 	private Tools tools;
 	private MsgSerialization msgDes;
+	private GamaMsg currentMsg;
 
 
 
@@ -76,8 +77,17 @@ public class PlayerController : MonoBehaviour {
 
 		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
 
-		displayReceivedMsg (receivedMsg);
+		updateReceivedMsgOnUnity (receivedMsg);
+		msgDes.texting ();
 
+		//currentMsg = msgDes.msgDeserialization (receivedMsg);
+		if (receivedMsg != "") {
+			string message  = receivedMsg.Substring (8);
+			Debug.Log ("Intial Message is: " + message);
+			currentMsg = msgDes.msgDeserialization (message);
+			Debug.Log ("The sender is: " + currentMsg.sender);
+			Debug.Log ("The Message content is: " + currentMsg.contents);
+		}
 
 
 
@@ -108,10 +118,11 @@ public class PlayerController : MonoBehaviour {
 		receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
 
 		Debug.Log("Received: " +  receivedMsg );
+
+
+		Debug.Log ("Deserialisation is Done");
 		Debug.Log("Good... Done!");
 		Debug.Log (gama.getGamaVersion ());
-
-		Debug.Log ("Type is: "+e.GetType ());
 	}
 
 	void OnGUI(){
@@ -130,7 +141,7 @@ public class PlayerController : MonoBehaviour {
 
 
 
-	void displayReceivedMsg(string msg){
+	void updateReceivedMsgOnUnity(string msg){
 		receivedMqttMessage.text = msg;
 	}
 
