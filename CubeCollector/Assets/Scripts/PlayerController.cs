@@ -11,8 +11,7 @@ using uPLibrary.Networking.M2Mqtt.Exceptions;
 using ummisco.gama.unity;
 
 using System;
-
-
+using System.Text;
 
 public class PlayerController : MonoBehaviour {
 
@@ -21,21 +20,29 @@ public class PlayerController : MonoBehaviour {
 	public Text winText;
 	public Text receivedMqttMessage;
 
+
 	private Rigidbody rb;
 	private int  count;
+	private string receivedMsg;
 
 	private MqttClient client;
 	private GamaMethods gama; 
+	private Tools tools;
+	private MsgSerialization msgDes;
 
 
 
 	void Start ()
 	{
+		tools = new Tools ();
+		msgDes = new MsgSerialization ();
 		rb = GetComponent<Rigidbody>();
 		count = 0;
+		receivedMsg = "";
 		SetCountText ();
 		winText.text = "";
 		receivedMqttMessage.text = "";
+
 		gama = new GamaMethods ();
 		// MQTT client Initialization 
 		// --------------------------
@@ -52,6 +59,9 @@ public class PlayerController : MonoBehaviour {
 
 		client.Subscribe(new string[] { "Unity" }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
 
+		List<string> targets = new List<string>();
+		targets.Add("Inbox1"); targets.Add("Inbox2"); targets.Add("Inbox3"); targets.Add("Inbox4");
+		Debug.Log("The list is: " + tools.listToString(targets, "|"));
 
 	}
 
@@ -65,6 +75,12 @@ public class PlayerController : MonoBehaviour {
 		rb.AddForce (movement * speed);
 
 		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
+
+		displayReceivedMsg (receivedMsg);
+
+
+
+
 	}
 
 	void OnTriggerEnter(Collider other) 
@@ -74,7 +90,7 @@ public class PlayerController : MonoBehaviour {
 			other.gameObject.SetActive (false);
 			count = count + 1;
 			SetCountText ();
-			sendGotBox();
+			sendGotBoxMsg();
 		}
 	}
 
@@ -89,12 +105,13 @@ public class PlayerController : MonoBehaviour {
 
 	void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) 
 	{ 
-		string receivedMessage = System.Text.Encoding.UTF8.GetString (e.Message);
-		Debug.Log("Received: " +  receivedMessage );
+		receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
+
+		Debug.Log("Received: " +  receivedMsg );
 		Debug.Log("Good... Done!");
 		Debug.Log (gama.getGamaVersion ());
 
-		receivedMqttMessage.text = receivedMessage;
+		Debug.Log ("Type is: "+e.GetType ());
 	}
 
 	void OnGUI(){
@@ -107,7 +124,17 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	void sendGotBox(){
+
+
+
+
+
+
+	void displayReceivedMsg(string msg){
+		receivedMqttMessage.text = msg;
+	}
+
+	void sendGotBoxMsg(){
 		client.Publish("Gama", System.Text.Encoding.UTF8.GetBytes("Great! I have got a box! Total Boxes is: "+count), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
 	}
 

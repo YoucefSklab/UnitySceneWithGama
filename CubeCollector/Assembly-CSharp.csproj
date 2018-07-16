@@ -51,6 +51,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\MessageSerialization\MsgSerialization.cs" />
+     <Compile Include="Assets\Script Gama\Tools.cs" />
      <Compile Include="Assets\Script MQTT\Exceptions\MqttClientException.cs" />
      <Compile Include="Assets\Script MQTT\Exceptions\MqttCommunicationException.cs" />
      <Compile Include="Assets\Script MQTT\Exceptions\MqttConnectionException.cs" />
