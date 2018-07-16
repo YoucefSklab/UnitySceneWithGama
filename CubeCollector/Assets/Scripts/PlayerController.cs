@@ -102,6 +102,9 @@ public class PlayerController : MonoBehaviour {
 			Debug.Log ("The Message receivers is: " + currentMsg.receivers);
 			Debug.Log ("The Message content is: " + currentMsg.contents);
 			Debug.Log ("The Message emissionTimeStamp is: " + currentMsg.emissionTimeStamp);
+
+			string att = msgDes.getMsgAttribute (message, "receivers");
+			Debug.Log ("Got the attribute receivers " + att);
 		}
 
 
