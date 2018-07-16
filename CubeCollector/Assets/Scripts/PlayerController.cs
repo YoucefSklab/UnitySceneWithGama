@@ -78,15 +78,30 @@ public class PlayerController : MonoBehaviour {
 		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
 
 		updateReceivedMsgOnUnity (receivedMsg);
-		msgDes.texting ();
 
-		//currentMsg = msgDes.msgDeserialization (receivedMsg);
+		// TODO: Review this part. Need to get correctly the received message
 		if (receivedMsg != "") {
-			string message  = receivedMsg.Substring (8);
-			Debug.Log ("Intial Message is: " + message);
+			string mes = "<ummisco.gama.network.common.CompositeGamaMessage>\n  <unread>true</unread>\n  <sender class=\"string\">Gama</sender>\n  <receivers class=\"string\">Unity</receivers>\n  <contents class=\"string\">&lt;string&gt; This message is sent from Gama to Unity &lt;/string&gt;</contents>\n  <emissionTimeStamp>633</emissionTimeStamp>\n</ummisco.gama.network.common.CompositeGamaMessage>";
+			int nbr = receivedMsg.Length - mes.Length -1;
+			string message = receivedMsg.Substring (nbr);
+
+			/*
+			Debug.Log ("Longueur is: " + nbr);
+			Debug.Log ("Intial Message is: " + receivedMsg);
+			Debug.Log ("New Message is: " + message);
+			Debug.Log ("Needed transformation is: " + message);
+
+			Debug.Log ("lenth of receivedMsg is: " + receivedMsg.Length);
+			Debug.Log ("lenth of message is: " + message.Length);
+			Debug.Log ("lenth of messageNew is: " + message.Length);
+			*/
+
 			currentMsg = msgDes.msgDeserialization (message);
-			Debug.Log ("The sender is: " + currentMsg.sender);
+			Debug.Log ("The Message unread is: " + currentMsg.unread);
+			Debug.Log ("The Message sender is: " + currentMsg.sender);
+			Debug.Log ("The Message receivers is: " + currentMsg.receivers);
 			Debug.Log ("The Message content is: " + currentMsg.contents);
+			Debug.Log ("The Message emissionTimeStamp is: " + currentMsg.emissionTimeStamp);
 		}
 
 
