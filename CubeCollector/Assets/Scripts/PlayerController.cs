@@ -28,12 +28,14 @@ public class PlayerController : MonoBehaviour {
 	private GamaMethods gama; 
 
 
+
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody>();
 		count = 0;
 		SetCountText ();
 		winText.text = "";
+		receivedMqttMessage.text = "";
 		gama = new GamaMethods ();
 		// MQTT client Initialization 
 		// --------------------------
@@ -108,4 +110,14 @@ public class PlayerController : MonoBehaviour {
 	void sendGotBox(){
 		client.Publish("Gama", System.Text.Encoding.UTF8.GetBytes("Great! I have got a box! Total Boxes is: "+count), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
 	}
+
+
+	void setSpeed(float s){
+		this.speed = s;
+	}
+
+	public float getSpeed(){
+		return this.speed;
+	}
+
 }
