@@ -51,8 +51,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\MessageSerialization\MsgSerialization.cs" />
-     <Compile Include="Assets\Script Gama\Tools.cs" />
+     <Compile Include="Assets\Script CubeCollector\CameraController.cs" />
+     <Compile Include="Assets\Script CubeCollector\PlayerController.cs" />
+     <Compile Include="Assets\Script CubeCollector\Rotator.cs" />
+     <Compile Include="Assets\Script Gama\MessageSerialization\GamaMessage.cs" />
+     <Compile Include="Assets\Script Gama\MessageSerialization\MsgSerialization.cs" />
+     <Compile Include="Assets\Script Gama\Tools\GamaMethods.cs" />
+     <Compile Include="Assets\Script Gama\Tools\Tools.cs" />
      <Compile Include="Assets\Script MQTT\Exceptions\MqttClientException.cs" />
      <Compile Include="Assets\Script MQTT\Exceptions\MqttCommunicationException.cs" />
      <Compile Include="Assets\Script MQTT\Exceptions\MqttConnectionException.cs" />
@@ -87,10 +92,6 @@
      <Compile Include="Assets\Script MQTT\test\mqttTest.cs" />
      <Compile Include="Assets\Script MQTT\Utility\QueueExtension.cs" />
      <Compile Include="Assets\Script MQTT\Utility\Trace.cs" />
-     <Compile Include="Assets\Scripts\CameraController.cs" />
-     <Compile Include="Assets\Scripts\GamaMethods.cs" />
-     <Compile Include="Assets\Scripts\PlayerController.cs" />
-     <Compile Include="Assets\Scripts\Rotator.cs" />
  <Reference Include="Facebook.Unity.Settings">
  <HintPath>/Users/sklab/Documents/Job Tools/UnitySceneWithGama/CubeCollector/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
  </Reference>
