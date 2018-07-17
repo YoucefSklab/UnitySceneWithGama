@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ummisco.gama.unity
+namespace ummisco.gama.unity.messages
 {
 
 	[System.Xml.Serialization.XmlRoot("ummisco.gama.network.common.CompositeGamaMessage")]
@@ -11,6 +11,7 @@ namespace ummisco.gama.unity
 		public string receivers;
 		public string contents;
 		public string emissionTimeStamp;
+		public string action;
 
 		public GamaMessage ()
 		{

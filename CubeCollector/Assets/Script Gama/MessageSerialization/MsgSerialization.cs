@@ -5,10 +5,8 @@ using System.IO;
 using System.Diagnostics;
 
 
-namespace ummisco.gama.unity
+namespace ummisco.gama.unity.messages
 {
-		
-
 	public class MsgSerialization {
 
 		public GamaMessage msgDeserialization (string aciResponseData){

@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
+
 using System.Net;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using uPLibrary.Networking.M2Mqtt.Utility;
 using uPLibrary.Networking.M2Mqtt.Exceptions;
-using ummisco.gama.unity;
+
+using ummisco.gama.unity.messages;
+using ummisco.gama.unity.utils;
 
 using System;
 using System.Text;
+using System.IO;
 
 public class PlayerController : MonoBehaviour {
 
@@ -27,7 +31,6 @@ public class PlayerController : MonoBehaviour {
 
 	private MqttClient client;
 	private GamaMethods gama; 
-	private Tools tools;
 	private MsgSerialization msgDes;
 	private GamaMessage currentMsg;
 
@@ -35,7 +38,8 @@ public class PlayerController : MonoBehaviour {
 
 	void Start ()
 	{
-		tools = new Tools ();
+
+
 		msgDes = new MsgSerialization ();
 		rb = GetComponent<Rigidbody>();
 		count = 0;
@@ -62,7 +66,7 @@ public class PlayerController : MonoBehaviour {
 
 		List<string> targets = new List<string>();
 		targets.Add("Inbox1"); targets.Add("Inbox2"); targets.Add("Inbox3"); targets.Add("Inbox4");
-		Debug.Log("The list is: " + tools.listToString(targets, "|"));
+		Debug.Log("The list is: " + Tools.listToString(targets, "|"));
 
 	}
 
@@ -81,9 +85,12 @@ public class PlayerController : MonoBehaviour {
 
 		// TODO: Review this part. Need to get correctly the received message
 		if (receivedMsg != "") {
-			string mes = "<ummisco.gama.network.common.CompositeGamaMessage>\n  <unread>true</unread>\n  <sender class=\"string\">Gama</sender>\n  <receivers class=\"string\">Unity</receivers>\n  <contents class=\"string\">&lt;string&gt; This message is sent from Gama to Unity &lt;/string&gt;</contents>\n  <emissionTimeStamp>633</emissionTimeStamp>\n</ummisco.gama.network.common.CompositeGamaMessage>";
-			int nbr = receivedMsg.Length - mes.Length -1;
-			string message = receivedMsg.Substring (nbr);
+			//string mes = "<ummisco.gama.network.common.CompositeGamaMessage>\n  <unread>true</unread>\n  <sender class=\"string\">Gama</sender>\n  <receivers class=\"string\">Unity</receivers>\n  <contents class=\"string\">&lt;string&gt; This message is sent from Gama to Unity &lt;/string&gt;</contents>\n  <emissionTimeStamp>633</emissionTimeStamp>\n</ummisco.gama.network.common.CompositeGamaMessage>";
+			//int nbr = receivedMsg.Length - mes.Length -1;
+
+			string message = receivedMsg.Substring (21);
+
+			Debug.Log ("Final Message is: " + message);
 
 			/*
 			Debug.Log ("Longueur is: " + nbr);
@@ -102,6 +109,7 @@ public class PlayerController : MonoBehaviour {
 			Debug.Log ("The Message receivers is: " + currentMsg.receivers);
 			Debug.Log ("The Message content is: " + currentMsg.contents);
 			Debug.Log ("The Message emissionTimeStamp is: " + currentMsg.emissionTimeStamp);
+			Debug.Log ("The Message action is: " + currentMsg.action);
 
 			string att = msgDes.getMsgAttribute (message, "receivers");
 			Debug.Log ("Got the attribute receivers " + att);
@@ -134,6 +142,8 @@ public class PlayerController : MonoBehaviour {
 	void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) 
 	{ 
 		receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
+
+		//receivedMsg = Tools.convertMessage (receivedMsg);
 
 		Debug.Log("Received: " +  receivedMsg );
 

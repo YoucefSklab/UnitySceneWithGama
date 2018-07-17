@@ -56,8 +56,10 @@
      <Compile Include="Assets\Script CubeCollector\Rotator.cs" />
      <Compile Include="Assets\Script Gama\MessageSerialization\GamaMessage.cs" />
      <Compile Include="Assets\Script Gama\MessageSerialization\MsgSerialization.cs" />
-     <Compile Include="Assets\Script Gama\Tools\GamaMethods.cs" />
-     <Compile Include="Assets\Script Gama\Tools\Tools.cs" />
+     <Compile Include="Assets\Script Gama\SetObject\SetObjectsProperties.cs" />
+     <Compile Include="Assets\Script Gama\SetObject\SetTextProperties.cs" />
+     <Compile Include="Assets\Script Gama\Utils\GamaMethods.cs" />
+     <Compile Include="Assets\Script Gama\Utils\Tools.cs" />
      <Compile Include="Assets\Script MQTT\Exceptions\MqttClientException.cs" />
      <Compile Include="Assets\Script MQTT\Exceptions\MqttCommunicationException.cs" />
      <Compile Include="Assets\Script MQTT\Exceptions\MqttConnectionException.cs" />
