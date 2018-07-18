@@ -6,6 +6,7 @@ namespace ummisco.gama.unity.setObjects
 	{
 		public SetObjectsProperties ()
 		{
+			
 		}
 	}
 }

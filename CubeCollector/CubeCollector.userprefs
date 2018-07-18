@@ -1,10 +1,16 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PlayerController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script CubeCollector/PlayerController.cs">
     <Files>
-      <File FileName="Assets/Scripts/PlayerController.cs" Line="40" Column="3" />
-      <File FileName="Assets/Scripts/CameraController.cs" Line="20" Column="2" />
-      <File FileName="Assets/Scripts/Rotator.cs" Line="11" Column="2" />
+      <File FileName="Assets/Script Gama/MessageSerialization/MsgSerialization.cs" Line="12" Column="66" />
+      <File FileName="Assets/Script Gama/MessageSerialization/GamaMessage.cs" Line="14" Column="23" />
+      <File FileName="Assets/Script Gama/Utils/Tools.cs" Line="10" Column="20" />
+      <File FileName="Assets/Script CubeCollector/PlayerController.cs" Line="92" Column="4" />
+      <File FileName="Assets/Script CubeCollector/Rotator.cs" Line="1" Column="1" />
+      <File FileName="Assets/Script Gama/Utils/GamaMethods.cs" Line="15" Column="3" />
+      <File FileName="Assets/Script CubeCollector/CameraController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Script Gama/SetObject/SetObjectsProperties.cs" Line="3" Column="1" />
+      <File FileName="Assets/Script Gama/SetObject/SetTextProperties.cs" Line="9" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
