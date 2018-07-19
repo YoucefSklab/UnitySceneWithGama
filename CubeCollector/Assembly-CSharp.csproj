@@ -55,6 +55,7 @@
      <Compile Include="Assets\Script CubeCollector\PlayerController.cs" />
      <Compile Include="Assets\Script CubeCollector\Rotator.cs" />
      <Compile Include="Assets\Script Gama\MessageSerialization\GamaMessage.cs" />
+     <Compile Include="Assets\Script Gama\MessageSerialization\GamaReponseMessage.cs" />
      <Compile Include="Assets\Script Gama\MessageSerialization\MsgSerialization.cs" />
      <Compile Include="Assets\Script Gama\SetObject\SetObjectsProperties.cs" />
      <Compile Include="Assets\Script Gama\SetObject\SetTextProperties.cs" />

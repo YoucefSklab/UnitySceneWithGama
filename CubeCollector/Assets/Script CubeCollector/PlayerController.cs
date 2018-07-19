@@ -88,7 +88,8 @@ public class PlayerController : MonoBehaviour {
 			//string mes = "<ummisco.gama.network.common.CompositeGamaMessage>\n  <unread>true</unread>\n  <sender class=\"string\">Gama</sender>\n  <receivers class=\"string\">Unity</receivers>\n  <contents class=\"string\">&lt;string&gt; This message is sent from Gama to Unity &lt;/string&gt;</contents>\n  <emissionTimeStamp>633</emissionTimeStamp>\n</ummisco.gama.network.common.CompositeGamaMessage>";
 			//int nbr = receivedMsg.Length - mes.Length -1;
 
-			string message = receivedMsg.Substring (21);
+			string message =  receivedMsg;//receivedMsg.Substring (21);
+
 
 			Debug.Log ("Final Message is: " + message);
 
@@ -109,7 +110,10 @@ public class PlayerController : MonoBehaviour {
 			Debug.Log ("The Message receivers is: " + currentMsg.receivers);
 			Debug.Log ("The Message content is: " + currentMsg.contents);
 			Debug.Log ("The Message emissionTimeStamp is: " + currentMsg.emissionTimeStamp);
-			Debug.Log ("The Message action is: " + currentMsg.action);
+			Debug.Log ("The Message unityAction is: " + currentMsg.unityAction);
+			Debug.Log ("The Message unityObject is: " + currentMsg.unityObject);
+			Debug.Log ("The Message unityAttribute is: " + currentMsg.unityAttribute);
+			Debug.Log ("The Message unityValue is: " + currentMsg.unityValue);
 
 			string att = msgDes.getMsgAttribute (message, "receivers");
 			Debug.Log ("Got the attribute receivers " + att);
@@ -156,7 +160,9 @@ public class PlayerController : MonoBehaviour {
 	void OnGUI(){
 		if ( GUI.Button (new Rect (20,40,180,20), "Send Mqtt message")) {
 			Debug.Log("sending... SKLAB");
+
 			client.Publish("Gama", System.Text.Encoding.UTF8.GetBytes("Sending from Unity3D!!! Good"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+
 			Debug.Log("Message sent!");
 			Debug.Log (gama.getGamaVersion ());
 			gama.getAllSceneGameObject();
@@ -174,7 +180,10 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void sendGotBoxMsg(){
-		client.Publish("Gama", System.Text.Encoding.UTF8.GetBytes("Great! I have got a box! Total Boxes is: "+count), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+		GamaReponseMessage msg = new GamaReponseMessage ("sender", "receivers", "contents", "emissionTimeStamp");
+		string message = msgDes.msgSerialization (msg);
+		//client.Publish("Gama", System.Text.Encoding.UTF8.GetBytes("Great! I have got a box! Total Boxes is: "+count), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+		client.Publish("Gama", System.Text.Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
 	}
 
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Diagnostics;
+using System.Xml.Serialization;
+using System.Xml;
 
 
 namespace ummisco.gama.unity.messages
@@ -52,6 +54,25 @@ namespace ummisco.gama.unity.messages
 			}
 			return null;
 		}
+
+
+		public string msgSerialization (GamaReponseMessage msgResponseData){
+
+			string msg = "";
+
+	
+
+
+			XmlSerializer serializer = new XmlSerializer(msgResponseData.GetType ());
+			using (StringWriter writer = new StringWriter())
+			{
+				serializer.Serialize(writer, msgResponseData);
+				return writer.ToString();
+			}
+
+			return msg;
+		}
+
 	}
 
 }
