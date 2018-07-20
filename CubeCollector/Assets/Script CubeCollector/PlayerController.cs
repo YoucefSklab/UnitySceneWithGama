@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour {
 
 			if(gameObject != null){
 				Debug.Log ("try to call ");
-				gameObject.SendMessage ("setSpeed", 10);
+				gameObject.SendMessage (currentMsg.getAction (), int.Parse(currentMsg.getAttributeValue ()));
 				Debug.Log ("Methode callded with success ");
 
 			}else{
