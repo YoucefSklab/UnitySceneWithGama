@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.IO;
 using System;
-using System.Diagnostics;
+using UnityEngine;
+using System.Reflection;
 
 namespace ummisco.gama.unity.utils
 {
@@ -25,6 +26,26 @@ namespace ummisco.gama.unity.utils
 		}
 
 
+		public static Dictionary<string, object> DictionaryFromType(object atype)
+		{
+
+			if (atype == null) return new Dictionary<string, object>();
+			Type t = atype.GetType();
+			PropertyInfo[] props = t.GetProperties();
+			Debug.Log (" Lenth is --> "+props.Length +  " type "+ t.ToString() );
+		
+			Dictionary<string, object> dict = new Dictionary<string, object>();
+			foreach (PropertyInfo prp in props)
+			{
+				object value = prp.GetValue(atype, new object[]{0});
+
+				dict.Add(prp.Name, value);
+
+			}
+			return dict;
+		}
+
 	}
+
 }
 

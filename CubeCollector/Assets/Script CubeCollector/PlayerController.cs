@@ -16,6 +16,7 @@ using ummisco.gama.unity.utils;
 using System;
 using System.Text;
 using System.IO;
+using System.Reflection;
 
 public class PlayerController : MonoBehaviour {
 
@@ -41,8 +42,8 @@ public class PlayerController : MonoBehaviour {
 
 
 		msgDes = new MsgSerialization ();
-		rb = GetComponent<Rigidbody>();
 		count = 0;
+		rb = GetComponent<Rigidbody>();
 		receivedMsg = "";
 		SetCountText ();
 		winText.text = "";
@@ -85,38 +86,21 @@ public class PlayerController : MonoBehaviour {
 
 		// TODO: Review this part. Need to get correctly the received message
 		if (receivedMsg != "") {
-			//string mes = "<ummisco.gama.network.common.CompositeGamaMessage>\n  <unread>true</unread>\n  <sender class=\"string\">Gama</sender>\n  <receivers class=\"string\">Unity</receivers>\n  <contents class=\"string\">&lt;string&gt; This message is sent from Gama to Unity &lt;/string&gt;</contents>\n  <emissionTimeStamp>633</emissionTimeStamp>\n</ummisco.gama.network.common.CompositeGamaMessage>";
-			//int nbr = receivedMsg.Length - mes.Length -1;
-
 			string message =  receivedMsg;//receivedMsg.Substring (21);
 
-
-			Debug.Log ("Final Message is: " + message);
-
-			/*
-			Debug.Log ("Longueur is: " + nbr);
-			Debug.Log ("Intial Message is: " + receivedMsg);
-			Debug.Log ("New Message is: " + message);
-			Debug.Log ("Needed transformation is: " + message);
-
-			Debug.Log ("lenth of receivedMsg is: " + receivedMsg.Length);
-			Debug.Log ("lenth of message is: " + message.Length);
-			Debug.Log ("lenth of messageNew is: " + message.Length);
-			*/
-
 			currentMsg = msgDes.msgDeserialization (message);
-			Debug.Log ("The Message unread is: " + currentMsg.unread);
-			Debug.Log ("The Message sender is: " + currentMsg.sender);
-			Debug.Log ("The Message receivers is: " + currentMsg.receivers);
-			Debug.Log ("The Message content is: " + currentMsg.contents);
-			Debug.Log ("The Message emissionTimeStamp is: " + currentMsg.emissionTimeStamp);
-			Debug.Log ("The Message unityAction is: " + currentMsg.unityAction);
-			Debug.Log ("The Message unityObject is: " + currentMsg.unityObject);
-			Debug.Log ("The Message unityAttribute is: " + currentMsg.unityAttribute);
-			Debug.Log ("The Message unityValue is: " + currentMsg.unityValue);
+			string att = msgDes.getMsgAttribute (message, "unityAction");
+			Debug.Log ("Got the attribute unityAction " + att);
 
-			string att = msgDes.getMsgAttribute (message, "receivers");
-			Debug.Log ("Got the attribute receivers " + att);
+
+
+
+			Dictionary<string, object> test = Tools.DictionaryFromType (currentMsg);
+			Debug.Log ("All elements in dic : " +test.ToString ());
+			foreach (var pair in test)
+			{
+				Debug.Log ("Key : -> " + pair.Key+ " Its Value -> "+ pair.Value);
+			}
 		}
 
 
@@ -131,7 +115,9 @@ public class PlayerController : MonoBehaviour {
 			count = count + 1;
 			SetCountText ();
 			sendGotBoxMsg();
+
 		}
+
 	}
 
 	void SetCountText ()
@@ -172,6 +158,9 @@ public class PlayerController : MonoBehaviour {
 
 
 
+	public void handleMessage(){
+	
+	}
 
 
 
@@ -185,6 +174,8 @@ public class PlayerController : MonoBehaviour {
 		//client.Publish("Gama", System.Text.Encoding.UTF8.GetBytes("Great! I have got a box! Total Boxes is: "+count), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
 		client.Publish("Gama", System.Text.Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
 	}
+
+
 
 
 	void setSpeed(float s){
