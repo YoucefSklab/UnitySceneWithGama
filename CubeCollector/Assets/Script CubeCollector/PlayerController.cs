@@ -17,10 +17,11 @@ using System;
 using System.Text;
 using System.IO;
 using System.Reflection;
+using NUnit.Framework.Internal;
 
 public class PlayerController : MonoBehaviour {
 
-	public float speed;
+	public int speed;
 	public Text countText;
 	public Text winText;
 	public Text receivedMqttMessage;
@@ -93,14 +94,26 @@ public class PlayerController : MonoBehaviour {
 			Debug.Log ("Got the attribute unityAction " + att);
 
 
+			GameObject gameObject = gama.getGameObjectByName (currentMsg.getObjectName ());
 
+			if(gameObject != null){
+				Debug.Log ("try to call ");
+				gameObject.SendMessage ("setSpeed", 10);
+				Debug.Log ("Methode callded with success ");
 
+			}else{
+				Debug.Log ("Not called ");
+
+			}
+
+			/*
 			Dictionary<string, object> test = Tools.DictionaryFromType (currentMsg);
 			Debug.Log ("All elements in dic : " +test.ToString ());
 			foreach (var pair in test)
 			{
 				Debug.Log ("Key : -> " + pair.Key+ " Its Value -> "+ pair.Value);
 			}
+		*/
 		}
 
 
@@ -128,6 +141,8 @@ public class PlayerController : MonoBehaviour {
 			winText.text = "You Win!";
 		}
 	}
+
+
 
 	void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) 
 	{ 
@@ -158,8 +173,8 @@ public class PlayerController : MonoBehaviour {
 
 
 
-	public void handleMessage(){
-	
+	public void handleMessage(GamaMessage msg){
+		
 	}
 
 
@@ -178,7 +193,7 @@ public class PlayerController : MonoBehaviour {
 
 
 
-	void setSpeed(float s){
+	void setSpeed(int s){
 		this.speed = s;
 	}
 

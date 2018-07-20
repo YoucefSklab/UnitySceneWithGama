@@ -19,15 +19,30 @@ namespace ummisco.gama.unity.utils
 		}
 
 
-		public void getAllSceneGameObject(){
+		public GameObject[] getAllSceneGameObject(){
 			GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>() ;
 
-			foreach(GameObject gameO in allObjects)
-				if (gameO.activeInHierarchy)
-					//print(thisObject+" is an active object") ;
-				//print("test");
+			foreach (GameObject gameO in allObjects) {
+				if (gameO.activeInHierarchy) {
 					Debug.Log(gameO.name);
 
+				}					
+			}
+			return allObjects;
+		}
+
+		public GameObject getGameObjectByName(string objectName){
+			GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>() ;
+
+			foreach (GameObject gameO in allObjects) {
+				if (gameO.activeInHierarchy) {
+					if (objectName.Equals (gameO.name)) {
+						return gameO;
+					}
+	
+				}					
+			}
+			return null;
 		}
 
 	}
