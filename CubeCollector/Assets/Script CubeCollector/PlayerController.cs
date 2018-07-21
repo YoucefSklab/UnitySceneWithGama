@@ -26,12 +26,11 @@ public class PlayerController : MonoBehaviour {
 	public Text winText;
 	public Text receivedMqttMessage;
 
+	public MainScript mainScript;
+
 
 	private Rigidbody rb;
 	private int  count;
-
-
-
 
 
 	void Start ()
@@ -41,6 +40,7 @@ public class PlayerController : MonoBehaviour {
 		SetCountText ();
 		winText.text = "";
 		receivedMqttMessage.text = "";
+		mainScript = new MainScript ();
 
 	}
 
@@ -60,12 +60,10 @@ public class PlayerController : MonoBehaviour {
 			other.gameObject.SetActive (false);
 			count = count + 1;
 			SetCountText ();
-			MainScript.sendGotBoxMsg();
+			mainScript.sendGotBoxMsg();
 		}
 
 	}
-
-
 
 
 	void SetCountText ()

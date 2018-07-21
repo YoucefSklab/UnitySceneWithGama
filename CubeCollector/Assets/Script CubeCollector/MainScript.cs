@@ -108,7 +108,7 @@ public class MainScript : MonoBehaviour {
 
 
 
-	public static void sendGotBoxMsg(){
+	public void sendGotBoxMsg(){
 		GamaReponseMessage msg = new GamaReponseMessage ("sender", "receivers", "contents", "emissionTimeStamp");
 		string message = msgDes.msgSerialization (msg);
 		client.Publish("Gama", System.Text.Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);

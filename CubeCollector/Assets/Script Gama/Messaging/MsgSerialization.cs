@@ -11,6 +11,10 @@ using System;
 namespace ummisco.gama.unity.messages
 {
 	public class MsgSerialization {
+
+		public MsgSerialization(){
+		
+		}
 		
 		public GamaMessage msgDeserialization (string aciResponseData){
 			GamaMessage msg;
