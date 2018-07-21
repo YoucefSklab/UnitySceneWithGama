@@ -43,9 +43,6 @@ namespace ummisco.gama.unity.messages
 		}
 
 
-
-
-
 	}
 
 }

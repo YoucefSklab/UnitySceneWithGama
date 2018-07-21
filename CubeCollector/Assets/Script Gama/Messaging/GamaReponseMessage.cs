@@ -8,8 +8,8 @@ namespace ummisco.gama.unity.messages
 		public Boolean unread { get; set; }
 		public string sender { get; set; }
 		public string receivers { get; set; }
-		public string contents;
-		public string emissionTimeStamp;
+		public string contents { get; set; }
+		public string emissionTimeStamp { get; set; }
 
 
 		public GamaReponseMessage ()
@@ -25,6 +25,7 @@ namespace ummisco.gama.unity.messages
 			this.contents = contents;
 			this.emissionTimeStamp = emissionTimeStamp;
 		}
+
 
 		public void setSender(string sender){
 			this.sender= sender;
@@ -59,8 +60,6 @@ namespace ummisco.gama.unity.messages
 
 			return this.emissionTimeStamp;
 		}
-
-	
 
 	}
 }

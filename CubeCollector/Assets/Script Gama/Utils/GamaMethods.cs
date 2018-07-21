@@ -39,7 +39,6 @@ namespace ummisco.gama.unity.utils
 					if (objectName.Equals (gameO.name)) {
 						return gameO;
 					}
-	
 				}					
 			}
 			return null;
