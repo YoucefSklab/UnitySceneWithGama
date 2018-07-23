@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ummisco.gama.unity.messages
 {
@@ -13,7 +14,8 @@ namespace ummisco.gama.unity.messages
 		public string emissionTimeStamp { set;  get;}
 		public string unityAction { set;  get;}
 		public string unityObject { set;  get;}
-		public string unityAttribute { set;  get;}
+		public object unityAttribute { set;  get;}
+
 		public string unityValue { set;  get;}
 
 		public GamaMessage ()
@@ -34,7 +36,7 @@ namespace ummisco.gama.unity.messages
 			return this.unityObject;
 		}
 
-		public string getObjectAttribute(){
+		public object getObjectAttribute(){
 			return this.unityAttribute;
 		}
 

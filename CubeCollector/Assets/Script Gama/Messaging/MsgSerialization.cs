@@ -29,6 +29,19 @@ namespace ummisco.gama.unity.messages
 
 
 
+		public ItemAttributes msgItemDeserialization (string aciResponseData){
+			ItemAttributes msg;
+			using(TextReader sr = new StringReader(aciResponseData))
+			{
+				var serializer = new System.Xml.Serialization.XmlSerializer(typeof(ItemAttributes));
+				ItemAttributes result =  (ItemAttributes)serializer.Deserialize(sr);
+				msg = result;
+			}
+			return msg;
+		}
+
+
+
 
 
 	public string getMsgAttribute(string aciResponseData, string att){

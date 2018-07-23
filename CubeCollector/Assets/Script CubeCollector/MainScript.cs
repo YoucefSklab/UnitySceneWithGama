@@ -9,6 +9,12 @@ using uPLibrary.Networking.M2Mqtt.Messages;
 using uPLibrary.Networking.M2Mqtt.Utility;
 using uPLibrary.Networking.M2Mqtt.Exceptions;
 using System;
+using System.IO;
+
+using System.Xml.Serialization;
+using System.Xml.Linq;
+using System.Linq;
+using System.Xml;
 
 
 public class MainScript : MonoBehaviour {
@@ -62,12 +68,155 @@ public class MainScript : MonoBehaviour {
 			string att = msgDes.getMsgAttribute (message, "unityAction");
 			Debug.Log ("Got the attribute unityAction " + att);
 
+
+
 			GameObject gameObject = gama.getGameObjectByName (currentMsg.getObjectName ());
 
 			if(gameObject != null){
-				gameObject.SendMessage (currentMsg.getAction (), int.Parse(currentMsg.getAttributeValue ()));
-				gameObject.SendMessage ("setReceivedText", "Set received Text TO CHANGE");
+			//	gameObject.SendMessage (currentMsg.getAction (), int.Parse(currentMsg.getAttributeValue ()));
+			//	gameObject.SendMessage ("setReceivedText", "Set received Text TO CHANGE");
+			//	Debug.Log ("---> " + currentMsg.getObjectAttribute());
 
+
+				//List<ItemAttributes> list = currentMsg.getObjectAttribute();
+				//	ItemAttributes list = msgDes.msgDeserialization (currentMsg.getObjectAttribute());
+
+				//Debug.Log ("---> elements are: "+list.Count);
+				Debug.Log ("---> type is : "+currentMsg.unityAttribute.GetType ());
+				Debug.Log ("---> Value is : "+currentMsg.unityAttribute);
+				Debug.Log ("---> Value is : "+currentMsg.unityAttribute);
+
+				XmlNode[] node  = (XmlNode[]) currentMsg.unityAttribute;
+
+				Dictionary<string, string> dataDictionary = new Dictionary<string, string>();
+
+				for (int i = 1; i < node.Length; i++)
+				{
+					XmlElement elt = (XmlElement) node.GetValue (i);
+					XmlNodeList list = elt.ChildNodes;
+
+					string atr ="";
+					string vl = "";
+
+					foreach (XmlElement item in list)
+					{
+						
+
+						if (item.Name.Equals ("attribute")) {
+							atr = item.InnerText;
+							Debug.Log ("======+>  attribute is : "+atr);
+
+						}
+						if (item.Name.Equals ("value")) {
+							vl = item.InnerText;
+							Debug.Log ("======+>  value is : "+vl);
+						}
+
+
+					}
+					dataDictionary.Add(atr, vl);
+				}
+
+				// Loop over pairs with foreach.
+				Debug.Log ("====== =====================    ALL THE VALUES ARE ================");
+				foreach (KeyValuePair<string, string> pair in dataDictionary)
+				{
+					Debug.Log (pair.Key + "  +++++  "+ pair.Value);
+				}
+			
+
+
+				/*
+
+
+				Debug.Log ("---> node Value is : "+node.GetValue(1));
+
+				XmlElement elt = (XmlElement) node.GetValue (1);
+				Debug.Log ("---> xml element Value is : "+elt.OuterXml);
+				string test = elt.GetAttribute ("attributeU");
+
+				Debug.Log (">>>>>>>>>>>>>>>>>>> Its lenth is:  "+test.Length);
+				Debug.Log (">>>>>>>>>>>>>>>>>>> xml element Attribute is : "+elt.GetAttribute ("class"));
+				Debug.Log (">>>>>>>>>>>>>>>>>>> xml element Value is : "+elt.GetAttribute ("valueU"));
+				Debug.Log ("---> elt.InnerText : "+elt.InnerText);
+
+
+
+				elt = (XmlElement) node.GetValue (2);
+				Debug.Log ("---> xml element Value is : "+elt.OuterXml);
+				Debug.Log ("---> elt.InnerText : "+elt.InnerText);
+				object obj = (object)elt.GetAttribute ("valueU");
+				Debug.Log (">>>>>>>>>>>>>>>>>>> xml element Attribute is : "+elt.GetAttribute ("attributeU"));
+				Debug.Log (">>>>>>>>>>>>>>>>>>> xml element Value is : "+elt.GetAttribute ("valueU"));
+				Debug.Log ("=========>>>> xml element Value is : "+obj.ToString());
+			
+				XmlNodeList list = elt.ChildNodes;
+				foreach (XmlElement item in list)
+				{
+					Debug.Log ("========P=>>>> xml element Value is : "+item.InnerText);
+					Debug.Log ("========P=>>>> item.Name : "+item.Name);
+
+				}
+			*/
+
+			
+				/*
+				MemoryStream stm = new MemoryStream();
+				StreamWriter stw = new StreamWriter(stm);
+				stw.Write(node.OuterXml);
+				stw.Flush();
+				stm.Position = 0;
+
+				//XmlSerializer ser = new XmlSerializer(typeof(T));
+				//T result = (ser.Deserialize(stm) as T);
+				*/
+
+
+
+
+
+			/*	string data = node.ToString ();
+
+			
+				Dictionary<string, string> dataDictionary = new Dictionary<string, string>();
+
+				foreach (XElement element in doc.Descendants().Where(p => p.HasElements == false)) {
+					int keyInt = 0;
+					string keyName = element.Name.LocalName;
+
+					while (dataDictionary.ContainsKey(keyName)) {
+						keyName = element.Name.LocalName + "_" + keyInt++;
+					}
+
+					dataDictionary.Add(keyName, element.Value);
+				}
+
+
+
+				// Loop over pairs with foreach.
+				foreach (KeyValuePair<string, string> pair in dataDictionary)
+				{
+					Debug.Log (pair.Key + " ----  "+ pair.Value);
+				}
+
+
+				*/
+			
+
+				//Debug.Log ("---> Size is : "+currentMsg.unityAttribute.Count);
+				Debug.Log ("---> Action is : "+currentMsg.getAction ());
+			//	Debug.Log ("---> elements in list attribute : "+list.attribute);
+				/*
+				for (int i=0; i<list.Count;i++)
+				{
+					ItemAttributes item = list[i];
+					Debug.Log ("\t---> Attribute" + item.attribute);
+					Debug.Log ("\t---> Value" + item.value);
+
+				}
+				*/
+
+				Debug.Log ("Good, There is a methode to call!");
 			}else{
 				Debug.Log ("No methode to call. null object!");
 			}
@@ -83,7 +232,6 @@ public class MainScript : MonoBehaviour {
 		}
 
 	}
-
 
 
 	void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) 

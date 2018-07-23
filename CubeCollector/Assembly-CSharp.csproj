@@ -57,6 +57,7 @@
      <Compile Include="Assets\Script CubeCollector\Rotator.cs" />
      <Compile Include="Assets\Script Gama\Messaging\GamaMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\GamaReponseMessage.cs" />
+     <Compile Include="Assets\Script Gama\Messaging\ItemAttributes.cs" />
      <Compile Include="Assets\Script Gama\Messaging\MsgSerialization.cs" />
      <Compile Include="Assets\Script Gama\SetObject\SetObjectsProperties.cs" />
      <Compile Include="Assets\Script Gama\SetObject\SetTextProperties.cs" />

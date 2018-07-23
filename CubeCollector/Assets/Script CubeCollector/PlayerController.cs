@@ -53,6 +53,13 @@ public class PlayerController : MonoBehaviour {
 		rb.AddForce (movement * speed);
 	}
 
+
+	void UpdatePosition (float moveHorizontal, float moveVertical)
+	{
+		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
+		rb.AddForce (movement * speed);
+	}
+
 	void OnTriggerEnter(Collider other) 
 	{
 		if (other.gameObject.CompareTag ( "Pick Up"))
