@@ -72,19 +72,30 @@ public class MainScript : MonoBehaviour {
 
 			GameObject gameObject = gama.getGameObjectByName (currentMsg.getObjectName ());
 
+
+			System.Reflection.MethodInfo[] info = gameObject.GetComponent ("PlayerController").GetType ().GetMethods ();
+
+			//System.Reflection.MethodInfo[] info = gameObject.GetType ().GetMethods ();
+
+			Debug.Log ("->>>>>>>>>>>>>>--> " + info.ToString () );
+
+			for (int i = 1; i < info.Length; i++)
+			{
+				System.Reflection.MethodInfo info1 = info [i];
+
+				Debug.Log ("->>>>>>>>>>>>>>--> Name" + info1.Name );
+			}
+
+
+		
+
 			if(gameObject != null){
 			//	gameObject.SendMessage (currentMsg.getAction (), int.Parse(currentMsg.getAttributeValue ()));
 			//	gameObject.SendMessage ("setReceivedText", "Set received Text TO CHANGE");
-			//	Debug.Log ("---> " + currentMsg.getObjectAttribute());
+			
 
 
-				//List<ItemAttributes> list = currentMsg.getObjectAttribute();
-				//	ItemAttributes list = msgDes.msgDeserialization (currentMsg.getObjectAttribute());
 
-				//Debug.Log ("---> elements are: "+list.Count);
-				Debug.Log ("---> type is : "+currentMsg.unityAttribute.GetType ());
-				Debug.Log ("---> Value is : "+currentMsg.unityAttribute);
-				Debug.Log ("---> Value is : "+currentMsg.unityAttribute);
 
 				XmlNode[] node  = (XmlNode[]) currentMsg.unityAttribute;
 
@@ -126,109 +137,12 @@ public class MainScript : MonoBehaviour {
 			
 
 
-				/*
-
-
-				Debug.Log ("---> node Value is : "+node.GetValue(1));
-
-				XmlElement elt = (XmlElement) node.GetValue (1);
-				Debug.Log ("---> xml element Value is : "+elt.OuterXml);
-				string test = elt.GetAttribute ("attributeU");
-
-				Debug.Log (">>>>>>>>>>>>>>>>>>> Its lenth is:  "+test.Length);
-				Debug.Log (">>>>>>>>>>>>>>>>>>> xml element Attribute is : "+elt.GetAttribute ("class"));
-				Debug.Log (">>>>>>>>>>>>>>>>>>> xml element Value is : "+elt.GetAttribute ("valueU"));
-				Debug.Log ("---> elt.InnerText : "+elt.InnerText);
-
-
-
-				elt = (XmlElement) node.GetValue (2);
-				Debug.Log ("---> xml element Value is : "+elt.OuterXml);
-				Debug.Log ("---> elt.InnerText : "+elt.InnerText);
-				object obj = (object)elt.GetAttribute ("valueU");
-				Debug.Log (">>>>>>>>>>>>>>>>>>> xml element Attribute is : "+elt.GetAttribute ("attributeU"));
-				Debug.Log (">>>>>>>>>>>>>>>>>>> xml element Value is : "+elt.GetAttribute ("valueU"));
-				Debug.Log ("=========>>>> xml element Value is : "+obj.ToString());
-			
-				XmlNodeList list = elt.ChildNodes;
-				foreach (XmlElement item in list)
-				{
-					Debug.Log ("========P=>>>> xml element Value is : "+item.InnerText);
-					Debug.Log ("========P=>>>> item.Name : "+item.Name);
-
-				}
-			*/
-
-			
-				/*
-				MemoryStream stm = new MemoryStream();
-				StreamWriter stw = new StreamWriter(stm);
-				stw.Write(node.OuterXml);
-				stw.Flush();
-				stm.Position = 0;
-
-				//XmlSerializer ser = new XmlSerializer(typeof(T));
-				//T result = (ser.Deserialize(stm) as T);
-				*/
-
-
-
-
-
-			/*	string data = node.ToString ();
-
-			
-				Dictionary<string, string> dataDictionary = new Dictionary<string, string>();
-
-				foreach (XElement element in doc.Descendants().Where(p => p.HasElements == false)) {
-					int keyInt = 0;
-					string keyName = element.Name.LocalName;
-
-					while (dataDictionary.ContainsKey(keyName)) {
-						keyName = element.Name.LocalName + "_" + keyInt++;
-					}
-
-					dataDictionary.Add(keyName, element.Value);
-				}
-
-
-
-				// Loop over pairs with foreach.
-				foreach (KeyValuePair<string, string> pair in dataDictionary)
-				{
-					Debug.Log (pair.Key + " ----  "+ pair.Value);
-				}
-
-
-				*/
-			
-
-				//Debug.Log ("---> Size is : "+currentMsg.unityAttribute.Count);
-				Debug.Log ("---> Action is : "+currentMsg.getAction ());
-			//	Debug.Log ("---> elements in list attribute : "+list.attribute);
-				/*
-				for (int i=0; i<list.Count;i++)
-				{
-					ItemAttributes item = list[i];
-					Debug.Log ("\t---> Attribute" + item.attribute);
-					Debug.Log ("\t---> Value" + item.value);
-
-				}
-				*/
-
 				Debug.Log ("Good, There is a methode to call!");
 			}else{
 				Debug.Log ("No methode to call. null object!");
 			}
 
-			/*
-			Dictionary<string, object> test = Tools.DictionaryFromType (currentMsg);
-			Debug.Log ("All elements in dic : " +test.ToString ());
-			foreach (var pair in test)
-			{
-				Debug.Log ("Key : -> " + pair.Key+ " Its Value -> "+ pair.Value);
-			}
-		*/
+
 		}
 
 	}
