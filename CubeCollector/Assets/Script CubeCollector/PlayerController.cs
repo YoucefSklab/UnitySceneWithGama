@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 
-	void SetCountText ()
+	public void SetCountText ()
 	{
 		countText.text = "Count: " + count.ToString ();
 		if (count >= 5)
@@ -82,13 +82,13 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	void setReceivedText (string text)
+	public void setReceivedText (string text)
 	{
 		receivedMqttMessage.text = text;
 
 	}
 
-	void setSpeed(int s){
+	public void setSpeed(int s){
 		this.speed = s;
 	}
 

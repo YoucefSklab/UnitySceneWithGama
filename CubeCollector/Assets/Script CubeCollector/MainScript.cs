@@ -15,6 +15,7 @@ using System.Xml.Serialization;
 using System.Xml.Linq;
 using System.Linq;
 using System.Xml;
+using System.Reflection;
 
 
 public class MainScript : MonoBehaviour {
@@ -72,18 +73,33 @@ public class MainScript : MonoBehaviour {
 
 			GameObject gameObject = gama.getGameObjectByName (currentMsg.getObjectName ());
 
+			BindingFlags flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
-			System.Reflection.MethodInfo[] info = gameObject.GetComponent ("PlayerController").GetType ().GetMethods ();
+			System.Reflection.MethodInfo[] info = gameObject.GetComponent ("PlayerController").GetType ().GetMethods (flags);
+			//System.Reflection.MethodInfo[] info = gameObject.GetComponent ("PlayerController").GetType ().GetMethods ();
+
 
 			//System.Reflection.MethodInfo[] info = gameObject.GetType ().GetMethods ();
 
 			Debug.Log ("->>>>>>>>>>>>>>--> " + info.ToString () );
 
-			for (int i = 1; i < info.Length; i++)
+			for (int i = 0; i < info.Length; i++)
 			{
 				System.Reflection.MethodInfo info1 = info [i];
 
-				Debug.Log ("->>>>>>>>>>>>>>--> Name" + info1.Name );
+				Debug.Log ("->>>>>>>>>>>>>>--> Name >>=>>=>>=  " + info1.Name );
+
+				ParameterInfo[] par = info1.GetParameters ();
+
+				for (int j = 0; j < par.Length; j++)
+				{
+					System.Reflection.ParameterInfo par1 = par [j];
+
+					Debug.Log ("->>>>>>>>>>>>>>--> parametre Name >>=>>=>>=  " + par1.Name );
+
+					Debug.Log ("->>>>>>>>>>>>>>--> parametre Type>>=>>=>>=  " + par1.ParameterType );
+
+				}
 			}
 
 
