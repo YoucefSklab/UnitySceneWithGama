@@ -1,6 +1,6 @@
 *.log
 *.meta
-/Build CubeCollector
-/Library
-/obj
-/Temp
+CubeCollector/Build CubeCollector
+CubeCollector/Library
+CubeCollector/obj
+CubeCollector/Temp
