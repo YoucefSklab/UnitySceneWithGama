@@ -97,11 +97,15 @@ public class PlayerController : MonoBehaviour {
 	}
 
 
-
-	public void changeAllAttributes(int s, string count, string win){
-		this.speed = s;
-		this.countText.text = count;
-		this.winText.text = win;
+	public void changeAllAttributes(object args){
+		object[] obj = (object[])args;
+		this.speed = (int)obj[0];
+		this.countText.text = (string)obj[1];
+		this.winText.text = (string)obj[2];
 	}
+
+
+
+
 
 }

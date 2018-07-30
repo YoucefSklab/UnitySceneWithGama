@@ -243,10 +243,13 @@ public class MainScript : MonoBehaviour {
 
 		switch (size)
 		{
+		case 0:
+			gameObject.SendMessage ( methodName );
+			break;
 		case 1:
 			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] )  );
 			break;
-/*
+  /*
 		case 2:
 			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
 				convertParameter( data[keyList.ElementAt (1)],   par [1] ));
@@ -309,7 +312,14 @@ public class MainScript : MonoBehaviour {
 			break;
 	*/
 		default:
-			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ));
+			object[] obj = new object[size + 1];
+			int i = 0;
+			foreach (KeyValuePair<string, string> pair in data)
+			{
+				obj [i] = pair.Value;
+				i++;
+			}
+			gameObject.SendMessage ( methodName,  obj);
 			break;
 		}
 
