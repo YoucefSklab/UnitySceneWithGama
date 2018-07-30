@@ -1,0 +1,6 @@
+*.log
+*.meta
+/Build CubeCollector
+/Library
+/obj
+/Temp
