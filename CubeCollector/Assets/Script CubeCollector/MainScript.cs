@@ -96,7 +96,6 @@ public class MainScript : MonoBehaviour {
 					System.Reflection.ParameterInfo par1 = par [j];
 
 					Debug.Log ("->>>>>>>>>>>>>>--> parametre Name >>=>>=>>=  " + par1.Name );
-
 					Debug.Log ("->>>>>>>>>>>>>>--> parametre Type>>=>>=>>=  " + par1.ParameterType );
 
 				}
@@ -107,11 +106,9 @@ public class MainScript : MonoBehaviour {
 
 			if(gameObject != null){
 			//	gameObject.SendMessage (currentMsg.getAction (), int.Parse(currentMsg.getAttributeValue ()));
+				gameObject.SendMessage (currentMsg.getAction (), getParameterType(currentMsg.getAttributeValue ()));
+
 			//	gameObject.SendMessage ("setReceivedText", "Set received Text TO CHANGE");
-			
-
-
-
 
 				XmlNode[] node  = (XmlNode[]) currentMsg.unityAttribute;
 
@@ -163,6 +160,10 @@ public class MainScript : MonoBehaviour {
 
 	}
 
+	public object getParameterType (object val){
+		string test = "goood, new test good";
+		return test;
+	}
 
 	void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) 
 	{ 

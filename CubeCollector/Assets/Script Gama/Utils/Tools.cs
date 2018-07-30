@@ -45,6 +45,11 @@ namespace ummisco.gama.unity.utils
 			return dict;
 		}
 
+		public object getParameterType (object par){
+			int test = 2;
+			return test;
+		}
+
 	}
 
 }
