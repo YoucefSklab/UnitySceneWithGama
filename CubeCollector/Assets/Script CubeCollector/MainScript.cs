@@ -16,6 +16,7 @@ using System.Xml.Linq;
 using System.Linq;
 using System.Xml;
 using System.Reflection;
+using System.ComponentModel;
 
 
 public class MainScript : MonoBehaviour {
@@ -36,20 +37,18 @@ public class MainScript : MonoBehaviour {
 		msgDes = new MsgSerialization ();
 		receivedMsg = "";
 
-		//client = new MqttClient(IPAddress.Parse("143.185.118.233"),8080 , false , null ); 
 		client = new MqttClient("localhost",1883 , false , null );
 
 		// register to message received 
 		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
-
 		string clientId = Guid.NewGuid().ToString(); 
 		client.Connect(clientId); 
-
 		client.Subscribe(new string[] { "Unity" }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
-
+		/*
 		List<string> targets = new List<string>();
 		targets.Add("Inbox1"); targets.Add("Inbox2"); targets.Add("Inbox3"); targets.Add("Inbox4");
 		Debug.Log("The list is: " + Tools.listToString(targets, "|"));
+		*/
 	}
 
 
@@ -58,23 +57,16 @@ public class MainScript : MonoBehaviour {
 
 		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
 
-		// This is done in the if block below
-		// updateReceivedMsgOnUnity (receivedMsg);
-
 		// TODO: Review this part. Need to get correctly the received message
 		if (receivedMsg != "") {
 			string message =  receivedMsg;//receivedMsg.Substring (21);
 
 			currentMsg = msgDes.msgDeserialization (message);
 			string att = msgDes.getMsgAttribute (message, "unityAction");
-			Debug.Log ("Got the attribute unityAction " + att);
-
-
 
 			GameObject gameObject = gama.getGameObjectByName (currentMsg.getObjectName ());
 
 			BindingFlags flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-
 			System.Reflection.MethodInfo[] info = gameObject.GetComponent ("PlayerController").GetType ().GetMethods (flags);
 			//System.Reflection.MethodInfo[] info = gameObject.GetComponent ("PlayerController").GetType ().GetMethods ();
 
@@ -105,10 +97,6 @@ public class MainScript : MonoBehaviour {
 		
 
 			if(gameObject != null){
-			//	gameObject.SendMessage (currentMsg.getAction (), int.Parse(currentMsg.getAttributeValue ()));
-				gameObject.SendMessage (currentMsg.getAction (), getParameterType(currentMsg.getAttributeValue ()));
-
-			//	gameObject.SendMessage ("setReceivedText", "Set received Text TO CHANGE");
 
 				XmlNode[] node  = (XmlNode[]) currentMsg.unityAttribute;
 
@@ -150,7 +138,15 @@ public class MainScript : MonoBehaviour {
 			
 
 
-				Debug.Log ("Good, There is a methode to call!");
+				Debug.Log ("---->>>>   Good, There is a methode to call! all numbers are: "+dataDictionary.Count);
+
+				//	gameObject.SendMessage (currentMsg.getAction (), int.Parse(currentMsg.getAttributeValue ()));
+				//	gameObject.SendMessage (currentMsg.getAction (), getParameterType(currentMsg.getAttributeValue ()));
+
+				//	gameObject.SendMessage ("setReceivedText", "Set received Text TO CHANGE");
+
+				sendMessageToGameObject (gameObject, currentMsg.getAction (), dataDictionary);
+
 			}else{
 				Debug.Log ("No methode to call. null object!");
 			}
@@ -160,10 +156,7 @@ public class MainScript : MonoBehaviour {
 
 	}
 
-	public object getParameterType (object val){
-		string test = "goood, new test good";
-		return test;
-	}
+
 
 	void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) 
 	{ 
@@ -218,5 +211,115 @@ public class MainScript : MonoBehaviour {
 
 	public void handleMessage(GamaMessage msg){
 
+	}
+
+
+
+
+
+
+
+
+
+	// The method to call Game Objects methods
+	//----------------------------------------
+	public void sendMessageToGameObject(GameObject gameObject, string methodName, Dictionary<string, string> data){
+
+		int size = data.Count;
+		List<string> keyList = new List<string>(data.Keys);
+
+		System.Reflection.MethodInfo info = gameObject.GetComponent ("PlayerController").GetType ().GetMethod(methodName);
+		ParameterInfo[] par = info.GetParameters ();
+
+
+		for (int j = 0; j < par.Length; j++)
+		{
+			System.Reflection.ParameterInfo par1 = par [j];
+
+			Debug.Log ("->>>>>>>>>>>>>>--> parametre Name >>=>>=>>=  " + par1.Name );
+			Debug.Log ("->>>>>>>>>>>>>>--> parametre Type>>=>>=>>=  " + par1.ParameterType );
+
+		}
+
+		switch (size)
+		{
+		case 1:
+			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] )  );
+			break;
+/*
+		case 2:
+			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
+				convertParameter( data[keyList.ElementAt (1)],   par [1] ));
+			break;
+		case 3:
+			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
+				convertParameter( data[keyList.ElementAt (1)],   par [1] ),
+				convertParameter( data[keyList.ElementAt (2)],   par [2] ));
+			break;
+		case 4:
+			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
+				convertParameter( data[keyList.ElementAt (1)],   par [1] ),
+				convertParameter( data[keyList.ElementAt (2)],   par [2] ),
+				convertParameter( data[keyList.ElementAt (3)],   par [3] ));
+			break;
+		case 5:
+			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
+				convertParameter( data[keyList.ElementAt (1)],   par [1] ),
+				convertParameter( data[keyList.ElementAt (2)],   par [2] ),
+				convertParameter( data[keyList.ElementAt (3)],   par [3] ),
+				convertParameter( data[keyList.ElementAt (4)],   par [4] ));
+			break;
+		case 6:
+			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
+				convertParameter( data[keyList.ElementAt (1)],   par [1] ),
+				convertParameter( data[keyList.ElementAt (2)],   par [2] ),
+				convertParameter( data[keyList.ElementAt (3)],   par [3] ),
+				convertParameter( data[keyList.ElementAt (4)],   par [4] ),
+				convertParameter( data[keyList.ElementAt (5)],   par [5] ));
+			break;
+		case 7:
+			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
+				convertParameter( data[keyList.ElementAt (1)],   par [1] ),
+				convertParameter( data[keyList.ElementAt (2)],   par [2] ),
+				convertParameter( data[keyList.ElementAt (3)],   par [3] ),
+				convertParameter( data[keyList.ElementAt (4)],   par [4] ),
+				convertParameter( data[keyList.ElementAt (5)],   par [5] ),
+				convertParameter( data[keyList.ElementAt (6)],   par [6] ));
+			break;
+		case 8:
+			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
+				convertParameter( data[keyList.ElementAt (1)],   par [1] ),
+				convertParameter( data[keyList.ElementAt (2)],   par [2] ),
+				convertParameter( data[keyList.ElementAt (3)],   par [3] ),
+				convertParameter( data[keyList.ElementAt (4)],   par [4] ),
+				convertParameter( data[keyList.ElementAt (5)],   par [5] ),
+				convertParameter( data[keyList.ElementAt (6)],   par [6] ),
+				convertParameter( data[keyList.ElementAt (7)],   par [7] ));
+			break;
+		case 9:
+			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
+				convertParameter( data[keyList.ElementAt (1)],   par [1] ),
+				convertParameter( data[keyList.ElementAt (2)],   par [2] ),
+				convertParameter( data[keyList.ElementAt (3)],   par [3] ),
+				convertParameter( data[keyList.ElementAt (4)],   par [4] ),
+				convertParameter( data[keyList.ElementAt (5)],   par [5] ),
+				convertParameter( data[keyList.ElementAt (6)],   par [6] ),
+				convertParameter( data[keyList.ElementAt (7)],   par [7] ),
+				convertParameter( data[keyList.ElementAt (8)],   par [8] ));
+			break;
+	*/
+		default:
+			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ));
+			break;
+		}
+
+	}
+
+	public object convertParameter (object val, ParameterInfo par){
+		//TypeConverter typeConverter = TypeDescriptor.GetConverter(par.ParameterType);
+		//object propValue = typeConverter.ConvertFromString(val);
+		object propValue = Convert.ChangeType (val, par.ParameterType);
+
+		return propValue;
 	}
 }

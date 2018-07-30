@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 
-	void UpdatePosition (float moveHorizontal, float moveVertical)
+	public void UpdatePosition (float moveHorizontal, float moveVertical)
 	{
 		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
 		rb.AddForce (movement * speed);
@@ -94,6 +94,14 @@ public class PlayerController : MonoBehaviour {
 
 	public int getSpeed(){
 		return this.speed;
+	}
+
+
+
+	public void changeAllAttributes(int s, string count, string win){
+		this.speed = s;
+		this.countText.text = count;
+		this.winText.text = win;
 	}
 
 }
