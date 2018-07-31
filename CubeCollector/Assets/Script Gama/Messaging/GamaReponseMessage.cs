@@ -2,13 +2,17 @@
 
 namespace ummisco.gama.unity.messages
 {
-	[System.Xml.Serialization.XmlRoot("ummisco.gama.unity.messages.GamaReponseMessage")]
+	[System.Xml.Serialization.XmlRoot ("ummisco.gama.unity.messages.GamaReponseMessage")]
 	public class GamaReponseMessage
 	{
 		public Boolean unread { get; set; }
+
 		public string sender { get; set; }
+
 		public string receivers { get; set; }
+
 		public string contents { get; set; }
+
 		public string emissionTimeStamp { get; set; }
 
 
@@ -27,36 +31,44 @@ namespace ummisco.gama.unity.messages
 		}
 
 
-		public void setSender(string sender){
-			this.sender= sender;
+		public void setSender (string sender)
+		{
+			this.sender = sender;
 		}
 
-		public string getSender(){
+		public string getSender ()
+		{
 			
 			return this.sender;
 		}
 
-		public void setReceivers(string receivers){
+		public void setReceivers (string receivers)
+		{
 			this.receivers = receivers;
 		}
 
-		public string getReceivers(){
+		public string getReceivers ()
+		{
 			return this.receivers;
 		}
 
-		public void setContents(string contents){
+		public void setContents (string contents)
+		{
 			this.contents = contents;
 		}
 
-		public string getContents(){
+		public string getContents ()
+		{
 			return this.contents;
 		}
 
-		public void setEmissionTimeStamp(string emissionTimeStamp){
+		public void setEmissionTimeStamp (string emissionTimeStamp)
+		{
 			this.emissionTimeStamp = emissionTimeStamp;
 		}
 
-		public string getEmissionTimeStamp(){
+		public string getEmissionTimeStamp ()
+		{
 
 			return this.emissionTimeStamp;
 		}

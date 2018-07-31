@@ -17,7 +17,8 @@ using System.Text;
 using System.IO;
 using System.Reflection;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
 	public int speed;
 	public Text countText;
@@ -28,12 +29,12 @@ public class PlayerController : MonoBehaviour {
 
 
 	private Rigidbody rb;
-	private int  count;
+	private int count;
 
 
 	void Start ()
 	{
-		rb = GetComponent<Rigidbody>();
+		rb = GetComponent<Rigidbody> ();
 		count = 0;
 		SetCountText ();
 		winText.text = "";
@@ -58,14 +59,13 @@ public class PlayerController : MonoBehaviour {
 		rb.AddForce (movement * speed);
 	}
 
-	void OnTriggerEnter(Collider other) 
+	void OnTriggerEnter (Collider other)
 	{
-		if (other.gameObject.CompareTag ( "Pick Up"))
-		{
+		if (other.gameObject.CompareTag ("Pick Up")) {
 			other.gameObject.SetActive (false);
 			count = count + 1;
 			SetCountText ();
-			mainScript.sendGotBoxMsg();
+			mainScript.sendGotBoxMsg ();
 		}
 
 	}
@@ -74,8 +74,7 @@ public class PlayerController : MonoBehaviour {
 	public void SetCountText ()
 	{
 		countText.text = "Count: " + count.ToString ();
-		if (count >= 5)
-		{
+		if (count >= 5) {
 			winText.text = "You Win!";
 		}
 	}
@@ -86,20 +85,23 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
-	public void setSpeed(int s){
+	public void setSpeed (int s)
+	{
 		this.speed = s;
 	}
 
-	public int getSpeed(){
+	public int getSpeed ()
+	{
 		return this.speed;
 	}
 
 
-	public void changeAllAttributes(object args){
+	public void changeAllAttributes (object args)
+	{
 		object[] obj = (object[])args;
-		this.speed = (int)obj[0];
-		this.countText.text = (string)obj[1];
-		this.winText.text = (string)obj[2];
+		this.speed = (int)obj [0];
+		this.countText.text = (string)obj [1];
+		this.winText.text = (string)obj [2];
 	}
 
 

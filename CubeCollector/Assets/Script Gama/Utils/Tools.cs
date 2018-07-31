@@ -8,47 +8,46 @@ using System.Reflection;
 
 namespace ummisco.gama.unity.utils
 {
-	public class Tools {
+	public class Tools
+	{
 
-		public static string listToString(List<string> inputList, string sep){
-			StringBuilder builder = new StringBuilder();
-			foreach (string elt in inputList) 
-			{
-				builder.Append(elt).Append(sep); 
+		public static string listToString (List<string> inputList, string sep)
+		{
+			StringBuilder builder = new StringBuilder ();
+			foreach (string elt in inputList) {
+				builder.Append (elt).Append (sep); 
 			}
-			string result = builder.ToString(); // Get string from StringBuilder
+			string result = builder.ToString (); // Get string from StringBuilder
 			return result;
 		}
 
 
-		public static string convertMessage(string message){
-			return message.Replace("&amp;","&").Replace("&lt;","<").Replace("&gt;",">").Replace("&quot;","\"").Replace("&apos;","'");
+		public static string convertMessage (string message)
+		{
+			return message.Replace ("&amp;", "&").Replace ("&lt;", "<").Replace ("&gt;", ">").Replace ("&quot;", "\"").Replace ("&apos;", "'");
 		}
 
 
-		public static Dictionary<string, object> DictionaryFromType(object atype)
+		public static Dictionary<string, object> DictionaryFromType (object atype)
 		{
 
-			if (atype == null) return new Dictionary<string, object>();
-			Type t = atype.GetType();
-			PropertyInfo[] props = t.GetProperties();
-			Debug.Log (" Lenth is --> "+props.Length +  " type "+ t.ToString() );
+			if (atype == null)
+				return new Dictionary<string, object> ();
+			Type t = atype.GetType ();
+			PropertyInfo[] props = t.GetProperties ();
+			Debug.Log (" Lenth is --> " + props.Length + " type " + t.ToString ());
 		
-			Dictionary<string, object> dict = new Dictionary<string, object>();
-			foreach (PropertyInfo prp in props)
-			{
-				object value = prp.GetValue(atype, new object[]{0});
+			Dictionary<string, object> dict = new Dictionary<string, object> ();
+			foreach (PropertyInfo prp in props) {
+				object value = prp.GetValue (atype, new object[]{ 0 });
 
-				dict.Add(prp.Name, value);
+				dict.Add (prp.Name, value);
 
 			}
 			return dict;
 		}
 
-		public object getParameterType (object par){
-			int test = 2;
-			return test;
-		}
+
 
 	}
 
