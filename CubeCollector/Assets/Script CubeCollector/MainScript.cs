@@ -4,6 +4,7 @@ using UnityEngine;
 using ummisco.gama.unity.messages;
 using ummisco.gama.unity.utils;
 
+
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using uPLibrary.Networking.M2Mqtt.Utility;
@@ -23,11 +24,8 @@ public class MainScript : MonoBehaviour
 {
 
 	private MainScript m_Instance;
-
 	public MainScript Instance { get { return m_Instance; } }
-
 	private string receivedMsg;
-
 	private MqttClient client;
 	private GamaMethods gama;
 	private MsgSerialization msgDes;
@@ -40,13 +38,14 @@ public class MainScript : MonoBehaviour
 		msgDes = new MsgSerialization ();
 		receivedMsg = "";
 
-		client = new MqttClient ("localhost", 1883, false, null);
+		client = new MqttClient (MqttSetting.SERVER_URL, MqttSetting.SERVER_PORT, false, null);
 
 		// register to message received 
 		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
 		string clientId = Guid.NewGuid ().ToString (); 
 		client.Connect (clientId); 
-		client.Subscribe (new string[] { "Unity" }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
+		client.Subscribe (new string[] { MqttSetting.MAIN_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
+	
 		/*
 		List<string> targets = new List<string>();
 		targets.Add("Inbox1"); targets.Add("Inbox2"); targets.Add("Inbox3"); targets.Add("Inbox4");
@@ -72,7 +71,7 @@ public class MainScript : MonoBehaviour
 			BindingFlags flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 			System.Reflection.MethodInfo[] info = gameObject.GetComponent ("PlayerController").GetType ().GetMethods (flags);
 			//System.Reflection.MethodInfo[] info = gameObject.GetComponent ("PlayerController").GetType ().GetMethods ();
-
+		
 
 			//System.Reflection.MethodInfo[] info = gameObject.GetType ().GetMethods ();
 

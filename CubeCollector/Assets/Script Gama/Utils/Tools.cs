@@ -21,33 +21,27 @@ namespace ummisco.gama.unity.utils
 			return result;
 		}
 
-
+		// TO DELETE
 		public static string convertMessage (string message)
 		{
 			return message.Replace ("&amp;", "&").Replace ("&lt;", "<").Replace ("&gt;", ">").Replace ("&quot;", "\"").Replace ("&apos;", "'");
 		}
 
-
 		public static Dictionary<string, object> DictionaryFromType (object atype)
 		{
 
-			if (atype == null)
+			if (atype == null) 
 				return new Dictionary<string, object> ();
 			Type t = atype.GetType ();
 			PropertyInfo[] props = t.GetProperties ();
-			Debug.Log (" Lenth is --> " + props.Length + " type " + t.ToString ());
-		
 			Dictionary<string, object> dict = new Dictionary<string, object> ();
 			foreach (PropertyInfo prp in props) {
 				object value = prp.GetValue (atype, new object[]{ 0 });
 
 				dict.Add (prp.Name, value);
-
 			}
 			return dict;
 		}
-
-
 
 	}
 

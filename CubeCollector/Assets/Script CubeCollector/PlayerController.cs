@@ -24,10 +24,7 @@ public class PlayerController : MonoBehaviour
 	public Text countText;
 	public Text winText;
 	public Text receivedMqttMessage;
-
 	public MainScript mainScript;
-
-
 	private Rigidbody rb;
 	private int count;
 
@@ -52,7 +49,6 @@ public class PlayerController : MonoBehaviour
 		rb.AddForce (movement * speed);
 	}
 
-
 	public void UpdatePosition (float moveHorizontal, float moveVertical)
 	{
 		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
@@ -67,9 +63,7 @@ public class PlayerController : MonoBehaviour
 			SetCountText ();
 			mainScript.sendGotBoxMsg ();
 		}
-
 	}
-
 
 	public void SetCountText ()
 	{
@@ -82,7 +76,6 @@ public class PlayerController : MonoBehaviour
 	public void setReceivedText (string text)
 	{
 		receivedMqttMessage.text = text;
-
 	}
 
 	public void setSpeed (int s)
@@ -95,7 +88,6 @@ public class PlayerController : MonoBehaviour
 		return this.speed;
 	}
 
-
 	public void changeAllAttributes (object args)
 	{
 		object[] obj = (object[])args;
@@ -103,9 +95,5 @@ public class PlayerController : MonoBehaviour
 		this.countText.text = (string)obj [1];
 		this.winText.text = (string)obj [2];
 	}
-
-
-
-
 
 }

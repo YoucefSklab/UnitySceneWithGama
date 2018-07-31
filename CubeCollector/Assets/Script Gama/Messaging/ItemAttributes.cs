@@ -16,8 +16,8 @@ namespace ummisco.gama.unity.messages
 
 		public ItemAttributes ()
 		{
+			
 		}
-
 
 	}
 }

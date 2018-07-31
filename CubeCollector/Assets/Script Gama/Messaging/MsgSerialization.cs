@@ -42,7 +42,6 @@ namespace ummisco.gama.unity.messages
 
 		public string getMsgAttribute (string aciResponseData, string att)
 		{
-
 			using (TextReader sr = new StringReader (aciResponseData)) {
 				var serializer = new System.Xml.Serialization.XmlSerializer (typeof(GamaMessage));
 				GamaMessage msg = (GamaMessage)serializer.Deserialize (sr);
@@ -66,7 +65,6 @@ namespace ummisco.gama.unity.messages
 
 		public string msgSerialization (GamaReponseMessage msgResponseData)
 		{
-
 			XmlSerializer serializer = new XmlSerializer (msgResponseData.GetType ());
 			using (StringWriter writer = new StringWriter ()) {
 				serializer.Serialize (writer, msgResponseData);

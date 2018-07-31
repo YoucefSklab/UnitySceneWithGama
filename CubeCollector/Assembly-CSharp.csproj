@@ -62,6 +62,7 @@
      <Compile Include="Assets\Script Gama\SetObject\SetObjectsProperties.cs" />
      <Compile Include="Assets\Script Gama\SetObject\SetTextProperties.cs" />
      <Compile Include="Assets\Script Gama\Utils\GamaMethods.cs" />
+     <Compile Include="Assets\Script Gama\Utils\MqttSetting.cs" />
      <Compile Include="Assets\Script Gama\Utils\Tools.cs" />
      <Compile Include="Assets\Script MQTT\Exceptions\MqttClientException.cs" />
      <Compile Include="Assets\Script MQTT\Exceptions\MqttCommunicationException.cs" />

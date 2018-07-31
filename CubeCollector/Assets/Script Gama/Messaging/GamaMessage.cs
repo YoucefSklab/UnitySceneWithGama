@@ -56,7 +56,6 @@ namespace ummisco.gama.unity.messages
 			return this.unityValue;
 		}
 
-
 	}
 
 }
