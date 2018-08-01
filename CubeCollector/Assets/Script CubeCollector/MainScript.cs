@@ -55,7 +55,7 @@ public class MainScript : MonoBehaviour
 	void FixedUpdate ()
 	{
 
-		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
+	//	client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
 
 		// TODO: Review this part. Need to get correctly the received message
 		if (receivedMsg != "") {
@@ -175,10 +175,21 @@ public class MainScript : MonoBehaviour
 	}
 
 
+	public void tester ()
+	{
+		
+			client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Bug fixed -> Sending from Unity3D!!! Good"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+			Debug.Log ("Tres Birn ce test ");
+
+
+	}
+
+
 
 
 	public void sendGotBoxMsg ()
 	{
+		/*
 		Debug.Log ("Another  box ");	
 		GamaReponseMessage msg = new GamaReponseMessage ("sender", "receivers", "contents", "emissionTimeStamp");
 		//msgDes = new MsgSerialization ();
@@ -191,6 +202,7 @@ public class MainScript : MonoBehaviour
 		client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Another box1"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
 		client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Another box2"));
 		Debug.Log ("Message sent about got box!");	
+		*/
 	}
 
 

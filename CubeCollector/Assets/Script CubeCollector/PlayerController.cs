@@ -24,7 +24,8 @@ public class PlayerController : MonoBehaviour
 	public Text countText;
 	public Text winText;
 	public Text receivedMqttMessage;
-	public MainScript mainScript;
+	public GameObject mainGameObject;
+	public GamaMethods gama = new GamaMethods();
 	private Rigidbody rb;
 	private int count;
 
@@ -36,7 +37,7 @@ public class PlayerController : MonoBehaviour
 		SetCountText ();
 		winText.text = "";
 		receivedMqttMessage.text = "";
-		mainScript = new MainScript ();
+		mainGameObject = gama.getGameObjectByName ("MainGameObject");
 
 	}
 
@@ -61,7 +62,7 @@ public class PlayerController : MonoBehaviour
 			other.gameObject.SetActive (false);
 			count = count + 1;
 			SetCountText ();
-			mainScript.sendGotBoxMsg ();
+			mainGameObject.SendMessage ("tester");
 		}
 	}
 

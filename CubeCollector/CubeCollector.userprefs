@@ -1,19 +1,12 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script Gama/Utils/Tools.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script MQTT/Messages/MqttMsgPublish.cs">
     <Files>
-      <File FileName="Assets/Script CubeCollector/MainScript.cs" Line="35" Column="2" />
-      <File FileName="Assets/Script Gama/Utils/Tools.cs" Line="11" Column="22" />
-      <File FileName="Assets/Script CubeCollector/PlayerController.cs" Line="19" Column="1" />
-      <File FileName="Assets/Script CubeCollector/Rotator.cs" Line="1" Column="1" />
-      <File FileName="Assets/Script Gama/Utils/GamaMethods.cs" Line="1" Column="1" />
-      <File FileName="Assets/Script CubeCollector/CameraController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Script Gama/SetObject/SetObjectsProperties.cs" Line="1" Column="1" />
-      <File FileName="Assets/Script Gama/SetObject/SetTextProperties.cs" Line="1" Column="1" />
-      <File FileName="Assets/Script Gama/Messaging/GamaMessage.cs" Line="1" Column="1" />
-      <File FileName="Assets/Script Gama/Messaging/GamaReponseMessage.cs" Line="1" Column="1" />
-      <File FileName="Assets/Script Gama/Messaging/ItemAttributes.cs" Line="1" Column="1" />
-      <File FileName="Assets/Script Gama/Messaging/MsgSerialization.cs" Line="82" Column="2" />
+      <File FileName="Assets/Script CubeCollector/MainScript.cs" Line="191" Column="12" />
+      <File FileName="Assets/Script CubeCollector/PlayerController.cs" Line="64" Column="19" />
+      <File FileName="Assets/Script MQTT/MqttClient.cs" Line="735" Column="19" />
+      <File FileName="Assets/Script Gama/Messaging/MsgSerialization.cs" Line="32" Column="19" />
+      <File FileName="Assets/Script MQTT/Messages/MqttMsgPublish.cs" Line="94" Column="9" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
