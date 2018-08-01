@@ -390,7 +390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4434893e7a14a418ef48bfd1426259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 10
   countText: {fileID: 1211033791}
   winText: {fileID: 2074133869}
   receivedMqttMessage: {fileID: 1717643857}
@@ -1609,8 +1609,8 @@ GameObject:
   - component: {fileID: 1953198850}
   - component: {fileID: 1953198849}
   m_Layer: 0
-  m_Name: GamaObject
-  m_TagString: Untagged
+  m_Name: MainGamaObject
+  m_TagString: MainGameObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

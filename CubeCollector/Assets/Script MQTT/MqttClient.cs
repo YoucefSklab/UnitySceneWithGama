@@ -24,6 +24,9 @@ using uPLibrary.Networking.M2Mqtt.Exceptions;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using uPLibrary.Networking.M2Mqtt.Utility;
 // if .Net Micro Framework
+
+
+
 #if (MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3)
 using Microsoft.SPOT;
 #if SSL
@@ -735,7 +738,7 @@ namespace uPLibrary.Networking.M2Mqtt
 
             // enqueue message to publish into the inflight queue
             this.EnqueueInflight(publish, MqttMsgFlow.ToPublish);           
-
+			UnityEngine.Debug.Log ("Another  box ---------->> "+topic);	
             return publish.MessageId;
         }
 

@@ -68,6 +68,7 @@ namespace ummisco.gama.unity.messages
 			XmlSerializer serializer = new XmlSerializer (msgResponseData.GetType ());
 			using (StringWriter writer = new StringWriter ()) {
 				serializer.Serialize (writer, msgResponseData);
+				UnityEngine.Debug.Log ("The result is " + writer.ToString ());
 				return writer.ToString ();
 			}
 		}

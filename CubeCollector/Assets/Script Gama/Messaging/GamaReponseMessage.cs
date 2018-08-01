@@ -5,15 +5,15 @@ namespace ummisco.gama.unity.messages
 	[System.Xml.Serialization.XmlRoot ("ummisco.gama.unity.messages.GamaReponseMessage")]
 	public class GamaReponseMessage
 	{
-		public Boolean unread { get; set; }
+		public Boolean unread ;
 
-		public string sender { get; set; }
+		public string sender ;
 
-		public string receivers { get; set; }
+		public string receivers ;
 
-		public string contents { get; set; }
+		public string contents ;
 
-		public string emissionTimeStamp { get; set; }
+		public string emissionTimeStamp;
 
 
 		public GamaReponseMessage ()

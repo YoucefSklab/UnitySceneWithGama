@@ -25,24 +25,22 @@ public class MainScript : MonoBehaviour
 
 	private MainScript m_Instance;
 	public MainScript Instance { get { return m_Instance; } }
-	private string receivedMsg;
-	private MqttClient client;
-	private GamaMethods gama;
-	private MsgSerialization msgDes;
-	private GamaMessage currentMsg;
+	public string receivedMsg = "";
+	public string clientId = Guid.NewGuid ().ToString (); 
+	public MqttClient client = new MqttClient (MqttSetting.SERVER_URL, MqttSetting.SERVER_PORT, false, null);
+	public GamaMethods gama = new GamaMethods ();
+	public MsgSerialization msgDes = new MsgSerialization ();
+	public GamaMessage currentMsg;
+
+
+
+
 
 	// Use this for initialization
 	void Start ()
 	{
-		gama = new GamaMethods ();
-		msgDes = new MsgSerialization ();
-		receivedMsg = "";
-
-		client = new MqttClient (MqttSetting.SERVER_URL, MqttSetting.SERVER_PORT, false, null);
-
-		// register to message received 
+		
 		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
-		string clientId = Guid.NewGuid ().ToString (); 
 		client.Connect (clientId); 
 		client.Subscribe (new string[] { MqttSetting.MAIN_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
 	
@@ -169,9 +167,10 @@ public class MainScript : MonoBehaviour
 	{
 		if (GUI.Button (new Rect (20, 40, 180, 20), "Send Mqtt message")) {
 			client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Sending from Unity3D!!! Good"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
-			Debug.Log ("Message sent!");
+			Debug.Log ("Message sent! test");
 
 			gama.getAllSceneGameObject ();
+
 		}
 	}
 
@@ -180,15 +179,25 @@ public class MainScript : MonoBehaviour
 
 	public void sendGotBoxMsg ()
 	{
+		Debug.Log ("Another  box ");	
 		GamaReponseMessage msg = new GamaReponseMessage ("sender", "receivers", "contents", "emissionTimeStamp");
+		//msgDes = new MsgSerialization ();
+		//client = new MqttClient (MqttSetting.SERVER_URL, MqttSetting.SERVER_PORT, false, null);
+		//string clientId = Guid.NewGuid ().ToString (); 
+		//Connect (clientId); 
+
 		string message = msgDes.msgSerialization (msg);
-		client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes (message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+		//client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes (message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+		client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Another box1"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+		client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Another box2"));
+		Debug.Log ("Message sent about got box!");	
 	}
 
 
 	void Awake ()
 	{
 		m_Instance = this;
+
 	}
 
 	void OnDestroy ()
@@ -197,10 +206,7 @@ public class MainScript : MonoBehaviour
 	}
 
 
-	void OnGui ()
-	{
-		// common GUI code goes here
-	}
+
 
 
 	// Update is called once per frame
