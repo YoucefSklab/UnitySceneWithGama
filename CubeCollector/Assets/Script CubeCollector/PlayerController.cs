@@ -91,9 +91,10 @@ public class PlayerController : MonoBehaviour
 	public void changeAllAttributes (object args)
 	{
 		object[] obj = (object[])args;
-		this.speed = (int)obj [0];
+		this.speed = Int32.Parse((string)obj [0]);
 		this.countText.text = (string)obj [1];
 		this.winText.text = (string)obj [2];
+ 
 	}
 
 }

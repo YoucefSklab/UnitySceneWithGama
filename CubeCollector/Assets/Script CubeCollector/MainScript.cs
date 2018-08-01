@@ -100,14 +100,14 @@ public class MainScript : MonoBehaviour
 
 				XmlNode[] node = (XmlNode[])currentMsg.unityAttribute;
 
-				Dictionary<string, string> dataDictionary = new Dictionary<string, string> ();
+				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
 
 				for (int i = 1; i < node.Length; i++) {
 					XmlElement elt = (XmlElement)node.GetValue (i);
 					XmlNodeList list = elt.ChildNodes;
 
-					string atr = "";
-					string vl = "";
+					object atr = "";
+					object vl = "";
 
 					foreach (XmlElement item in list) {
 						
@@ -129,7 +129,7 @@ public class MainScript : MonoBehaviour
 
 				// Loop over pairs with foreach.
 				Debug.Log ("====== =====================    ALL THE VALUES ARE ================");
-				foreach (KeyValuePair<string, string> pair in dataDictionary) {
+				foreach (KeyValuePair<object, object> pair in dataDictionary) {
 					Debug.Log (pair.Key + "  +++++  " + pair.Value);
 				}
 			
@@ -224,11 +224,11 @@ public class MainScript : MonoBehaviour
 
 	// The method to call Game Objects methods
 	//----------------------------------------
-	public void sendMessageToGameObject (GameObject gameObject, string methodName, Dictionary<string, string> data)
+	public void sendMessageToGameObject (GameObject gameObject, string methodName, Dictionary<object, object> data)
 	{
 
 		int size = data.Count;
-		List<string> keyList = new List<string> (data.Keys);
+		List<object> keyList = new List<object> (data.Keys);
 
 		System.Reflection.MethodInfo info = gameObject.GetComponent ("PlayerController").GetType ().GetMethod (methodName);
 		ParameterInfo[] par = info.GetParameters ();
@@ -314,7 +314,7 @@ public class MainScript : MonoBehaviour
 		default:
 			object[] obj = new object[size + 1];
 			int i = 0;
-			foreach (KeyValuePair<string, string> pair in data) {
+			foreach (KeyValuePair<object, object> pair in data) {
 				obj [i] = pair.Value;
 				i++;
 			}
