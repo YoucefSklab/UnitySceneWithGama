@@ -1,8 +1,8 @@
 *.log
 *.meta
+Library/
 CubeCollector/Library/
-CubeCollector/Library
 CubeCollector/obj/
 CubeCollector/Temp/
 *.backup
-**/metadata
+**/metadata/

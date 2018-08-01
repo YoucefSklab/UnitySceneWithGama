@@ -738,8 +738,7 @@ namespace uPLibrary.Networking.M2Mqtt
 
             // enqueue message to publish into the inflight queue
             this.EnqueueInflight(publish, MqttMsgFlow.ToPublish);           
-			UnityEngine.Debug.Log ("Another  box ---------->> "+topic);	
-            return publish.MessageId;
+			return publish.MessageId;
         }
 
         /// <summary>

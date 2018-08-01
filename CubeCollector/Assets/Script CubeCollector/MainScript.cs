@@ -189,20 +189,12 @@ public class MainScript : MonoBehaviour
 
 	public void sendGotBoxMsg ()
 	{
-		/*
-		Debug.Log ("Another  box ");	
 		GamaReponseMessage msg = new GamaReponseMessage ("sender", "receivers", "contents", "emissionTimeStamp");
-		//msgDes = new MsgSerialization ();
-		//client = new MqttClient (MqttSetting.SERVER_URL, MqttSetting.SERVER_PORT, false, null);
-		//string clientId = Guid.NewGuid ().ToString (); 
-		//Connect (clientId); 
 
 		string message = msgDes.msgSerialization (msg);
-		//client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes (message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
-		client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Another box1"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
-		client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Another box2"));
-		Debug.Log ("Message sent about got box!");	
-		*/
+		client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes (message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+		//client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Another box1"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+		//client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Another box2"));
 	}
 
 
