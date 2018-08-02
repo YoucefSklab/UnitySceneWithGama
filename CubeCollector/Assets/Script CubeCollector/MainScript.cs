@@ -180,9 +180,12 @@ public class MainScript : MonoBehaviour
 			Debug.Log ("-> Message to deal with as topic: 1 ----> " + MqttSetting.MAIN_TOPIC);
 			GamaMessage currentMsg = msgDes.msgDeserialization (receivedMsg);
 			Debug.Log ("-> Message to deal with as topic: 2 ----> " + MqttSetting.MAIN_TOPIC);
-			//SpeedTopic dealTopic = new SpeedTopic (currentMsg, (GameObject)currentMsg.getObjectAttribute ());
+			GameObject gameObject = gama.getGameObjectByName (currentMsg.getObjectName ());
+			//SpeedTopic dealTopic = new SpeedTopic (currentMsg, (GameObject) gama.getGameObjectByName(currentMsg.getObjectName ()) );
+			//SpeedTopic1 dealTopic =  new SpeedTopic1 (gameObject);
+			SpeedTopic1 dealTopic = new SpeedTopic1 (currentMsg, (GameObject) gama.getGameObjectByName(currentMsg.getObjectName ()) );
 			Debug.Log ("-> Message to deal with as topic: 3 ----> " + MqttSetting.MAIN_TOPIC);
-			//dealTopic.ProcessToMessage ();
+			dealTopic.ProcessToMessage ();
 			Debug.Log ("-> Message to deal with as topic: 4 ----> " + MqttSetting.MAIN_TOPIC);
 			break;
 		case MqttSetting.SPEED_TOPIC:
