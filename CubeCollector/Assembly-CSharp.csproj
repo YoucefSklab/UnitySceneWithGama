@@ -56,6 +56,10 @@
      <Compile Include="Assets\Script CubeCollector\MainScript.cs" />
      <Compile Include="Assets\Script CubeCollector\PlayerController.cs" />
      <Compile Include="Assets\Script CubeCollector\Rotator.cs" />
+     <Compile Include="Assets\Script CubeCollector\Topics\ColorTopic.cs" />
+     <Compile Include="Assets\Script CubeCollector\Topics\PositionTopic.cs" />
+     <Compile Include="Assets\Script CubeCollector\Topics\SpeedTopic.cs" />
+     <Compile Include="Assets\Script CubeCollector\Topics\Topic.cs" />
      <Compile Include="Assets\Script Gama\Messaging\GamaMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\GamaReponseMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\ItemAttributes.cs" />

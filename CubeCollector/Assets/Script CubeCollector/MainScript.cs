@@ -24,9 +24,11 @@ public class MainScript : MonoBehaviour
 {
 
 	private MainScript m_Instance;
+
 	public MainScript Instance { get { return m_Instance; } }
+
 	public string receivedMsg = "";
-	public string clientId = Guid.NewGuid ().ToString (); 
+	public string clientId = Guid.NewGuid ().ToString ();
 	public MqttClient client = new MqttClient (MqttSetting.SERVER_URL, MqttSetting.SERVER_PORT, false, null);
 	public GamaMethods gama = new GamaMethods ();
 	public MsgSerialization msgDes = new MsgSerialization ();
@@ -55,7 +57,7 @@ public class MainScript : MonoBehaviour
 	void FixedUpdate ()
 	{
 
-	//	client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
+		//	client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
 
 		// TODO: Review this part. Need to get correctly the received message
 		if (receivedMsg != "") {
@@ -67,12 +69,12 @@ public class MainScript : MonoBehaviour
 			GameObject gameObject = gama.getGameObjectByName (currentMsg.getObjectName ());
 
 			BindingFlags flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-			System.Reflection.MethodInfo[] info = gameObject.GetComponent ("PlayerController").GetType ().GetMethods (flags);
+			System.Reflection.MethodInfo[] info = gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethods (flags);
 			//System.Reflection.MethodInfo[] info = gameObject.GetComponent ("PlayerController").GetType ().GetMethods ();
 		
 
-			//System.Reflection.MethodInfo[] info = gameObject.GetType ().GetMethods ();
 
+			//System.Reflection.MethodInfo[] info = gameObject.GetType ().GetMethods ();
 			Debug.Log ("->>>>>>>>>>>>>>--> " + info.ToString ());
 
 			for (int i = 0; i < info.Length; i++) {
@@ -157,6 +159,23 @@ public class MainScript : MonoBehaviour
 	{ 
 		receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
 
+		switch (e.Topic) {
+		case MqttSetting.MAIN_TOPIC:
+			Debug.Log ("-> Message to deal with as topic: "+MqttSetting.MAIN_TOPIC);
+			break;
+		case MqttSetting.SPEED_TOPIC:
+			Debug.Log ("-> Message to deal with as topic: "+MqttSetting.SPEED_TOPIC);
+			break;
+		case MqttSetting.POSITION_TOPIC:
+			Debug.Log ("-> Message to deal with as topic: "+MqttSetting.POSITION_TOPIC);
+			break;
+		case MqttSetting.COLOR_TOPIC:
+			Debug.Log ("-> Message to deal with as topic: "+MqttSetting.COLOR_TOPIC);
+			break;
+		default:
+			break;
+		}
+
 		Debug.Log ("Received: " + receivedMsg);
 		Debug.Log (gama.getGamaVersion ());
 	}
@@ -178,22 +197,19 @@ public class MainScript : MonoBehaviour
 	public void tester ()
 	{
 		
-			client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Bug fixed -> Sending from Unity3D!!! Good"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
-			Debug.Log ("Tres Birn ce test ");
+		client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Bug fixed -> Sending from Unity3D!!! Good"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+		Debug.Log ("Tres Birn ce test ");
 
 
 	}
 
 
-
-
 	public void sendGotBoxMsg ()
 	{
-		GamaReponseMessage msg = new GamaReponseMessage ("sender", "receivers", "contents", "emissionTimeStamp");
+		GamaReponseMessage msg = new GamaReponseMessage (clientId, "GamaAgent", MqttSetting.NOTIFY_MSG, "Got a Box notification", DateTime.Now.ToString ());
 
 		string message = msgDes.msgSerialization (msg);
 		client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes (message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
-		//client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Another box1"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
 		//client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Another box2"));
 	}
 
@@ -211,8 +227,6 @@ public class MainScript : MonoBehaviour
 
 
 
-
-
 	// Update is called once per frame
 	void Update ()
 	{
@@ -223,12 +237,6 @@ public class MainScript : MonoBehaviour
 	{
 
 	}
-
-
-
-
-
-
 
 
 
@@ -259,68 +267,7 @@ public class MainScript : MonoBehaviour
 		case 1:
 			gameObject.SendMessage (methodName, convertParameter (data [keyList.ElementAt (0)], par [0]));
 			break;
-		/*
-		case 2:
-			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
-				convertParameter( data[keyList.ElementAt (1)],   par [1] ));
-			break;
-		case 3:
-			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
-				convertParameter( data[keyList.ElementAt (1)],   par [1] ),
-				convertParameter( data[keyList.ElementAt (2)],   par [2] ));
-			break;
-		case 4:
-			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
-				convertParameter( data[keyList.ElementAt (1)],   par [1] ),
-				convertParameter( data[keyList.ElementAt (2)],   par [2] ),
-				convertParameter( data[keyList.ElementAt (3)],   par [3] ));
-			break;
-		case 5:
-			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
-				convertParameter( data[keyList.ElementAt (1)],   par [1] ),
-				convertParameter( data[keyList.ElementAt (2)],   par [2] ),
-				convertParameter( data[keyList.ElementAt (3)],   par [3] ),
-				convertParameter( data[keyList.ElementAt (4)],   par [4] ));
-			break;
-		case 6:
-			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
-				convertParameter( data[keyList.ElementAt (1)],   par [1] ),
-				convertParameter( data[keyList.ElementAt (2)],   par [2] ),
-				convertParameter( data[keyList.ElementAt (3)],   par [3] ),
-				convertParameter( data[keyList.ElementAt (4)],   par [4] ),
-				convertParameter( data[keyList.ElementAt (5)],   par [5] ));
-			break;
-		case 7:
-			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
-				convertParameter( data[keyList.ElementAt (1)],   par [1] ),
-				convertParameter( data[keyList.ElementAt (2)],   par [2] ),
-				convertParameter( data[keyList.ElementAt (3)],   par [3] ),
-				convertParameter( data[keyList.ElementAt (4)],   par [4] ),
-				convertParameter( data[keyList.ElementAt (5)],   par [5] ),
-				convertParameter( data[keyList.ElementAt (6)],   par [6] ));
-			break;
-		case 8:
-			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
-				convertParameter( data[keyList.ElementAt (1)],   par [1] ),
-				convertParameter( data[keyList.ElementAt (2)],   par [2] ),
-				convertParameter( data[keyList.ElementAt (3)],   par [3] ),
-				convertParameter( data[keyList.ElementAt (4)],   par [4] ),
-				convertParameter( data[keyList.ElementAt (5)],   par [5] ),
-				convertParameter( data[keyList.ElementAt (6)],   par [6] ),
-				convertParameter( data[keyList.ElementAt (7)],   par [7] ));
-			break;
-		case 9:
-			gameObject.SendMessage ( methodName, 	convertParameter( data[keyList.ElementAt (0)],   par [0] ),
-				convertParameter( data[keyList.ElementAt (1)],   par [1] ),
-				convertParameter( data[keyList.ElementAt (2)],   par [2] ),
-				convertParameter( data[keyList.ElementAt (3)],   par [3] ),
-				convertParameter( data[keyList.ElementAt (4)],   par [4] ),
-				convertParameter( data[keyList.ElementAt (5)],   par [5] ),
-				convertParameter( data[keyList.ElementAt (6)],   par [6] ),
-				convertParameter( data[keyList.ElementAt (7)],   par [7] ),
-				convertParameter( data[keyList.ElementAt (8)],   par [8] ));
-			break;
-	*/
+		
 		default:
 			object[] obj = new object[size + 1];
 			int i = 0;

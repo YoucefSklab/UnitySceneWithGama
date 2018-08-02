@@ -11,6 +11,8 @@ namespace ummisco.gama.unity.messages
 
 		public string receivers ;
 
+		public string type ;
+
 		public string contents ;
 
 		public string emissionTimeStamp;
@@ -21,11 +23,12 @@ namespace ummisco.gama.unity.messages
 			
 		}
 
-		public GamaReponseMessage (string sender, string receivers, string contents, string emissionTimeStamp)
+		public GamaReponseMessage (string sender, string receivers, string type, string contents, string emissionTimeStamp)
 		{
 			this.unread = true;
 			this.sender = sender;
 			this.receivers = receivers;
+			this.type = type;
 			this.contents = contents;
 			this.emissionTimeStamp = emissionTimeStamp;
 		}
@@ -51,6 +54,17 @@ namespace ummisco.gama.unity.messages
 		{
 			return this.receivers;
 		}
+
+		public void setType (string type)
+		{
+			this.type = type;
+		}
+
+		public string getType ()
+		{
+			return this.type;
+		}
+
 
 		public void setContents (string contents)
 		{

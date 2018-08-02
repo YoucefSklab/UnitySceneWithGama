@@ -394,7 +394,7 @@ MonoBehaviour:
   countText: {fileID: 1211033791}
   winText: {fileID: 2074133869}
   receivedMqttMessage: {fileID: 1717643857}
-  mainScript: {fileID: 0}
+  mainGameObject: {fileID: 0}
 --- !u!23 &143374728
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1609,7 +1609,7 @@ GameObject:
   - component: {fileID: 1953198850}
   - component: {fileID: 1953198849}
   m_Layer: 0
-  m_Name: MainGamaObject
+  m_Name: MainGameObject
   m_TagString: MainGameObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1626,6 +1626,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15a6bada8b89342debc69deaba565339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  receivedMsg: 
+  clientId: 47c751e6-56f3-4dcc-ac3b-fb85f892cf33
 --- !u!4 &1953198850
 Transform:
   m_ObjectHideFlags: 0
