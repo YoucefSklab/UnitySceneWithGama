@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace ummisco.gama.unity.utils
 {
@@ -23,6 +24,10 @@ namespace ummisco.gama.unity.utils
 		// The prifix to use to get game objects script component
 		public const string SCRIPT_PRIFIX = "Controller";
 
+
+		public static GameObject[] allObjects = null;
 	}
+
+
 }
 

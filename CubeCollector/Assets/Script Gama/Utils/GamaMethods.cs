@@ -22,7 +22,7 @@ namespace ummisco.gama.unity.utils
 
 		public GameObject[] getAllSceneGameObject ()
 		{
-			GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
+			GameObject[] allObjects = MqttSetting.allObjects;
 
 			foreach (GameObject gameO in allObjects) {
 				if (gameO.activeInHierarchy) {
@@ -35,9 +35,7 @@ namespace ummisco.gama.unity.utils
 
 		public GameObject getGameObjectByName (string objectName)
 		{
-			GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
-
-			foreach (GameObject gameO in allObjects) {
+			foreach (GameObject gameO in MqttSetting.allObjects) {
 				if (gameO.activeInHierarchy) {
 					if (objectName.Equals (gameO.name)) {
 						return gameO;

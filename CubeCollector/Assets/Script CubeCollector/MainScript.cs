@@ -18,6 +18,7 @@ using System.Linq;
 using System.Xml;
 using System.Reflection;
 using System.ComponentModel;
+using ummisco.gama.unity.topics;
 
 
 public class MainScript : MonoBehaviour
@@ -34,18 +35,32 @@ public class MainScript : MonoBehaviour
 	public MsgSerialization msgDes = new MsgSerialization ();
 	public GamaMessage currentMsg;
 
+	public GameObject[] allObjects;
+	public GameObject currentGameObject = null; 
 
 
+
+	void Awake ()
+	{
+		m_Instance = this;
+		MqttSetting.allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
+
+	}
 
 
 	// Use this for initialization
 	void Start ()
 	{
-		
+
 		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
 		client.Connect (clientId); 
-		client.Subscribe (new string[] { MqttSetting.MAIN_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
-	
+		client.Subscribe (new string[] { MqttSetting.MAIN_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+		client.Subscribe (new string[] { MqttSetting.NOTIFY_MSG}, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
+		client.Subscribe (new string[] { MqttSetting.SPEED_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
+		client.Subscribe (new string[] { MqttSetting.POSITION_TOPIC}, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
+		client.Subscribe (new string[] { MqttSetting.COLOR_TOPIC}, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
+
+
 		/*
 		List<string> targets = new List<string>();
 		targets.Add("Inbox1"); targets.Add("Inbox2"); targets.Add("Inbox3"); targets.Add("Inbox4");
@@ -56,25 +71,25 @@ public class MainScript : MonoBehaviour
 
 	void FixedUpdate ()
 	{
-
+		/*
 		//	client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
 
 		// TODO: Review this part. Need to get correctly the received message
 		if (receivedMsg != "") {
-			string message = receivedMsg;//receivedMsg.Substring (21);
+			string message = receivedMsg;
 
 			currentMsg = msgDes.msgDeserialization (message);
-			string att = msgDes.getMsgAttribute (message, "unityAction");
+		//	string att = msgDes.getMsgAttribute (message, "unityAction");
 
-			GameObject gameObject = gama.getGameObjectByName (currentMsg.getObjectName ());
+			currentGameObject = gama.getGameObjectByName (currentMsg.getObjectName ());
 
 			BindingFlags flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-			System.Reflection.MethodInfo[] info = gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethods (flags);
-			//System.Reflection.MethodInfo[] info = gameObject.GetComponent ("PlayerController").GetType ().GetMethods ();
+			System.Reflection.MethodInfo[] info = currentGameObject.GetComponent (currentGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethods (flags);
+			//System.Reflection.MethodInfo[] info = currentGameObject.GetComponent ("PlayerController").GetType ().GetMethods ();
 		
 
 
-			//System.Reflection.MethodInfo[] info = gameObject.GetType ().GetMethods ();
+			//System.Reflection.MethodInfo[] info = currentGameObject.GetType ().GetMethods ();
 			Debug.Log ("->>>>>>>>>>>>>>--> " + info.ToString ());
 
 			for (int i = 0; i < info.Length; i++) {
@@ -96,7 +111,7 @@ public class MainScript : MonoBehaviour
 
 		
 
-			if (gameObject != null) {
+			if (currentGameObject != null) {
 
 				XmlNode[] node = (XmlNode[])currentMsg.unityAttribute;
 
@@ -137,12 +152,12 @@ public class MainScript : MonoBehaviour
 
 				Debug.Log ("---->>>>   Good, There is a methode to call! all numbers are: " + dataDictionary.Count);
 
-				//	gameObject.SendMessage (currentMsg.getAction (), int.Parse(currentMsg.getAttributeValue ()));
-				//	gameObject.SendMessage (currentMsg.getAction (), getParameterType(currentMsg.getAttributeValue ()));
+				//	currentGameObject.SendMessage (currentMsg.getAction (), int.Parse(currentMsg.getAttributeValue ()));
+				//	currentGameObject.SendMessage (currentMsg.getAction (), getParameterType(currentMsg.getAttributeValue ()));
 
-				//	gameObject.SendMessage ("setReceivedText", "Set received Text TO CHANGE");
+				//	currentGameObject.SendMessage ("setReceivedText", "Set received Text TO CHANGE");
 
-				sendMessageToGameObject (gameObject, currentMsg.getAction (), dataDictionary);
+				sendMessageToGameObject (currentGameObject, currentMsg.getAction (), dataDictionary);
 
 			} else {
 				Debug.Log ("No methode to call. null object!");
@@ -150,6 +165,7 @@ public class MainScript : MonoBehaviour
 
 
 		}
+		*/
 
 	}
 
@@ -161,7 +177,13 @@ public class MainScript : MonoBehaviour
 
 		switch (e.Topic) {
 		case MqttSetting.MAIN_TOPIC:
-			Debug.Log ("-> Message to deal with as topic: "+MqttSetting.MAIN_TOPIC);
+			Debug.Log ("-> Message to deal with as topic: 1 ----> " + MqttSetting.MAIN_TOPIC);
+			GamaMessage currentMsg = msgDes.msgDeserialization (receivedMsg);
+			Debug.Log ("-> Message to deal with as topic: 2 ----> " + MqttSetting.MAIN_TOPIC);
+			//SpeedTopic dealTopic = new SpeedTopic (currentMsg, (GameObject)currentMsg.getObjectAttribute ());
+			Debug.Log ("-> Message to deal with as topic: 3 ----> " + MqttSetting.MAIN_TOPIC);
+			//dealTopic.ProcessToMessage ();
+			Debug.Log ("-> Message to deal with as topic: 4 ----> " + MqttSetting.MAIN_TOPIC);
 			break;
 		case MqttSetting.SPEED_TOPIC:
 			Debug.Log ("-> Message to deal with as topic: "+MqttSetting.SPEED_TOPIC);
@@ -214,11 +236,6 @@ public class MainScript : MonoBehaviour
 	}
 
 
-	void Awake ()
-	{
-		m_Instance = this;
-
-	}
 
 	void OnDestroy ()
 	{
