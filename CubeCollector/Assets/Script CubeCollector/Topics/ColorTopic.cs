@@ -37,9 +37,9 @@ public class ColorTopic : MonoBehaviour
 		return gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethods (flags);
 	}
 
-	public void ProcessColorTopic ()
+	public void ProcessColorTopic (object obj)
 	{
-		Debug.Log ("->>>>>>>>>>>>>>--> --->>>  this is from color Topic");
+		setAllPropertiesColorTopic (obj);
 
 		if (gameObject != null) {
 
@@ -81,11 +81,8 @@ public class ColorTopic : MonoBehaviour
 	}
 
 
-	public static Color ToColor(string c)
+	public static Color ToColor(string color)
 	{
-
-		string color="red";
-		Debug.Log ("Color is "+color);
 		return (Color)typeof(Color).GetProperty(color.ToLowerInvariant()).GetValue(null, null);
 	}
 

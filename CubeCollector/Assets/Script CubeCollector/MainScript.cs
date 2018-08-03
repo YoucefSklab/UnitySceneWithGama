@@ -19,6 +19,7 @@ using System.Xml;
 using System.Reflection;
 using System.ComponentModel;
 using ummisco.gama.unity.topics;
+using System.Globalization;
 
 
 public class MainScript : MonoBehaviour
@@ -102,13 +103,11 @@ public class MainScript : MonoBehaviour
 			switch (e.Topic) {
 			case MqttSetting.MAIN_TOPIC:
 				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.MONO_FREE_TOPIC);
-				Debug.Log ("------------------------------> Remaining messages is : " + msgList.Count);
 
 				break;
 			case MqttSetting.MONO_FREE_TOPIC:
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.MONO_FREE_TOPIC);
-				Debug.Log ("------------------------------> Remaining messages is : " + msgList.Count);
 				objectTargetName = currentMsg.getObjectName ();
 				allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 				gameObjectTarget = null;
@@ -123,23 +122,35 @@ public class MainScript : MonoBehaviour
 				obj = new object[]{ currentMsg, gameObjectTarget };
 
 				// gameObject is the current gameObject to which this script is attached
-				gameObject.GetComponent (MqttSetting.MONO_FREE_TOPIC_SCRIPT).SendMessage ("setAllPropertiesMonoFreeTopic", obj);
-				gameObject.GetComponent (MqttSetting.MONO_FREE_TOPIC_SCRIPT).SendMessage ("ProcessMonoFreeTopic");
+				gameObject.GetComponent (MqttSetting.MONO_FREE_TOPIC_SCRIPT).SendMessage ("ProcessMonoFreeTopic", obj);
 				//------------------------------------------------------------------------------
 				break;
 			case MqttSetting.POSITION_TOPIC:
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.POSITION_TOPIC);
-				Debug.Log ("------------------------------> Remaining messages is : " + msgList.Count);
+				Debug.Log ("-> Message is : " + receivedMsg);
+				objectTargetName = currentMsg.getObjectName ();
+				allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
+				gameObjectTarget = null;
 
+				foreach (GameObject gameO in allObjects) {
+					if (gameO.activeInHierarchy) {
+						if (objectTargetName.Equals (gameO.name)) {
+							gameObjectTarget = gameO;
+						}
+					}					
+				}
+
+				obj = new object[]{ currentMsg, gameObjectTarget };
+
+				// gameObject is the current gameObject to which this script is attached
+				gameObject.GetComponent (MqttSetting.POSITION_TOPIC_SCRIPT).SendMessage ("ProcessPositionTopic", obj);
 				//------------------------------------------------------------------------------
 				break;
 			case MqttSetting.COLOR_TOPIC:
 				//------------------------------------------------------------------------------
 			
 				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.COLOR_TOPIC);
-				Debug.Log ("------------------------------> Remaining messages is : " + msgList.Count);
-				Debug.Log ("------------------------------> Message " + receivedMsg);
 				objectTargetName = currentMsg.getObjectName ();
 				allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 				gameObjectTarget = null;
@@ -151,14 +162,11 @@ public class MainScript : MonoBehaviour
 						}
 					}					
 				}
-				Debug.Log ("------------------------------> TargetObject is  " + gameObjectTarget.name);
-				Debug.Log ("------------------------------> message action is  " + currentMsg.getAction ());
 
 				obj = new object[]{ currentMsg, gameObjectTarget };
 
 				// gameObject is the current gameObject to which this script is attached
-				gameObject.GetComponent (MqttSetting.COLOR_TOPIC_SCRIPT).SendMessage ("setAllPropertiesColorTopic", obj);
-				gameObject.GetComponent (MqttSetting.COLOR_TOPIC_SCRIPT).SendMessage ("ProcessColorTopic");
+				gameObject.GetComponent (MqttSetting.COLOR_TOPIC_SCRIPT).SendMessage ("ProcessColorTopic", obj);
 		
 				//------------------------------------------------------------------------------
 				break;
@@ -277,11 +285,9 @@ public class MainScript : MonoBehaviour
 
 	void client_MqttMsgPublishReceived (object sender, MqttMsgPublishEventArgs e)
 	{ 
-		Debug.Log ("------------------------------> Old Remaining messages is : " + msgList.Count);
 		msgList.Add (e);
-		Debug.Log ("------------------------------> new Remaining messages is : " + msgList.Count);
 		//receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
-		Debug.Log (">  New Message received on topic : " + e.Topic);
+		//Debug.Log (">  New Message received on topic : " + e.Topic);
 	}
 
 
@@ -300,11 +306,7 @@ public class MainScript : MonoBehaviour
 
 	public void tester ()
 	{
-		
 		client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Bug fixed -> Sending from Unity3D!!! Good"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
-		Debug.Log ("Tres Birn ce test ");
-
-
 	}
 
 
@@ -355,7 +357,7 @@ public class MainScript : MonoBehaviour
 			System.Reflection.ParameterInfo par1 = par [j];
 
 			Debug.Log ("->>>>>>>>>>>>>>--> parametre Name >>=>>=>>=  " + par1.Name);
-			Debug.Log ("->>>>>>>>>>>>>>--> parametre Type>>=>>=>>=  " + par1.ParameterType);
+			Debug.Log ("->>>>>>>>>>>>>>--> parametre Type >>=>>=>>=  " + par1.ParameterType);
 
 		}
 

@@ -32,11 +32,12 @@ public class MonoFreeTopic : MonoBehaviour {
 		return gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethods (flags);
 	}
 
-	public void ProcessMonoFreeTopic ()
+	public void ProcessMonoFreeTopic (object obj)
 	{
+		
 		Debug.Log ("->>>>>>>>>>>>>>--> --->>>  this is from mono free Topic");
 
-
+		setAllPropertiesMonoFreeTopic (obj);
 
 		BindingFlags flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 		MethodInfo[] info = getMethodsInfo (flags);
