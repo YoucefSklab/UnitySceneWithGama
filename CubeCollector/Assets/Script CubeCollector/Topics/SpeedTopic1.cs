@@ -24,12 +24,7 @@ namespace ummisco.gama.unity.topics
 			Debug.Log ("->>>>>>>>>>>>>>--> --->>>  inside SpeedTopic");
 		}
 
-		public SpeedTopic1 ( GameObject gameO)
-		{
-			
-			this.gameObject = gameO;
-			Debug.Log ("->>>>>>>>>>>>>>--> --->>>  inside SpeedTopic");
-		}
+
 
 		public MethodInfo[] getMethodsInfo(BindingFlags flags){
 			return gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethods (flags);

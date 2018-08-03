@@ -24,6 +24,12 @@ namespace ummisco.gama.unity.utils
 		// The prifix to use to get game objects script component
 		public const string SCRIPT_PRIFIX = "Controller";
 
+		// Topics' Scripts
+		public const string MAIN_TOPIC_SCRIPT = "MainScript";
+		public const string SPEED_TOPIC_SCRIPT = "SpeedTopic";
+		public const string POSITION_TOPIC_SCRIPT = "PositionTopic";
+		public const string COLOR_TOPIC_SCRIPT = "ColorTopic";
+
 
 		public static GameObject[] allObjects = null;
 	}

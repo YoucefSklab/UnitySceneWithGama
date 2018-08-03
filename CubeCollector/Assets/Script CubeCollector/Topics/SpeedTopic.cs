@@ -109,6 +109,14 @@ public class SpeedTopic : MonoBehaviour {
 	}
 
 
+	public void setAllProperties (object args)
+	{
+		object[] obj = (object[])args;
+		this.message = (GamaMessage)obj [0];
+		this.gameObject = (GameObject)obj [1];
+	}
+
+
 
 }
 
