@@ -32,7 +32,7 @@ public class MonoFreeTopic : MonoBehaviour {
 		return gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethods (flags);
 	}
 
-	public void ProcessToMessage ()
+	public void ProcessMonoFreeTopic ()
 	{
 		Debug.Log ("->>>>>>>>>>>>>>--> --->>>  this is from mono free Topic");
 
@@ -78,14 +78,14 @@ public class MonoFreeTopic : MonoBehaviour {
 				//	Debug.Log (pair.Key + "  +++++  " + pair.Value);
 			}
 
-			sendMessageToGameObject (gameObject, message.getAction (), dataDictionary);
+			sendMonoFreeTopic (gameObject, message.getAction (), dataDictionary);
 
 		} 
 	}
 
 	// The method to call Game Objects methods
 	//----------------------------------------
-	public new void sendMessageToGameObject (GameObject gameObject, string methodName, Dictionary<object, object> data)
+	public new void sendMonoFreeTopic (GameObject gameObject, string methodName, Dictionary<object, object> data)
 	{
 
 		int size = data.Count;
@@ -109,7 +109,7 @@ public class MonoFreeTopic : MonoBehaviour {
 	}
 
 
-	public void setAllProperties (object args)
+	public void setAllPropertiesMonoFreeTopic (object args)
 	{
 		object[] obj = (object[])args;
 		this.message = (GamaMessage)obj [0];
