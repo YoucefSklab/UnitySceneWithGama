@@ -11,9 +11,10 @@ namespace ummisco.gama.unity.utils
 
 		// Topics
 		public const string MAIN_TOPIC = "Unity";
-		public const string SPEED_TOPIC = "speed";
+		public const string MONO_FREE_TOPIC = "monoFree";
 		public const string POSITION_TOPIC = "position";
 		public const string COLOR_TOPIC = "color";
+		public const string DEFAULT_TOPIC = "default";
 
 
 		// Message types
@@ -26,7 +27,7 @@ namespace ummisco.gama.unity.utils
 
 		// Topics' Scripts
 		public const string MAIN_TOPIC_SCRIPT = "MainScript";
-		public const string SPEED_TOPIC_SCRIPT = "SpeedTopic";
+		public const string MONO_FREE_TOPIC_SCRIPT = "MonoFreeTopic";
 		public const string POSITION_TOPIC_SCRIPT = "PositionTopic";
 		public const string COLOR_TOPIC_SCRIPT = "ColorTopic";
 

@@ -9,7 +9,7 @@ using System;
 using System.Xml;
 
 
-public class SpeedTopic : MonoBehaviour {
+public class MonoFreeTopic : MonoBehaviour {
 
 
 	protected MsgSerialization msgDes = new MsgSerialization ();
@@ -34,7 +34,7 @@ public class SpeedTopic : MonoBehaviour {
 
 	public void ProcessToMessage ()
 	{
-		Debug.Log ("->>>>>>>>>>>>>>--> --->>>  this is from speed Topic");
+		Debug.Log ("->>>>>>>>>>>>>>--> --->>>  this is from mono free Topic");
 
 
 
@@ -116,6 +116,18 @@ public class SpeedTopic : MonoBehaviour {
 		this.gameObject = (GameObject)obj [1];
 	}
 
+
+	public GameObject getGameObjectByName (string objectName)
+	{
+		foreach (GameObject gameO in MqttSetting.allObjects) {
+			if (gameO.activeInHierarchy) {
+				if (objectName.Equals (gameO.name)) {
+					return gameO;
+				}
+			}					
+		}
+		return null;
+	}
 
 
 }

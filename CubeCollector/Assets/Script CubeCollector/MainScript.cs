@@ -67,12 +67,9 @@ public class MainScript : MonoBehaviour
 		client.Connect (clientId); 
 		client.Subscribe (new string[] { MqttSetting.MAIN_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.NOTIFY_MSG }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
-		client.Subscribe (new string[] { MqttSetting.SPEED_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
+		client.Subscribe (new string[] { MqttSetting.MONO_FREE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
 		client.Subscribe (new string[] { MqttSetting.POSITION_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
 		client.Subscribe (new string[] { MqttSetting.COLOR_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
-
-
-
 
 
 		/*
@@ -88,74 +85,59 @@ public class MainScript : MonoBehaviour
 
 		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
 
-		Debug.Log ("------------------------------> This game object is " + gameObject.name );
+		Debug.Log ("------------------------------> This game object is " + gameObject.name);
 		if (msgList.Count > 0) {
 
 			MqttMsgPublishEventArgs e = msgList [0];
 
-		//	foreach (var e in msgList) {
-				receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
-				switch (e.Topic) {
-				case MqttSetting.MAIN_TOPIC:
 
+			receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
+			GamaMessage currentMsg = msgDes.msgDeserialization (receivedMsg);
+			switch (e.Topic) {
+			case MqttSetting.MAIN_TOPIC:
+				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.MONO_FREE_TOPIC);
 
+				break;
+			case MqttSetting.MONO_FREE_TOPIC:
+				//------------------------------------------------------------------------------
+				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.MONO_FREE_TOPIC);
+				string objectTargetName = currentMsg.getObjectName ();
+				GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
+				GameObject gameObjectTarget = null;
 
-					Debug.Log ("-> Message to deal with as topic: 1 ----> " + MqttSetting.MAIN_TOPIC);
-
-					GamaMessage currentMsg = msgDes.msgDeserialization (receivedMsg);
-
-					Debug.Log ("-> Message to deal with as topic: 2 ----> " + MqttSetting.MAIN_TOPIC);
-
-					string objectTargetName = currentMsg.getObjectName ();
-					//GameObject gameObject = GameObject.FindGameObjectWithTag (currentMsg.getObjectName ()); //getGameObjectByName (currentMsg.getObjectName ());
-
-					GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
-
-					GameObject gameObjectTarget = null;
-
-					foreach (GameObject gameO in allObjects) {
-						if (gameO.activeInHierarchy) {
-							if (objectTargetName.Equals (gameO.name)) {
-								gameObjectTarget = gameO;
-								Debug.Log ("------------------------------> Target Object " + gameObjectTarget.name );
-							}
-						}					
-					}
-
-
-					object[] obj = new object[]{ currentMsg, gameObjectTarget };
-
-					// gameObject is the current gameObject to which this script is attached
-					gameObject.GetComponent (MqttSetting.SPEED_TOPIC_SCRIPT).SendMessage ("setAllProperties", obj);
-					gameObject.GetComponent (MqttSetting.SPEED_TOPIC_SCRIPT).SendMessage ("ProcessToMessage");
-
-					//SpeedTopic dealTopic = new SpeedTopic (currentMsg, (GameObject) gama.getGameObjectByName(currentMsg.getObjectName ()) );
-					//SpeedTopic1 dealTopic =  new SpeedTopic1 (gameObject);
-					//SpeedTopic1 dealTopic = new SpeedTopic1 (currentMsg, (GameObject)gama.getGameObjectByName (currentMsg.getObjectName ()));
-					Debug.Log ("-> Message to deal with as topic: 3 ----> " + MqttSetting.MAIN_TOPIC);
-					//dealTopic.ProcessToMessage ();
-					Debug.Log ("-> Message to deal with as topic: 4 ----> " + MqttSetting.MAIN_TOPIC);
-				
-
-
-
-
-					break;
-				case MqttSetting.SPEED_TOPIC:
-					Debug.Log ("-> Message to deal with as topic: " + MqttSetting.SPEED_TOPIC);
-					break;
-				case MqttSetting.POSITION_TOPIC:
-					Debug.Log ("-> Message to deal with as topic: " + MqttSetting.POSITION_TOPIC);
-					break;
-				case MqttSetting.COLOR_TOPIC:
-					Debug.Log ("-> Message to deal with as topic: " + MqttSetting.COLOR_TOPIC);
-					break;
-				default:
-					break;
+				foreach (GameObject gameO in allObjects) {
+					if (gameO.activeInHierarchy) {
+						if (objectTargetName.Equals (gameO.name)) {
+							gameObjectTarget = gameO;
+						}
+					}					
 				}
+				object[] obj = new object[]{ currentMsg, gameObjectTarget };
+
+				// gameObject is the current gameObject to which this script is attached
+				gameObject.GetComponent (MqttSetting.MONO_FREE_TOPIC_SCRIPT).SendMessage ("setAllProperties", obj);
+				gameObject.GetComponent (MqttSetting.MONO_FREE_TOPIC_SCRIPT).SendMessage ("ProcessToMessage");
+				//------------------------------------------------------------------------------
+				break;
+			case MqttSetting.POSITION_TOPIC:
+				//------------------------------------------------------------------------------
+				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.POSITION_TOPIC);
+				//------------------------------------------------------------------------------
+				break;
+			case MqttSetting.COLOR_TOPIC:
+				//------------------------------------------------------------------------------
+				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.COLOR_TOPIC);
+				//------------------------------------------------------------------------------
+				break;
+			default:
+				//------------------------------------------------------------------------------
+				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.DEFAULT_TOPIC);
+				//------------------------------------------------------------------------------
+				break;
+			}
 				
 			msgList.RemoveAt (0);
-		//	}
+		
 		}
 
 
@@ -262,47 +244,9 @@ public class MainScript : MonoBehaviour
 
 	void client_MqttMsgPublishReceived (object sender, MqttMsgPublishEventArgs e)
 	{ 
-
 		msgList.Add (e);
-
-		receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
-		/*
-		switch (e.Topic) {
-		case MqttSetting.MAIN_TOPIC:
-			//Debug.Log ("-> Message to deal with as topic: 1 ----> " + MqttSetting.MAIN_TOPIC);
-			GamaMessage currentMsg = msgDes.msgDeserialization (receivedMsg);
-			//Debug.Log ("-> Message to deal with as topic: 2 ----> " + MqttSetting.MAIN_TOPIC);
-			GameObject gameObject = GameObject.FindGameObjectWithTag (currentMsg.getObjectName ()); //getGameObjectByName (currentMsg.getObjectName ());
-			object[] obj = new object[]{currentMsg, gameObject};
-
-
-			gameObject.GetComponent (MqttSetting.SPEED_TOPIC_SCRIPT).SendMessage ("setAllProperties", obj);
-			gameObject.GetComponent (MqttSetting.SPEED_TOPIC_SCRIPT).SendMessage ("ProcessToMessage");
-		
-			//SpeedTopic dealTopic = new SpeedTopic (currentMsg, (GameObject) gama.getGameObjectByName(currentMsg.getObjectName ()) );
-			//SpeedTopic1 dealTopic =  new SpeedTopic1 (gameObject);
-			SpeedTopic1 dealTopic = new SpeedTopic1 (currentMsg, (GameObject) gama.getGameObjectByName(currentMsg.getObjectName ()) );
-			Debug.Log ("-> Message to deal with as topic: 3 ----> " + MqttSetting.MAIN_TOPIC);
-			dealTopic.ProcessToMessage ();
-			Debug.Log ("-> Message to deal with as topic: 4 ----> " + MqttSetting.MAIN_TOPIC);
-			break;
-		case MqttSetting.SPEED_TOPIC:
-			Debug.Log ("-> Message to deal with as topic: "+MqttSetting.SPEED_TOPIC);
-			break;
-		case MqttSetting.POSITION_TOPIC:
-			Debug.Log ("-> Message to deal with as topic: "+MqttSetting.POSITION_TOPIC);
-			break;
-		case MqttSetting.COLOR_TOPIC:
-			Debug.Log ("-> Message to deal with as topic: "+MqttSetting.COLOR_TOPIC);
-			break;
-		default:
-			break;
-		}
-
-		
-		Debug.Log (gama.getGamaVersion ());
-		*/
-		Debug.Log ("Received: " + receivedMsg);
+		//receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
+		Debug.Log (">  New Message received on topic : " + e.Topic);
 	}
 
 
