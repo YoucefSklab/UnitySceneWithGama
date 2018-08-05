@@ -87,8 +87,11 @@ public class PositionTopic : MonoBehaviour
 //		z = float.Parse((string)data [keyList.ElementAt (2)]);     
 
 		Transform tr = gameObject.GetComponent<Transform> ();
-		Vector3 movement = new Vector3 (z, y, z);
-		tr.position = movement;
+		Vector3 movement = new Vector3 (x, y, z);
+		//tr.position = movement;
+		gameObject.transform.position = movement;
+
+
 		Debug.Log ("position applied ");
 	}
 
