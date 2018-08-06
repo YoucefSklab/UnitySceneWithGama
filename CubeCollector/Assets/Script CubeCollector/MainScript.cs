@@ -26,9 +26,10 @@ public class MainScript : MonoBehaviour
 {
 
 
-	private static MainScript m_Instance = null;              
+	private static MainScript m_Instance = null;
 
-	public static MainScript Instance { get { return m_Instance; } } //Static instance of MainScript which allows it to be accessed by any other script.
+	public static MainScript Instance { get { return m_Instance; } }
+	//Static instance of MainScript which allows it to be accessed by any other script.
 
 	public string receivedMsg = "";
 	public string clientId = Guid.NewGuid ().ToString ();
@@ -52,15 +53,15 @@ public class MainScript : MonoBehaviour
 		//Check if instance already exists 	
 		//If instance already exists and it's not this:
 		//Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a MainScript.
-		if (m_Instance == null) 
+		if (m_Instance == null)
 			m_Instance = this;
-		else if (m_Instance != this) 
-			Destroy(gameObject);    
+		else if (m_Instance != this)
+			Destroy (gameObject);    
 		
 
 
 		//Sets this to not be destroyed when reloading scene
-		DontDestroyOnLoad(gameObject);
+		DontDestroyOnLoad (gameObject);
 
 
 
@@ -89,7 +90,8 @@ public class MainScript : MonoBehaviour
 		client.Subscribe (new string[] { MqttSetting.NOTIFY_MSG }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
 		client.Subscribe (new string[] { MqttSetting.MONO_FREE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
 		client.Subscribe (new string[] { MqttSetting.POSITION_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
-		client.Subscribe (new string[] { MqttSetting.COLOR_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
+		client.Subscribe (new string[] { MqttSetting.COLOR_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+		client.Subscribe (new string[] { MqttSetting.REPLAY_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
 
 		/*
@@ -184,6 +186,46 @@ public class MainScript : MonoBehaviour
 				// gameObject is the current gameObject to which this script is attached
 				gameObject.GetComponent (MqttSetting.COLOR_TOPIC_SCRIPT).SendMessage ("ProcessColorTopic", obj);
 		
+				//------------------------------------------------------------------------------
+				break;
+			case MqttSetting.REPLAY_TOPIC:
+				//------------------------------------------------------------------------------
+
+				Debug.Log ("-> Message to deal with as topic:      replayToMe");
+				//Debug.Log ("-> Message to deal with as topic: " + MqttSetting.REPLAY_TOPIC);
+				objectTargetName = currentMsg.getObjectName ();
+				allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
+				gameObjectTarget = null;
+
+				foreach (GameObject gameO in allObjects) {
+					if (gameO.activeInHierarchy) {
+						if (objectTargetName.Equals (gameO.name)) {
+							gameObjectTarget = gameO;
+						}
+					}					
+				}
+				//obj = new object[]{ currentMsg, gameObjectTarget };
+				//string msgReplay = gameObject.GetComponent (MqttSetting.MONO_FREE_TOPIC_SCRIPT).SendMessage ("ProcessMonoFreeTopic", obj);
+				//sendReplay (clientId, "GamaAgent", MqttSetting.REPLAY_TOPIC, msgReplay);
+
+				// gameObject is the current gameObject to which this script is attached
+				FieldInfo[] fieldInfo = gameObjectTarget.GetComponent ("PlayerController").GetType ().GetFields ();
+
+				string msgReplay = "";
+				foreach (FieldInfo fi in fieldInfo) {
+					if (fi.Name.Equals ("speed")) {
+						System.Object ob = (System.Object)gameObjectTarget.GetComponent ("PlayerController");
+						//msgReplay = Convert.ChangeType (fi.GetValue (ob), msgReplay.GetType ());
+						msgReplay = (string)fi.GetValue (ob);
+					}
+						
+				}
+
+				sendReplay (clientId, "GamaAgent", MqttSetting.REPLAY_TOPIC, msgReplay);
+				Debug.Log ("--------------> The replay was sent as follow : " + msgReplay);
+
+
+
 				//------------------------------------------------------------------------------
 				break;
 			default:
@@ -303,7 +345,7 @@ public class MainScript : MonoBehaviour
 	{ 
 		msgList.Add (e);
 		//receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
-		//Debug.Log (">  New Message received on topic : " + e.Topic);
+		Debug.Log (">  New Message received on topic : " + e.Topic);
 	}
 
 
@@ -334,6 +376,17 @@ public class MainScript : MonoBehaviour
 		client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes (message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
 		//client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Another box2"));
 	}
+
+	public void sendReplay (string sender, string receiver, string topic, string replayMsg)
+	{
+		GamaReponseMessage msg = new GamaReponseMessage (sender, receiver, topic, replayMsg, DateTime.Now.ToString ());
+
+		string message = msgDes.msgSerialization (msg);
+		client.Publish (topic, System.Text.Encoding.UTF8.GetBytes (message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+
+	}
+
+
 
 
 

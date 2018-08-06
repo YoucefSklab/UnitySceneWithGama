@@ -98,7 +98,6 @@ public class MonoFreeTopic : MonoBehaviour {
 		//object obj2 = base.convertParameter (obj, parameter [0]);
 		gameObject.SendMessage (methodName, convertParameter(obj, parameter [0]));
 
-
 		Debug.Log ("Method called");
 	}
 

@@ -14,6 +14,7 @@ namespace ummisco.gama.unity.utils
 		public const string MONO_FREE_TOPIC = "monoFree";
 		public const string POSITION_TOPIC = "position";
 		public const string COLOR_TOPIC = "color";
+		public const string REPLAY_TOPIC = "replay";
 		public const string DEFAULT_TOPIC = "default";
 
 
