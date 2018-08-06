@@ -25,9 +25,10 @@ using System.Globalization;
 public class MainScript : MonoBehaviour
 {
 
-	private MainScript m_Instance;
 
-	public MainScript Instance { get { return m_Instance; } }
+	private static MainScript m_Instance = null;              
+
+	public static MainScript Instance { get { return m_Instance; } } //Static instance of MainScript which allows it to be accessed by any other script.
 
 	public string receivedMsg = "";
 	public string clientId = Guid.NewGuid ().ToString ();
@@ -48,6 +49,21 @@ public class MainScript : MonoBehaviour
 	void Awake ()
 	{
 		m_Instance = this;
+		//Check if instance already exists 	
+		//If instance already exists and it's not this:
+		//Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a MainScript.
+		if (m_Instance == null) 
+			m_Instance = this;
+		else if (m_Instance != this) 
+			Destroy(gameObject);    
+		
+
+
+		//Sets this to not be destroyed when reloading scene
+		DontDestroyOnLoad(gameObject);
+
+
+
 		MqttSetting.allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 
 		GameObject[] all = UnityEngine.Object.FindObjectsOfType<GameObject> ();

@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace ummisco.gama.unity.topics
 {
-	public class Topic
+	public abstract class Topic : MonoBehaviour
 	{
 
 		protected MsgSerialization msgDes = new MsgSerialization ();
