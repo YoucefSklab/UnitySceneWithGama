@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace ummisco.gama.unity.utils
 {
@@ -34,6 +35,18 @@ namespace ummisco.gama.unity.utils
 
 
 		public static GameObject[] allObjects = null;
+
+		public static List<string> getTopicsInList(){
+			List<string> topicsList = new List<string>();
+			topicsList.Add (MAIN_TOPIC);
+			topicsList.Add (MONO_FREE_TOPIC);
+			topicsList.Add (POSITION_TOPIC);
+			topicsList.Add (COLOR_TOPIC);
+			topicsList.Add (REPLAY_TOPIC);
+			topicsList.Add (DEFAULT_TOPIC);
+
+			return topicsList;
+		}
 	}
 
 

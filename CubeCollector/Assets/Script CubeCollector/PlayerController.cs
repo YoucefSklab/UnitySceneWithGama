@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
 		winText.text = "";
 		receivedMqttMessage.text = "";
 		mainGameObject = gama.getGameObjectByName ("MainGameObject");
+	
 
 	}
 

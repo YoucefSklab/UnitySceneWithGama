@@ -107,14 +107,17 @@ public class MainScript : MonoBehaviour
 
 		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
 
-		Debug.Log ("------------------------------> This game object is : " + gameObject.name);
+	//	Debug.Log ("------------------------------> This game object is : " + gameObject.name);
 
 
 
 		if (msgList.Count > 0) {
 
 			MqttMsgPublishEventArgs e = msgList [0];
+			if (!MqttSetting.getTopicsInList ().Contains (e.Topic))
+				return;
 
+			Debug.Log ("------------------------------> TOPIC IS : " + e.Topic);
 			receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
 			GamaMessage currentMsg = msgDes.msgDeserialization (receivedMsg);
 
@@ -191,8 +194,7 @@ public class MainScript : MonoBehaviour
 			case MqttSetting.REPLAY_TOPIC:
 				//------------------------------------------------------------------------------
 
-				Debug.Log ("-> Message to deal with as topic:      replayToMe");
-				//Debug.Log ("-> Message to deal with as topic: " + MqttSetting.REPLAY_TOPIC);
+				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.REPLAY_TOPIC);
 				objectTargetName = currentMsg.getObjectName ();
 				allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 				gameObjectTarget = null;
@@ -211,18 +213,32 @@ public class MainScript : MonoBehaviour
 				// gameObject is the current gameObject to which this script is attached
 				FieldInfo[] fieldInfo = gameObjectTarget.GetComponent ("PlayerController").GetType ().GetFields ();
 
+
+				foreach (FieldInfo fi in fieldInfo)
+					Debug.Log ("--------->>>> FieldInfo Name:  " + fi.Name);
+
 				string msgReplay = "";
+
 				foreach (FieldInfo fi in fieldInfo) {
 					if (fi.Name.Equals ("speed")) {
-						System.Object ob = (System.Object)gameObjectTarget.GetComponent ("PlayerController");
-						//msgReplay = Convert.ChangeType (fi.GetValue (ob), msgReplay.GetType ());
-						msgReplay = (string)fi.GetValue (ob);
+						UnityEngine.Component ob = (UnityEngine.Component)gameObjectTarget.GetComponent ("PlayerController");
+
+						msgReplay = fi.GetValue (ob).ToString ();
+
+						//msgReplay = Convert.ChangeType (fi.GetValue (ob), fi.FieldType);
+						//(int)fi.GetValue (ob)
+						//msgReplay = (string)fi.GetValue (ob);
+						Debug.Log ("--------->>>> speed speed speed speed :  " + msgReplay);
+						Debug.Log ("--------->>>> speed speed speed Type :  " + fi.FieldType);
+						//Debug.Log ("--------->>>> speed speed speed Convert :  " + msg);
+						//msgReplay = (string)fi.GetValue (ob);
 					}
 						
 				}
 
+
 				sendReplay (clientId, "GamaAgent", MqttSetting.REPLAY_TOPIC, msgReplay);
-				Debug.Log ("--------------> The replay was sent as follow : " + msgReplay);
+			//	Debug.Log ("--------------> The replay was sent as follow : " + (string) msgReplay);
 
 
 
@@ -344,8 +360,9 @@ public class MainScript : MonoBehaviour
 	void client_MqttMsgPublishReceived (object sender, MqttMsgPublishEventArgs e)
 	{ 
 		msgList.Add (e);
-		//receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
+		receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
 		Debug.Log (">  New Message received on topic : " + e.Topic);
+		//Debug.Log (">  msgList count : " + msgList.Count);
 	}
 
 

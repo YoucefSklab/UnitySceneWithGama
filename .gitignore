@@ -1,8 +1,5 @@
 *.log
 *.meta
-Library/
-CubeCollector/Library/
-CubeCollector/obj/
-CubeCollector/Temp/
-*.backup
-**/metadata/
+.Library
+*.dll
+*.mdb
