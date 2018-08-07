@@ -107,7 +107,7 @@ public class MainScript : MonoBehaviour
 
 		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
 
-	//	Debug.Log ("------------------------------> This game object is : " + gameObject.name);
+		//	Debug.Log ("------------------------------> This game object is : " + gameObject.name);
 
 
 
@@ -206,42 +206,23 @@ public class MainScript : MonoBehaviour
 						}
 					}					
 				}
-				//obj = new object[]{ currentMsg, gameObjectTarget };
-				//string msgReplay = gameObject.GetComponent (MqttSetting.MONO_FREE_TOPIC_SCRIPT).SendMessage ("ProcessMonoFreeTopic", obj);
-				//sendReplay (clientId, "GamaAgent", MqttSetting.REPLAY_TOPIC, msgReplay);
 
 				// gameObject is the current gameObject to which this script is attached
 				FieldInfo[] fieldInfo = gameObjectTarget.GetComponent ("PlayerController").GetType ().GetFields ();
-
-
-				foreach (FieldInfo fi in fieldInfo)
-					Debug.Log ("--------->>>> FieldInfo Name:  " + fi.Name);
 
 				string msgReplay = "";
 
 				foreach (FieldInfo fi in fieldInfo) {
 					if (fi.Name.Equals ("speed")) {
 						UnityEngine.Component ob = (UnityEngine.Component)gameObjectTarget.GetComponent ("PlayerController");
-
 						msgReplay = fi.GetValue (ob).ToString ();
-
-						//msgReplay = Convert.ChangeType (fi.GetValue (ob), fi.FieldType);
-						//(int)fi.GetValue (ob)
-						//msgReplay = (string)fi.GetValue (ob);
 						Debug.Log ("--------->>>> speed speed speed speed :  " + msgReplay);
 						Debug.Log ("--------->>>> speed speed speed Type :  " + fi.FieldType);
-						//Debug.Log ("--------->>>> speed speed speed Convert :  " + msg);
-						//msgReplay = (string)fi.GetValue (ob);
 					}
-						
 				}
 
-
-				sendReplay (clientId, "GamaAgent", MqttSetting.REPLAY_TOPIC, msgReplay);
-			//	Debug.Log ("--------------> The replay was sent as follow : " + (string) msgReplay);
-
-
-
+				sendReplay (clientId, "GamaAgent", MqttSetting.REPLAYED_TOPIC, msgReplay);
+			    
 				//------------------------------------------------------------------------------
 				break;
 			default:

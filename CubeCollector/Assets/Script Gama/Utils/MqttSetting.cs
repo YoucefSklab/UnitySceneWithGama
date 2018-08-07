@@ -10,13 +10,18 @@ namespace ummisco.gama.unity.utils
 		public static string SERVER_URL = "localhost";
 		public static int SERVER_PORT = 1883;
 
-		// Topics
+		// Topics to receive
 		public const string MAIN_TOPIC = "Unity";
 		public const string MONO_FREE_TOPIC = "monoFree";
 		public const string POSITION_TOPIC = "position";
 		public const string COLOR_TOPIC = "color";
 		public const string REPLAY_TOPIC = "replay";
 		public const string DEFAULT_TOPIC = "default";
+
+
+		// Topics to send
+		public const string REPLAYED_TOPIC = "replayed";
+
 
 
 		// Message types
