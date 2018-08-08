@@ -7,13 +7,18 @@ namespace AssemblyCSharp
 	//The abstract keyword enables you to create classes and class members that are incomplete and must be implemented in a derived class.
 	public abstract class MovingObject : MonoBehaviour
 	{
-		public float moveTime = 0.1f;           //Time it will take object to move, in seconds.
-		public LayerMask blockingLayer;         //Layer on which collision will be checked.
+		public float moveTime = 0.1f;
+		//Time it will take object to move, in seconds.
+		public LayerMask blockingLayer;
+		//Layer on which collision will be checked.
 
 
-		private BoxCollider2D boxCollider;      //The BoxCollider2D component attached to this object.
-		private Rigidbody2D rb2D;               //The Rigidbody2D component attached to this object.
-		private float inverseMoveTime;          //Used to make movement more efficient.
+		private BoxCollider2D boxCollider;
+		//The BoxCollider2D component attached to this object.
+		private Rigidbody2D rb2D;
+		//The Rigidbody2D component attached to this object.
+		private float inverseMoveTime;
+		//Used to make movement more efficient.
 
 
 		//Protected, virtual functions can be overridden by inheriting classes.
@@ -30,7 +35,7 @@ namespace AssemblyCSharp
 		}
 
 
-		//Move returns true if it is able to move and false if not. 
+		//Move returns true if it is able to move and false if not.
 		//Move takes parameters for x direction, y direction and a RaycastHit2D to check collision.
 		protected bool Move (int xDir, int yDir, out RaycastHit2D hit)
 		{
@@ -50,8 +55,7 @@ namespace AssemblyCSharp
 			boxCollider.enabled = true;
 
 			//Check if anything was hit
-			if(hit.transform == null)
-			{
+			if (hit.transform == null) {
 				//If nothing was hit, start SmoothMovement co-routine passing in the Vector2 end as destination
 				StartCoroutine (SmoothMovement (end));
 
@@ -72,10 +76,9 @@ namespace AssemblyCSharp
 			float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 
 			//While that distance is greater than a very small amount (Epsilon, almost zero):
-			while(sqrRemainingDistance > float.Epsilon)
-			{
+			while (sqrRemainingDistance > float.Epsilon) {
 				//Find a new position proportionally closer to the end, based on the moveTime
-				Vector3 newPostion = Vector3.MoveTowards(rb2D.position, end, inverseMoveTime * Time.deltaTime);
+				Vector3 newPostion = Vector3.MoveTowards (rb2D.position, end, inverseMoveTime * Time.deltaTime);
 
 				//Call MovePosition on attached Rigidbody2D and move it to the calculated position.
 				rb2D.MovePosition (newPostion);
@@ -101,7 +104,7 @@ namespace AssemblyCSharp
 			bool canMove = Move (xDir, yDir, out hit);
 
 			//Check if nothing was hit by linecast
-			if(hit.transform == null)
+			if (hit.transform == null)
 				//If nothing was hit, return and don't execute further code.
 				return;
 
@@ -109,7 +112,7 @@ namespace AssemblyCSharp
 			T hitComponent = hit.transform.GetComponent <T> ();
 
 			//If canMove is false and hitComponent is not equal to null, meaning MovingObject is blocked and has hit something it can interact with.
-			if(!canMove && hitComponent != null)
+			if (!canMove && hitComponent != null)
 
 				//Call the OnCantMove function and pass it hitComponent as a parameter.
 				OnCantMove (hitComponent);

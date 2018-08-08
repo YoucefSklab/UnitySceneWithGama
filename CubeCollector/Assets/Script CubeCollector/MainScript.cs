@@ -44,6 +44,7 @@ public class MainScript : MonoBehaviour
 	public object[] obj = null;
 	public string objectTargetName = "";
 
+
 	List<MqttMsgPublishEventArgs> msgList = new List<MqttMsgPublishEventArgs> ();
 
 
@@ -58,12 +59,8 @@ public class MainScript : MonoBehaviour
 		else if (m_Instance != this)
 			Destroy (gameObject);    
 		
-
-
 		//Sets this to not be destroyed when reloading scene
 		DontDestroyOnLoad (gameObject);
-
-
 
 		MqttSetting.allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 
@@ -94,12 +91,6 @@ public class MainScript : MonoBehaviour
 		client.Subscribe (new string[] { MqttSetting.GET_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.SET_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
-
-		/*
-		List<string> targets = new List<string>();
-		targets.Add("Inbox1"); targets.Add("Inbox2"); targets.Add("Inbox3"); targets.Add("Inbox4");
-		Debug.Log("The list is: " + Tools.listToString(targets, "|"));
-		*/
 	}
 
 
@@ -108,9 +99,7 @@ public class MainScript : MonoBehaviour
 
 		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
 
-			//Debug.Log ("------------------------------> Trait another message for: " + gameObject.name);
-
-
+		//Debug.Log ("------------------------------> Trait another message for: " + gameObject.name);
 
 		if (msgList.Count > 0) {
 
@@ -119,9 +108,7 @@ public class MainScript : MonoBehaviour
 				Debug.Log ("-> The Topic doesn't exist in the defined list. Please check!");
 				return;
 			}
-				
-
-			Debug.Log ("------------------------------> TOPIC IS : " + e.Topic);
+		
 			receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
 			GamaMessage currentMsg = msgDes.msgDeserialization (receivedMsg);
 
@@ -146,14 +133,12 @@ public class MainScript : MonoBehaviour
 				}
 				obj = new object[]{ currentMsg, gameObjectTarget };
 
-				// gameObject is the current gameObject to which this script is attached
 				gameObject.GetComponent (MqttSetting.MONO_FREE_TOPIC_SCRIPT).SendMessage ("ProcessMonoFreeTopic", obj);
 				//------------------------------------------------------------------------------
 				break;
 			case MqttSetting.POSITION_TOPIC:
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.POSITION_TOPIC);
-				Debug.Log ("-> Message is : " + receivedMsg);
 				objectTargetName = currentMsg.getObjectName ();
 				allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 				gameObjectTarget = null;
@@ -168,13 +153,11 @@ public class MainScript : MonoBehaviour
 
 				obj = new object[]{ currentMsg, gameObjectTarget };
 
-				// gameObject is the current gameObject to which this script is attached
 				gameObject.GetComponent (MqttSetting.POSITION_TOPIC_SCRIPT).SendMessage ("ProcessPositionTopic", obj);
 				//------------------------------------------------------------------------------
 				break;
 			case MqttSetting.COLOR_TOPIC:
 				//------------------------------------------------------------------------------
-			
 				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.COLOR_TOPIC);
 				objectTargetName = currentMsg.getObjectName ();
 				allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
@@ -191,13 +174,12 @@ public class MainScript : MonoBehaviour
 				obj = new object[]{ currentMsg, gameObjectTarget };
 
 				// gameObject is the current gameObject to which this script is attached
-				gameObject.GetComponent (MqttSetting.COLOR_TOPIC_SCRIPT).SendMessage ("ProcessColorTopic", obj);
+				gameObject.GetComponent (MqttSetting.COLOR_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 		
 				//------------------------------------------------------------------------------
 				break;
 			case MqttSetting.GET_TOPIC:
 				//------------------------------------------------------------------------------
-
 				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.GET_TOPIC);
 				objectTargetName = currentMsg.getObjectName ();
 				allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
@@ -211,22 +193,13 @@ public class MainScript : MonoBehaviour
 					}					
 				}
 
-				// gameObject is the current gameObject to which this script is attached
-				FieldInfo[] fieldInfo = gameObjectTarget.GetComponent ("PlayerController").GetType ().GetFields ();
+				string value = null;
+				obj = new object[]{ currentMsg, gameObjectTarget, value };
 
-				string msgReplay = "";
+				gameObject.GetComponent (MqttSetting.GET_TOPIC_SCRIPT).SendMessage ("ProcessGetTopic", obj);
 
-				foreach (FieldInfo fi in fieldInfo) {
-					if (fi.Name.Equals ("speed")) {
-						UnityEngine.Component ob = (UnityEngine.Component)gameObjectTarget.GetComponent ("PlayerController");
-						msgReplay = fi.GetValue (ob).ToString ();
-						Debug.Log ("--------->>>> speed speed speed speed :  " + msgReplay);
-						Debug.Log ("--------->>>> speed speed speed Type :  " + fi.FieldType);
-					}
-				}
-
-				sendReplay (clientId, "GamaAgent", MqttSetting.REPLAY_TOPIC, msgReplay);
-			    
+				value = (string)obj [2];
+				sendReplay (clientId, "GamaAgent", MqttSetting.REPLAY_TOPIC, value);
 				//------------------------------------------------------------------------------
 				break;
 			case MqttSetting.SET_TOPIC:
@@ -247,9 +220,7 @@ public class MainScript : MonoBehaviour
 
 				obj = new object[]{ currentMsg, gameObjectTarget };
 
-				// gameObject is the current gameObject to which this script is attached
 				gameObject.GetComponent (MqttSetting.SET_TOPIC_SCRIPT).SendMessage ("ProcessSetTopic", obj);
-
 				//------------------------------------------------------------------------------
 				break;
 			default:
@@ -258,108 +229,10 @@ public class MainScript : MonoBehaviour
 				//------------------------------------------------------------------------------
 				break;
 			}
-				
 
 			msgList.Remove (e);
 		}
 
-
-
-
-
-		/*
-		// TODO: Review this part. Need to get correctly the received message
-		if (receivedMsg != "") {
-			string message = receivedMsg;
-
-			currentMsg = msgDes.msgDeserialization (message);
-		//	string att = msgDes.getMsgAttribute (message, "unityAction");
-
-			currentGameObject = gama.getGameObjectByName (currentMsg.getObjectName ());
-
-			BindingFlags flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-			System.Reflection.MethodInfo[] info = currentGameObject.GetComponent (currentGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethods (flags);
-			//System.Reflection.MethodInfo[] info = currentGameObject.GetComponent ("PlayerController").GetType ().GetMethods ();
-		
-
-
-			//System.Reflection.MethodInfo[] info = currentGameObject.GetType ().GetMethods ();
-			Debug.Log ("->>>>>>>>>>>>>>--> " + info.ToString ());
-
-			for (int i = 0; i < info.Length; i++) {
-				System.Reflection.MethodInfo info1 = info [i];
-
-				Debug.Log ("->>>>>>>>>>>>>>--> Name >>=>>=>>=  " + info1.Name);
-
-				ParameterInfo[] par = info1.GetParameters ();
-
-				for (int j = 0; j < par.Length; j++) {
-					System.Reflection.ParameterInfo par1 = par [j];
-
-					Debug.Log ("->>>>>>>>>>>>>>--> parametre Name >>=>>=>>=  " + par1.Name);
-					Debug.Log ("->>>>>>>>>>>>>>--> parametre Type>>=>>=>>=  " + par1.ParameterType);
-
-				}
-			}
-
-
-		
-
-			if (currentGameObject != null) {
-
-				XmlNode[] node = (XmlNode[])currentMsg.unityAttribute;
-
-				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
-
-				for (int i = 1; i < node.Length; i++) {
-					XmlElement elt = (XmlElement)node.GetValue (i);
-					XmlNodeList list = elt.ChildNodes;
-
-					object atr = "";
-					object vl = "";
-
-					foreach (XmlElement item in list) {
-						
-
-						if (item.Name.Equals ("attribute")) {
-							atr = item.InnerText;
-							Debug.Log ("======+>  attribute is : " + atr);
-
-						}
-						if (item.Name.Equals ("value")) {
-							vl = item.InnerText;
-							Debug.Log ("======+>  value is : " + vl);
-						}
-
-
-					}
-					dataDictionary.Add (atr, vl);
-				}
-
-				// Loop over pairs with foreach.
-				Debug.Log ("====== =====================    ALL THE VALUES ARE ================");
-				foreach (KeyValuePair<object, object> pair in dataDictionary) {
-					Debug.Log (pair.Key + "  +++++  " + pair.Value);
-				}
-			
-
-
-				Debug.Log ("---->>>>   Good, There is a methode to call! all numbers are: " + dataDictionary.Count);
-
-				//	currentGameObject.SendMessage (currentMsg.getAction (), int.Parse(currentMsg.getAttributeValue ()));
-				//	currentGameObject.SendMessage (currentMsg.getAction (), getParameterType(currentMsg.getAttributeValue ()));
-
-				//	currentGameObject.SendMessage ("setReceivedText", "Set received Text TO CHANGE");
-
-				sendMessageToGameObject (currentGameObject, currentMsg.getAction (), dataDictionary);
-
-			} else {
-				Debug.Log ("No methode to call. null object!");
-			}
-
-
-		}
-		*/
 
 	}
 
@@ -369,7 +242,7 @@ public class MainScript : MonoBehaviour
 	{ 
 		msgList.Add (e);
 		receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
-		Debug.Log (">  New Message received on topic : " + e.Topic);
+		//Debug.Log (">  New Message received on topic : " + e.Topic);
 		//Debug.Log (">  msgList count : " + msgList.Count);
 	}
 
@@ -405,22 +278,14 @@ public class MainScript : MonoBehaviour
 	public void sendReplay (string sender, string receiver, string topic, string replayMsg)
 	{
 		GamaReponseMessage msg = new GamaReponseMessage (sender, receiver, topic, replayMsg, DateTime.Now.ToString ());
-
 		string message = msgDes.msgSerialization (msg);
 		client.Publish (topic, System.Text.Encoding.UTF8.GetBytes (message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
-
 	}
-
-
-
-
 
 	void OnDestroy ()
 	{
 		m_Instance = null;
 	}
-
-
 
 	// Update is called once per frame
 	void Update ()
@@ -432,7 +297,6 @@ public class MainScript : MonoBehaviour
 	{
 
 	}
-
 
 
 	// The method to call Game Objects methods

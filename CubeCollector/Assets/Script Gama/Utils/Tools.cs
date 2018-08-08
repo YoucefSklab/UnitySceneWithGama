@@ -43,6 +43,17 @@ namespace ummisco.gama.unity.utils
 			return dict;
 		}
 
+		public static object convertParameter (object val, ParameterInfo par)
+		{
+			object propValue = Convert.ChangeType (val, par.ParameterType);
+			return propValue;
+		}
+
+		public static Color stringToColor (string color)
+		{
+			return (Color)typeof(Color).GetProperty (color.ToLowerInvariant ()).GetValue (null, null);
+		}
+
 	}
 
 }

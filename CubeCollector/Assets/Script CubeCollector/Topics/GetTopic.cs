@@ -11,7 +11,7 @@ using System.Xml;
 
 namespace ummisco.gama.unity.topics
 {
-	public class SetTopic : MonoBehaviour
+	public class GetTopic : MonoBehaviour
 	{
 
 
@@ -19,6 +19,7 @@ namespace ummisco.gama.unity.topics
 		protected GamaMethods gama = new GamaMethods ();
 		protected GamaMessage message;
 		protected GameObject gameObject;
+		protected string valueIs = "";
 
 		// Use this for initialization
 		void Start ()
@@ -38,9 +39,9 @@ namespace ummisco.gama.unity.topics
 			return gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethods (flags);
 		}
 
-		public void ProcessSetTopic (object obj)
+		public void ProcessGetTopic (object[] obj)
 		{
-			setAllPropertiesSetTopic (obj);
+			setAllPropertiesGetTopic (obj);
 
 
 			if (gameObject != null) {
@@ -64,33 +65,36 @@ namespace ummisco.gama.unity.topics
 				}
 				dataDictionary.Add (atr, vl);
 
-				sendSetTopic (gameObject, message.getAction (), dataDictionary);
-				Debug.Log ("Method called");
+				obj [2] = getValueToSend (gameObject, message.getAction (), dataDictionary);
+				Debug.Log ("Method called and returned -> " + obj [2]);
 
-			} 
-
+			}
 
 		}
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public new void sendSetTopic (GameObject gameObject, string methodName, Dictionary<object, object> data)
+		public string getValueToSend (GameObject gameObject, string methodName, Dictionary<object, object> data)
 		{
 
 			int size = data.Count;
 			List<object> keyList = new List<object> (data.Keys);
 			object obj = data [keyList.ElementAt (0)];
 
-			FieldInfo[] fieldInfoSet = gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetFields ();
-	
+			FieldInfo[] fieldInfoGet = gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetFields ();
+
+			string msgReplay = "";
+
 			foreach (KeyValuePair<object, object> pair in data) {
-				foreach (FieldInfo fi in fieldInfoSet) {
+				foreach (FieldInfo fi in fieldInfoGet) {
 					if (fi.Name.Equals (pair.Key.ToString ())) {
 						UnityEngine.Component ob = (UnityEngine.Component)gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX);
-						fi.SetValue (ob, (Convert.ChangeType (pair.Value, fi.FieldType)));
+						msgReplay = fi.GetValue (ob).ToString ();
 					}
 				}
 			}
+			Debug.Log ("To return this -> " + msgReplay);
+			return msgReplay;
 		}
 
 
@@ -104,11 +108,12 @@ namespace ummisco.gama.unity.topics
 		}
 
 
-		public void setAllPropertiesSetTopic (object args)
+		public void setAllPropertiesGetTopic (object args)
 		{
 			object[] obj = (object[])args;
 			this.message = (GamaMessage)obj [0];
 			this.gameObject = (GameObject)obj [1];
+			this.valueIs = (string)obj [2];
 		}
 
 
@@ -126,5 +131,5 @@ namespace ummisco.gama.unity.topics
 
 
 	}
-
 }
+

@@ -27,7 +27,7 @@ namespace ummisco.gama.unity.utils
 
 		// Topics to send
 		public const string REPLAY_TOPIC = "replay";
-		public const string NOTIFICATION_TOPIC = "replay";
+		public const string NOTIFICATION_TOPIC = "notification";
 
 
 
@@ -45,6 +45,7 @@ namespace ummisco.gama.unity.utils
 		public const string POSITION_TOPIC_SCRIPT = "PositionTopic";
 		public const string COLOR_TOPIC_SCRIPT = "ColorTopic";
 		public const string SET_TOPIC_SCRIPT = "SetTopic";
+		public const string GET_TOPIC_SCRIPT = "GetTopic";
 
 
 
