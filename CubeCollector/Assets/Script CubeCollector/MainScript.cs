@@ -91,7 +91,8 @@ public class MainScript : MonoBehaviour
 		client.Subscribe (new string[] { MqttSetting.MONO_FREE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
 		client.Subscribe (new string[] { MqttSetting.POSITION_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
 		client.Subscribe (new string[] { MqttSetting.COLOR_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
-		client.Subscribe (new string[] { MqttSetting.REPLAY_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+		client.Subscribe (new string[] { MqttSetting.GET_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+		client.Subscribe (new string[] { MqttSetting.SET_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
 
 		/*
@@ -107,15 +108,18 @@ public class MainScript : MonoBehaviour
 
 		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
 
-		//	Debug.Log ("------------------------------> This game object is : " + gameObject.name);
+			//Debug.Log ("------------------------------> Trait another message for: " + gameObject.name);
 
 
 
 		if (msgList.Count > 0) {
 
 			MqttMsgPublishEventArgs e = msgList [0];
-			if (!MqttSetting.getTopicsInList ().Contains (e.Topic))
+			if (!MqttSetting.getTopicsInList ().Contains (e.Topic)) {
+				Debug.Log ("-> The Topic doesn't exist in the defined list. Please check!");
 				return;
+			}
+				
 
 			Debug.Log ("------------------------------> TOPIC IS : " + e.Topic);
 			receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
@@ -123,7 +127,7 @@ public class MainScript : MonoBehaviour
 
 			switch (e.Topic) {
 			case MqttSetting.MAIN_TOPIC:
-				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.MONO_FREE_TOPIC);
+				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.MAIN_TOPIC);
 
 				break;
 			case MqttSetting.MONO_FREE_TOPIC:
@@ -191,10 +195,10 @@ public class MainScript : MonoBehaviour
 		
 				//------------------------------------------------------------------------------
 				break;
-			case MqttSetting.REPLAY_TOPIC:
+			case MqttSetting.GET_TOPIC:
 				//------------------------------------------------------------------------------
 
-				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.REPLAY_TOPIC);
+				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.GET_TOPIC);
 				objectTargetName = currentMsg.getObjectName ();
 				allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 				gameObjectTarget = null;
@@ -221,8 +225,31 @@ public class MainScript : MonoBehaviour
 					}
 				}
 
-				sendReplay (clientId, "GamaAgent", MqttSetting.REPLAYED_TOPIC, msgReplay);
+				sendReplay (clientId, "GamaAgent", MqttSetting.REPLAY_TOPIC, msgReplay);
 			    
+				//------------------------------------------------------------------------------
+				break;
+			case MqttSetting.SET_TOPIC:
+				//------------------------------------------------------------------------------
+
+				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.SET_TOPIC);
+				objectTargetName = currentMsg.getObjectName ();
+				allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
+				gameObjectTarget = null;
+
+				foreach (GameObject gameO in allObjects) {
+					if (gameO.activeInHierarchy) {
+						if (objectTargetName.Equals (gameO.name)) {
+							gameObjectTarget = gameO;
+						}
+					}					
+				}
+
+				obj = new object[]{ currentMsg, gameObjectTarget };
+
+				// gameObject is the current gameObject to which this script is attached
+				gameObject.GetComponent (MqttSetting.SET_TOPIC_SCRIPT).SendMessage ("ProcessSetTopic", obj);
+
 				//------------------------------------------------------------------------------
 				break;
 			default:
