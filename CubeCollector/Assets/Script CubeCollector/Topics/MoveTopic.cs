@@ -18,6 +18,7 @@ namespace ummisco.gama.unity.topics
 
 
 		public Rigidbody rb;
+		public int speed;
 		public float inverseMoveTime;
 		public float moveTime = 0.1f;
 
@@ -29,7 +30,8 @@ namespace ummisco.gama.unity.topics
 		// Use this for initialization
 		public override void Start ()
 		{
-			inverseMoveTime = 1f / moveTime;	
+			inverseMoveTime = 1f / moveTime;
+			speed = 10;
 		}
 
 		// Update is called once per frame
@@ -76,26 +78,31 @@ namespace ummisco.gama.unity.topics
 		{
 			int size = data.Count;
 			List<object> keyList = new List<object> (data.Keys);
-			int x, y; 
+			int x, y, z; 
 
 			x = int.Parse ((string)data [keyList.ElementAt (0)], CultureInfo.InvariantCulture.NumberFormat);
 			y = int.Parse ((string)data [keyList.ElementAt (1)], CultureInfo.InvariantCulture.NumberFormat);
+			z = int.Parse ((string)data [keyList.ElementAt (2)], CultureInfo.InvariantCulture.NumberFormat);
 
-			Debug.Log ("Move to  (X="+ x + ",Y="+ x + ") position!");
+			Debug.Log ("Move to  (X="+ x + ",Y="+ y + ",Z="+ z + ") position!");
 
-			moveToPosition(x,y);
+			moveToPosition(x,y,z);
 		}
 
 
-		public void moveToPosition(int xDir, int yDir){
+		public void moveToPosition(int xDir, int yDir, int zDir){
 
 			//Store start position to move from, based on objects current transform position.
-			Vector2 start = targetGameObject.transform.position;
+			Vector3 start = targetGameObject.transform.position;
 
 			// Calculate end position based on the direction parameters passed in when calling Move.
-			Vector2 end = start + new Vector2 (xDir, yDir);
+			Vector3 end = start + new Vector3 (xDir, yDir, zDir);
 
-			StartCoroutine (SmoothMovement (end));
+			Vector3 movement = new Vector3 (xDir, yDir, zDir);
+
+			rb.AddForce (movement * speed);
+
+			//StartCoroutine (SmoothMovement (end));
 		}
 
 		//Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
@@ -107,6 +114,9 @@ namespace ummisco.gama.unity.topics
 
 			Debug.Log ("Before Moving and it remains "+sqrRemainingDistance.ToString ());
 			Debug.Log ("inverseMoveTime is "+ inverseMoveTime);
+
+		
+
 
 			//While that distance is greater than a very small amount (Epsilon, almost zero):
 			while (sqrRemainingDistance > float.Epsilon) {
@@ -122,6 +132,7 @@ namespace ummisco.gama.unity.topics
 				//Return and loop until sqrRemainingDistance is close enough to zero to end the function
 				yield return null;
 			}
+
 
 			Debug.Log ("Good! end distination is reached");
 		}

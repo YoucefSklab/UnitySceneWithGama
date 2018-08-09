@@ -11,7 +11,7 @@ namespace ummisco.gama.unity.utils
 		public static int SERVER_PORT = 1883;
 
 		//Object's names'
-		public const string GAMA_MANAGER_OBJECT_NAME = "GamaManger";
+		public const string GAMA_MANAGER_OBJECT_NAME = "GamaManager";
 		public const string SET_TOPIC_MANAGER = "SetTopicManager";
 		public const string GET_TOPIC_MANAGER = "GetTopicManager";
 		public const string COLOR_TOPIC_MANAGER = "ColorTopicManager";

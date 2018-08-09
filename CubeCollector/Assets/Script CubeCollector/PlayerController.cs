@@ -24,10 +24,11 @@ public class PlayerController : MonoBehaviour
 	public Text countText;
 	public Text winText;
 	public Text receivedMqttMessage;
-	public GameObject mainGameObject;
-	public GamaMethods gama = new GamaMethods();
+	public GameObject gamaManager;
+	public GamaMethods gama = new GamaMethods ();
 	private Rigidbody rb;
 	private int count;
+
 
 
 	protected void Start ()
@@ -37,7 +38,8 @@ public class PlayerController : MonoBehaviour
 		SetCountText ();
 		winText.text = "";
 		receivedMqttMessage.text = "";
-		mainGameObject = gama.getGameObjectByName ("MainGameObject");
+		//MqttSetting.allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
+		//gamaManager = gama.getGameObjectByName ("GamaManager");
 
 	}
 
@@ -53,18 +55,25 @@ public class PlayerController : MonoBehaviour
 	public void UpdatePosition (float moveHorizontal, float moveVertical)
 	{
 		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
-		rb.AddForce (movement * speed);
+		//rb.AddForce (movement * speed);
+		rb.MovePosition (movement);
 	}
 
 
 
 	void OnTriggerEnter (Collider other)
 	{
+		MqttSetting.allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
+
+		gamaManager = gama.getGameObjectByName (MqttSetting.GAMA_MANAGER_OBJECT_NAME);
+
 		if (other.gameObject.CompareTag ("Pick Up")) {
 			other.gameObject.SetActive (false);
 			count = count + 1;
 			SetCountText ();
-			mainGameObject.SendMessage ("sendGotBoxMsg");
+			Debug.Log ("The game Object name is: " + gamaManager.name);
+
+			gamaManager.SendMessage ("sendGotBoxMsg");
 		}
 	}
 
@@ -94,7 +103,7 @@ public class PlayerController : MonoBehaviour
 	public void changeAllAttributes (object args)
 	{
 		object[] obj = (object[])args;
-		this.speed = Int32.Parse((string)obj [0]);
+		this.speed = Int32.Parse ((string)obj [0]);
 		this.countText.text = (string)obj [1];
 		this.winText.text = (string)obj [2];
  

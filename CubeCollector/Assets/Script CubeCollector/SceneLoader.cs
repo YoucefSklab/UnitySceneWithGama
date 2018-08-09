@@ -10,7 +10,7 @@ namespace AssemblyCSharp
 		void Awake ()
 		{
 			//Check if a gamaManager has already been assigned to static variable gamaManager.Instance or if it's still null
-			if (GamaManger.Instance == null)
+			if (GamaManager.Instance == null)
 				//Instantiate gamaManager prefab
 				Instantiate(gamaManager);
 		}

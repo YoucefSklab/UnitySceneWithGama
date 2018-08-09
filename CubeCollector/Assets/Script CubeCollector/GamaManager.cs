@@ -22,13 +22,13 @@ using ummisco.gama.unity.topics;
 using System.Globalization;
 
 
-public class GamaManger : MonoBehaviour
+public class GamaManager : MonoBehaviour
 {
 
 
-	private static GamaManger m_Instance = null;
+	private static GamaManager m_Instance = null;
 
-	public static GamaManger Instance { get { return m_Instance; } }
+	public static GamaManager Instance { get { return m_Instance; } }
 	//Static instance of GamaManager which allows it to be accessed by any other script.
 
 	public string receivedMsg = "";
