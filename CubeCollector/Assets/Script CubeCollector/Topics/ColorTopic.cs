@@ -12,7 +12,7 @@ using System.Xml;
 
 namespace ummisco.gama.unity.topics
 {
-	public abstract class ColorTopic : Topic
+	public class ColorTopic : Topic
 	{
 
 		private static ColorTopic m_Instance = null;

@@ -16,6 +16,11 @@ namespace ummisco.gama.unity.topics
 	public class MoveTopic : Topic
 	{
 
+
+		public Rigidbody rb;
+		public float inverseMoveTime;
+		public float moveTime = 0.1f;
+
 		public MoveTopic (GamaMessage currentMsg, GameObject gameObj) : base (currentMsg, gameObj)
 		{
 
@@ -24,7 +29,7 @@ namespace ummisco.gama.unity.topics
 		// Use this for initialization
 		public override void Start ()
 		{
-
+			inverseMoveTime = 1f / moveTime;	
 		}
 
 		// Update is called once per frame
@@ -33,11 +38,11 @@ namespace ummisco.gama.unity.topics
 
 		}
 
-
-
 		public void ProcessTopic (object obj)
 		{
 			setAllProperties (obj);
+
+			rb = targetGameObject.GetComponent<Rigidbody> ();
 
 			if (targetGameObject != null) {
 
@@ -62,7 +67,6 @@ namespace ummisco.gama.unity.topics
 					dataDictionary.Add (atr, vl);
 				}
 				sendTopic (targetGameObject, message.getAction (), dataDictionary);
-
 			} 
 		}
 
@@ -72,17 +76,56 @@ namespace ummisco.gama.unity.topics
 		{
 			int size = data.Count;
 			List<object> keyList = new List<object> (data.Keys);
-			float x, y, z;
+			int x, y; 
 
-			x = float.Parse ((string)data [keyList.ElementAt (0)], CultureInfo.InvariantCulture.NumberFormat);
-			y = float.Parse ((string)data [keyList.ElementAt (1)], CultureInfo.InvariantCulture.NumberFormat);
-			z = float.Parse ((string)data [keyList.ElementAt (2)], CultureInfo.InvariantCulture.NumberFormat);
-			Debug.Log ("----->>>>    X,Y,Z  " + x + "," + y + "," + z);
+			x = int.Parse ((string)data [keyList.ElementAt (0)], CultureInfo.InvariantCulture.NumberFormat);
+			y = int.Parse ((string)data [keyList.ElementAt (1)], CultureInfo.InvariantCulture.NumberFormat);
 
-			Vector3 movement = new Vector3 (x, y, z);
-			targetGameObject.transform.position = movement;
+			Debug.Log ("Move to  (X="+ x + ",Y="+ x + ") position!");
 
+			moveToPosition(x,y);
 		}
+
+
+		public void moveToPosition(int xDir, int yDir){
+
+			//Store start position to move from, based on objects current transform position.
+			Vector2 start = targetGameObject.transform.position;
+
+			// Calculate end position based on the direction parameters passed in when calling Move.
+			Vector2 end = start + new Vector2 (xDir, yDir);
+
+			StartCoroutine (SmoothMovement (end));
+		}
+
+		//Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
+		protected IEnumerator SmoothMovement (Vector3 end)
+		{
+			//Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter. 
+			//Square magnitude is used instead of magnitude because it's computationally cheaper.
+			float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
+
+			Debug.Log ("Before Moving and it remains "+sqrRemainingDistance.ToString ());
+			Debug.Log ("inverseMoveTime is "+ inverseMoveTime);
+
+			//While that distance is greater than a very small amount (Epsilon, almost zero):
+			while (sqrRemainingDistance > float.Epsilon) {
+				//Find a new position proportionally closer to the end, based on the moveTime
+				Vector3 newPostion = Vector3.MoveTowards (rb.position, end, inverseMoveTime * Time.deltaTime);
+
+				//Call MovePosition on attached Rigidbody2D and move it to the calculated position.
+				rb.MovePosition (newPostion);
+
+				//Recalculate the remaining distance after moving.
+				sqrRemainingDistance = (transform.position - end).sqrMagnitude;
+				Debug.Log ("Stillll Moving and it remains "+sqrRemainingDistance.ToString ());
+				//Return and loop until sqrRemainingDistance is close enough to zero to end the function
+				yield return null;
+			}
+
+			Debug.Log ("Good! end distination is reached");
+		}
+
 	}
 }
 

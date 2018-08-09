@@ -84,6 +84,7 @@ public class GamaManger : MonoBehaviour
 		client.Subscribe (new string[] { MqttSetting.COLOR_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.GET_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.SET_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+		client.Subscribe (new string[] { MqttSetting.MOVE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
 	}
 
@@ -143,6 +144,15 @@ public class GamaManger : MonoBehaviour
 				topicGameObject = getGameObjectByName (MqttSetting.POSITION_TOPIC_MANAGER);
 
 				topicGameObject.GetComponent (MqttSetting.POSITION_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
+				//------------------------------------------------------------------------------
+				break;
+			case MqttSetting.MOVE_TOPIC:
+				//------------------------------------------------------------------------------
+				Debug.Log ("-> Topic to deal with is : " + MqttSetting.MOVE_TOPIC);
+
+				topicGameObject = getGameObjectByName (MqttSetting.MOVE_TOPIC_MANAGER);
+
+				topicGameObject.GetComponent (MqttSetting.MOVE_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				//------------------------------------------------------------------------------
 				break;
 			case MqttSetting.COLOR_TOPIC:

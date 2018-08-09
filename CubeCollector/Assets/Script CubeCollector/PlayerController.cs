@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
 	private int count;
 
 
-	void Start ()
+	protected void Start ()
 	{
 		rb = GetComponent<Rigidbody> ();
 		count = 0;
@@ -38,7 +38,6 @@ public class PlayerController : MonoBehaviour
 		winText.text = "";
 		receivedMqttMessage.text = "";
 		mainGameObject = gama.getGameObjectByName ("MainGameObject");
-	
 
 	}
 
@@ -56,6 +55,8 @@ public class PlayerController : MonoBehaviour
 		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
 		rb.AddForce (movement * speed);
 	}
+
+
 
 	void OnTriggerEnter (Collider other)
 	{
@@ -98,5 +99,7 @@ public class PlayerController : MonoBehaviour
 		this.winText.text = (string)obj [2];
  
 	}
+
+
 
 }

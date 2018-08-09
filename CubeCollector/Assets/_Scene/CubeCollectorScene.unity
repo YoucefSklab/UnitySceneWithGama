@@ -390,6 +390,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4434893e7a14a418ef48bfd1426259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveTime: 0.1
+  blockingLayer:
+    serializedVersion: 2
+    m_Bits: 0
   speed: 10
   countText: {fileID: 1211033791}
   winText: {fileID: 2074133869}

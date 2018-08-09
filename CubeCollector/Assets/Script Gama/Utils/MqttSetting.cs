@@ -76,6 +76,7 @@ namespace ummisco.gama.unity.utils
 			topicsList.Add (DEFAULT_TOPIC);
 			topicsList.Add (SET_TOPIC);
 			topicsList.Add (GET_TOPIC);
+			topicsList.Add (MOVE_TOPIC);
 
 			return topicsList;
 		}
