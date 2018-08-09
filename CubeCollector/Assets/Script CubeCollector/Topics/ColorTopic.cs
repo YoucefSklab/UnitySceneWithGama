@@ -12,8 +12,19 @@ using System.Xml;
 
 namespace ummisco.gama.unity.topics
 {
-	public class ColorTopic : Topic
+	public abstract class ColorTopic : Topic
 	{
+
+		private static ColorTopic m_Instance = null;
+
+		public static ColorTopic Instance { get { return m_Instance; } }
+
+		void Awake ()
+		{
+			if (m_Instance == null) m_Instance = this;
+		}
+
+
 
 		public ColorTopic (GamaMessage currentMsg, GameObject gameObj) : base (currentMsg, gameObj)
 		{
@@ -34,11 +45,11 @@ namespace ummisco.gama.unity.topics
 		}
 
 
-		public override void ProcessTopic (object obj)
+		public void ProcessTopic (object obj)
 		{
 			setAllProperties (obj);
 
-			if (gameObject != null) {
+			if (targetGameObject != null) {
 
 				XmlNode[] node = (XmlNode[])message.unityAttribute;
 				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
@@ -59,20 +70,20 @@ namespace ummisco.gama.unity.topics
 				}
 				dataDictionary.Add (atr, vl);
 
-				sendTopic (gameObject, message.getAction (), dataDictionary);
+				sendTopic (targetGameObject, message.getAction (), dataDictionary);
 
 			} 
 		}
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public override void sendTopic (GameObject gameObject, string methodName, Dictionary<object, object> data)
+		public void sendTopic (GameObject targetGameObject, string methodName, Dictionary<object, object> data)
 		{
 
 			int size = data.Count;
 			List<object> keyList = new List<object> (data.Keys);
 			object obj = data [keyList.ElementAt (0)];
-			gameObject.GetComponent<Renderer> ().material.color = Tools.stringToColor ((string)obj);
+			targetGameObject.GetComponent<Renderer> ().material.color = Tools.stringToColor ((string)obj);
 
 		}
 

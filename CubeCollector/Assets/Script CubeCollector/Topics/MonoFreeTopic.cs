@@ -33,7 +33,7 @@ namespace ummisco.gama.unity.topics
 		}
 
 
-		public void ProcessMonoFreeTopic (object obj)
+		public void ProcessTopic (object obj)
 		{
 		
 			Debug.Log ("->>>>>>>>>>>>>>--> --->>>  this is from mono free Topic");
@@ -53,7 +53,7 @@ namespace ummisco.gama.unity.topics
 				}
 			}
 
-			if (gameObject != null) {
+			if (targetGameObject != null) {
 
 				XmlNode[] node = (XmlNode[])message.unityAttribute;
 				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
@@ -80,24 +80,24 @@ namespace ummisco.gama.unity.topics
 					//	Debug.Log (pair.Key + "  +++++  " + pair.Value);
 				}
 
-				sendTopic (gameObject, message.getAction (), dataDictionary);
+				sendTopic (targetGameObject, message.getAction (), dataDictionary);
 
 			} 
 		}
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public override void sendTopic (GameObject gameObject, string methodName, Dictionary<object, object> data)
+		public void sendTopic (GameObject targetGameObject, string methodName, Dictionary<object, object> data)
 		{
 
 			int size = data.Count;
 			List<object> keyList = new List<object> (data.Keys);
 
-			MethodInfo methInfo = gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethod (methodName);
+			MethodInfo methInfo = targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethod (methodName);
 			ParameterInfo[] parameter = methInfo.GetParameters ();
 			object obj = data [keyList.ElementAt (0)];
 			//object obj2 = base.convertParameter (obj, parameter [0]);
-			gameObject.SendMessage (methodName, Tools.convertParameter (obj, parameter [0]));
+			targetGameObject.SendMessage (methodName, Tools.convertParameter (obj, parameter [0]));
 
 			Debug.Log ("Method called");
 		}

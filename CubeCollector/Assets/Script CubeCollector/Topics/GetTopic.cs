@@ -33,12 +33,12 @@ namespace ummisco.gama.unity.topics
 
 		}
 	
-		public void ProcessGetTopic (object[] obj)
+		public void ProcessTopic (object[] obj)
 		{
 			this.setAllProperties (obj);
 
 
-			if (gameObject != null) {
+			if (targetGameObject != null) {
 
 				XmlNode[] node = (XmlNode[])message.unityAttribute;
 				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
@@ -59,7 +59,7 @@ namespace ummisco.gama.unity.topics
 				}
 				dataDictionary.Add (atr, vl);
 
-				obj [2] = getValueToSend (gameObject, message.getAction (), dataDictionary);
+				obj [2] = getValueToSend (targetGameObject, message.getAction (), dataDictionary);
 				Debug.Log ("Method called and returned -> " + obj [2]);
 
 			}
@@ -68,21 +68,21 @@ namespace ummisco.gama.unity.topics
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public string getValueToSend (GameObject gameObject, string methodName, Dictionary<object, object> data)
+		public string getValueToSend (GameObject targetGameObject, string methodName, Dictionary<object, object> data)
 		{
 
 			int size = data.Count;
 			List<object> keyList = new List<object> (data.Keys);
 			object obj = data [keyList.ElementAt (0)];
 
-			FieldInfo[] fieldInfoGet = gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetFields ();
+			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetFields ();
 
 			string msgReplay = "";
 
 			foreach (KeyValuePair<object, object> pair in data) {
 				foreach (FieldInfo fi in fieldInfoGet) {
 					if (fi.Name.Equals (pair.Key.ToString ())) {
-						UnityEngine.Component ob = (UnityEngine.Component)gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX);
+						UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX);
 						msgReplay = fi.GetValue (ob).ToString ();
 					}
 				}
@@ -93,11 +93,11 @@ namespace ummisco.gama.unity.topics
 
 
 
-		public new void setAllProperties (object args)
+		public override void setAllProperties (object args)
 		{
 			object[] obj = (object[])args;
 			this.message = (GamaMessage)obj [0];
-			this.gameObject = (GameObject)obj [1];
+			this.targetGameObject = (GameObject)obj [1];
 			this.valueIs = (string)obj [2];
 		}
 

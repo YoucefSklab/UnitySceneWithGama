@@ -1,7 +1,3 @@
-/Users/sklab/Documents/Job Tools/UnitySceneWithGama/CubeCollector/Temp/bin/Debug/Assembly-CSharp.dll.mdb
-/Users/sklab/Documents/Job Tools/UnitySceneWithGama/CubeCollector/Temp/bin/Debug/Assembly-CSharp.dll
-/Users/sklab/Documents/Job Tools/UnitySceneWithGama/CubeCollector/obj/Debug/Assembly-CSharp.dll
-/Users/sklab/Documents/Job Tools/UnitySceneWithGama/CubeCollector/obj/Debug/Assembly-CSharp.dll.mdb
 /Users/sklab/Documents/Job Tools/UnitySceneWithGama/CubeCollector/Temp/bin/Debug/UnityEngine.dll
 /Users/sklab/Documents/Job Tools/UnitySceneWithGama/CubeCollector/Temp/bin/Debug/UnityEditor.dll
 /Users/sklab/Documents/Job Tools/UnitySceneWithGama/CubeCollector/Temp/bin/Debug/Facebook.Unity.Settings.dll

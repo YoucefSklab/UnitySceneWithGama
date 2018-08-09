@@ -35,11 +35,11 @@ namespace ummisco.gama.unity.topics
 
 
 
-		public void ProcessPositionTopic (object obj)
+		public void ProcessTopic (object obj)
 		{
 			setAllProperties (obj);
 
-			if (gameObject != null) {
+			if (targetGameObject != null) {
 
 				XmlNode[] node = (XmlNode[])message.unityAttribute;
 				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
@@ -61,14 +61,14 @@ namespace ummisco.gama.unity.topics
 					}
 					dataDictionary.Add (atr, vl);
 				}
-				sendTopic (gameObject, message.getAction (), dataDictionary);
+				sendTopic (targetGameObject, message.getAction (), dataDictionary);
 
 			} 
 		}
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public override void sendTopic (GameObject gameObject, string methodName, Dictionary<object, object> data)
+		public void sendTopic (GameObject targetGameObject, string methodName, Dictionary<object, object> data)
 		{
 			int size = data.Count;
 			List<object> keyList = new List<object> (data.Keys);
@@ -80,7 +80,7 @@ namespace ummisco.gama.unity.topics
 			Debug.Log ("----->>>>    X,Y,Z  " + x + "," + y + "," + z);
     
 			Vector3 movement = new Vector3 (x, y, z);
-			gameObject.transform.position = movement;
+			targetGameObject.transform.position = movement;
 
 
 			Debug.Log ("position applied ");

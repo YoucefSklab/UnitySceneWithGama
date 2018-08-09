@@ -32,12 +32,12 @@ namespace ummisco.gama.unity.topics
 		}
 
 
-		public void ProcessSetTopic (object obj)
+		public void ProcessTopic (object obj)
 		{
 			setAllProperties (obj);
 
 
-			if (gameObject != null) {
+			if (targetGameObject != null) {
 
 				XmlNode[] node = (XmlNode[])message.unityAttribute;
 				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
@@ -58,7 +58,7 @@ namespace ummisco.gama.unity.topics
 				}
 				dataDictionary.Add (atr, vl);
 
-				sendTopic (gameObject, message.getAction (), dataDictionary);
+				sendTopic (targetGameObject, message.getAction (), dataDictionary);
 				Debug.Log ("Method called");
 
 			} 
@@ -66,21 +66,22 @@ namespace ummisco.gama.unity.topics
 
 		}
 
+
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public override void sendTopic (GameObject gameObject, string methodName, Dictionary<object, object> data)
+		public void sendTopic (GameObject targetGameObject, string methodName, Dictionary<object, object> data)
 		{
 
 			int size = data.Count;
 			List<object> keyList = new List<object> (data.Keys);
 			object obj = data [keyList.ElementAt (0)];
 
-			FieldInfo[] fieldInfoSet = gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetFields ();
+			FieldInfo[] fieldInfoSet = targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetFields ();
 	
 			foreach (KeyValuePair<object, object> pair in data) {
 				foreach (FieldInfo fi in fieldInfoSet) {
 					if (fi.Name.Equals (pair.Key.ToString ())) {
-						UnityEngine.Component ob = (UnityEngine.Component)gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX);
+						UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX);
 						fi.SetValue (ob, (Convert.ChangeType (pair.Value, fi.FieldType)));
 					}
 				}

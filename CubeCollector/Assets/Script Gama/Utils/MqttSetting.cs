@@ -10,6 +10,17 @@ namespace ummisco.gama.unity.utils
 		public static string SERVER_URL = "localhost";
 		public static int SERVER_PORT = 1883;
 
+		//Object's names'
+		public const string GAMA_MANAGER_OBJECT_NAME = "GamaManger";
+		public const string SET_TOPIC_MANAGER = "SetTopicManager";
+		public const string GET_TOPIC_MANAGER = "GetTopicManager";
+		public const string COLOR_TOPIC_MANAGER = "ColorTopicManager";
+		public const string POSITION_TOPIC_MANAGER = "PositionTopicManager";
+		public const string MONO_FREE_TOPIC_MANAGER = "MonoFreeTopicManager";
+		public const string MULTIPLE_FREE_TOPIC_MANAGER = "MultipleFreeTopicManager";
+		public const string REPLAY_TOPIC_MANAGER = "ReplayTopicManager";
+		public const string NOTIFICATION_TOPIC_MANAGER = "NotificationTopicManager";
+
 		// Topics to receive
 		public const string MAIN_TOPIC = "Unity";
 		public const string GET_TOPIC = "get";
@@ -40,7 +51,7 @@ namespace ummisco.gama.unity.utils
 		public const string SCRIPT_PRIFIX = "Controller";
 
 		// Topics' Scripts
-		public const string MAIN_TOPIC_SCRIPT = "MainScript";
+		public const string MAIN_TOPIC_SCRIPT = "GamaManager";
 		public const string MONO_FREE_TOPIC_SCRIPT = "MonoFreeTopic";
 		public const string POSITION_TOPIC_SCRIPT = "PositionTopic";
 		public const string COLOR_TOPIC_SCRIPT = "ColorTopic";

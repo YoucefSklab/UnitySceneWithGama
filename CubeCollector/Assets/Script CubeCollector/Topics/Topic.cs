@@ -17,12 +17,12 @@ namespace ummisco.gama.unity.topics
 
 		protected GamaMessage message { get ; set; }
 
-		protected new GameObject gameObject { get ; set; }
+		protected GameObject targetGameObject { get ; set; }
 
 
 		void Awake ()
 		{
-
+			
 		}
 
 		// Use this for initialization
@@ -42,14 +42,14 @@ namespace ummisco.gama.unity.topics
 		public Topic (GamaMessage currentMsg, GameObject gameO)
 		{
 			this.message = currentMsg;
-			this.gameObject = gameObject;
+			this.targetGameObject = targetGameObject;
 		}
 
 
 
 		public virtual MethodInfo[] getMethodsInfo (BindingFlags flags)
 		{
-			return gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethods (flags);
+			return targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethods (flags);
 		}
 
 
@@ -59,16 +59,22 @@ namespace ummisco.gama.unity.topics
 		{
 			object[] obj = (object[])args;
 			this.message = (GamaMessage)obj [0];
-			this.gameObject = (GameObject)obj [1];
+			this.targetGameObject = (GameObject)obj [1];
 		}
 
 
+		/*
+		public virtual void ProcessTopic (object obj){
+		
+		}
+*/
 
-		public virtual void ProcessTopic (object obj)
-		{
+		//public abstract void sendTopic<T> (GameObject targetGameObject, string methodName, Dictionary<object, object> data)
+		//	where T : Component;
+		/*{
 			setAllProperties (obj);
 
-			if (gameObject != null) {
+			if (targetGameObject != null) {
 
 				XmlNode[] node = (XmlNode[])message.unityAttribute;
 				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
@@ -89,7 +95,7 @@ namespace ummisco.gama.unity.topics
 				}
 				dataDictionary.Add (atr, vl);
 
-				sendTopic (gameObject, message.getAction (), dataDictionary);
+				sendTopic (targetGameObject, message.getAction (), dataDictionary);
 				Debug.Log ("Method called");
 
 			} 
@@ -97,18 +103,18 @@ namespace ummisco.gama.unity.topics
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public virtual void sendTopic (GameObject gameObject, string methodName, Dictionary<object, object> data)
+		public virtual void sendTopic (GameObject targetGameObject, string methodName, Dictionary<object, object> data)
 		{
 
 			int size = data.Count;
 			List<object> keyList = new List<object> (data.Keys);
 
-			MethodInfo methInfo = gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethod (methodName);
+			MethodInfo methInfo = targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethod (methodName);
 			ParameterInfo[] parameter = methInfo.GetParameters ();
 			object obj = data [keyList.ElementAt (0)];
-			gameObject.SendMessage (methodName, Tools.convertParameter (obj, parameter [0]));
+			targetGameObject.SendMessage (methodName, Tools.convertParameter (obj, parameter [0]));
 		}
-
+ */
 
 
 	}

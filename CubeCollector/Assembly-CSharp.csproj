@@ -53,7 +53,7 @@
   <ItemGroup>
      <Compile Include="Assets\Script CubeCollector\CameraController.cs" />
      <Compile Include="Assets\Script CubeCollector\EventTrigger.cs" />
-     <Compile Include="Assets\Script CubeCollector\MainScript.cs" />
+     <Compile Include="Assets\Script CubeCollector\GamaManger.cs" />
      <Compile Include="Assets\Script CubeCollector\PlayerController.cs" />
      <Compile Include="Assets\Script CubeCollector\Rotator.cs" />
      <Compile Include="Assets\Script CubeCollector\SceneLoader.cs" />
