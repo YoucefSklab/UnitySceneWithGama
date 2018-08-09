@@ -85,14 +85,6 @@ namespace ummisco.gama.unity.topics
 
 			Debug.Log ("position applied ");
 		}
-
-
-
-
-
-
-
-
 	}
 }
 

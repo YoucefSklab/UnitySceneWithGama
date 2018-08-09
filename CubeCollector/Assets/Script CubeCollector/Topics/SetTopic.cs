@@ -11,36 +11,30 @@ using System.Xml;
 
 namespace ummisco.gama.unity.topics
 {
-	public class SetTopic : MonoBehaviour
+	public class SetTopic : Topic
 	{
 
+		public SetTopic (GamaMessage currentMsg, GameObject gameObj) : base (currentMsg, gameObj)
+		{
 
-		protected MsgSerialization msgDes = new MsgSerialization ();
-		protected GamaMethods gama = new GamaMethods ();
-		protected GamaMessage message;
-		protected GameObject gameObject;
+		}
 
 		// Use this for initialization
-		void Start ()
+		public override void Start ()
 		{
 
 		}
 
 		// Update is called once per frame
-		void Update ()
+		public override void Update ()
 		{
 
 		}
 
-
-		public MethodInfo[] getMethodsInfo (BindingFlags flags)
-		{
-			return gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethods (flags);
-		}
 
 		public void ProcessSetTopic (object obj)
 		{
-			setAllPropertiesSetTopic (obj);
+			setAllProperties (obj);
 
 
 			if (gameObject != null) {
@@ -64,7 +58,7 @@ namespace ummisco.gama.unity.topics
 				}
 				dataDictionary.Add (atr, vl);
 
-				sendSetTopic (gameObject, message.getAction (), dataDictionary);
+				sendTopic (gameObject, message.getAction (), dataDictionary);
 				Debug.Log ("Method called");
 
 			} 
@@ -74,7 +68,7 @@ namespace ummisco.gama.unity.topics
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public new void sendSetTopic (GameObject gameObject, string methodName, Dictionary<object, object> data)
+		public override void sendTopic (GameObject gameObject, string methodName, Dictionary<object, object> data)
 		{
 
 			int size = data.Count;
@@ -92,38 +86,6 @@ namespace ummisco.gama.unity.topics
 				}
 			}
 		}
-
-
-
-
-
-		public object convertParameter (object val, ParameterInfo par)
-		{
-			object propValue = Convert.ChangeType (val, par.ParameterType);
-			return propValue;
-		}
-
-
-		public void setAllPropertiesSetTopic (object args)
-		{
-			object[] obj = (object[])args;
-			this.message = (GamaMessage)obj [0];
-			this.gameObject = (GameObject)obj [1];
-		}
-
-
-		public GameObject getGameObjectByName (string objectName)
-		{
-			foreach (GameObject gameO in MqttSetting.allObjects) {
-				if (gameO.activeInHierarchy) {
-					if (objectName.Equals (gameO.name)) {
-						return gameO;
-					}
-				}					
-			}
-			return null;
-		}
-
 
 	}
 

@@ -64,7 +64,6 @@ public class MainScript : MonoBehaviour
 
 		MqttSetting.allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 
-		GameObject[] all = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 		foreach (GameObject gO in allObjects) {
 			if (gO.activeInHierarchy) {
 				if (gO.name.Equals ("MainGameObject")) {

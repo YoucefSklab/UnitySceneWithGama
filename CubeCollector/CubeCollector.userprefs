@@ -1,19 +1,16 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script CubeCollector/MainScript.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script CubeCollector/Topics/MonoFreeTopic.cs">
     <Files>
-      <File FileName="Assets/Script CubeCollector/EventTrigger.cs" Line="9" Column="9" />
-      <File FileName="Assets/Script CubeCollector/Topics/ColorTopic.cs" Line="43" Column="1" />
-      <File FileName="Assets/Script CubeCollector/MainScript.cs" Line="108" Column="2" />
-      <File FileName="Assets/Script CubeCollector/PlayerController.cs" Line="41" Column="2" />
-      <File FileName="Assets/Script Gama/Messaging/MsgSerialization.cs" Line="26" Column="4" />
-      <File FileName="Assets/Script MQTT/Messages/MqttMsgPublish.cs" Line="1" Column="1" />
-      <File FileName="Assets/Script CubeCollector/Topics/MonoFreeTopic.cs" Line="102" Column="3" />
-      <File FileName="Assets/Script Gama/Utils/MqttSetting.cs" Line="39" Column="45" />
-      <File FileName="Assets/Script CubeCollector/Topics/PositionTopic.cs" Line="91" Column="5" />
-      <File FileName="Assets/Script CubeCollector/Topics/MovingObject.cs" Line="9" Column="3" />
-      <File FileName="Assets/Script CubeCollector/Topics/Topic.cs" Line="21" Column="30" />
-      <File FileName="Assets/Script CubeCollector/SceneLoader.cs" Line="13" Column="36" />
+      <File FileName="Assets/Script CubeCollector/Topics/Topic.cs" Line="58" Column="11" />
+      <File FileName="Assets/Script CubeCollector/Topics/MonoFreeTopic.cs" Line="48" Column="28" />
+      <File FileName="Assets/Script CubeCollector/Topics/ColorTopic.cs" Line="25" Column="18" />
+      <File FileName="Assets/Script CubeCollector/Topics/PositionTopic.cs" Line="27" Column="4" />
+      <File FileName="Assets/Script CubeCollector/Topics/GetTopic.cs" Line="25" Column="19" />
+      <File FileName="Assets/Script CubeCollector/Topics/SetTopic.cs" Line="15" Column="3" />
+      <File FileName="Assets/Script CubeCollector/Topics/MovingObject.cs" Line="82" Column="5" />
+      <File FileName="Assets/Script Gama/Utils/Tools.cs" Line="54" Column="1" />
+      <File FileName="Assets/Script CubeCollector/MainScript.cs" Line="67" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

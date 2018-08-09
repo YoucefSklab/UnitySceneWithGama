@@ -11,37 +11,31 @@ using System.Xml;
 
 namespace ummisco.gama.unity.topics
 {
-	public class GetTopic : MonoBehaviour
+	public class GetTopic : Topic
 	{
 
-
-		protected MsgSerialization msgDes = new MsgSerialization ();
-		protected GamaMethods gama = new GamaMethods ();
-		protected GamaMessage message;
-		protected GameObject gameObject;
 		protected string valueIs = "";
 
+		public GetTopic (GamaMessage currentMsg, GameObject gameObj) : base (currentMsg, gameObj)
+		{
+
+		}
+
 		// Use this for initialization
-		void Start ()
+		public override void Start ()
 		{
 
 		}
 
 		// Update is called once per frame
-		void Update ()
+		public override void Update ()
 		{
 
 		}
-
-
-		public MethodInfo[] getMethodsInfo (BindingFlags flags)
-		{
-			return gameObject.GetComponent (gameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethods (flags);
-		}
-
+	
 		public void ProcessGetTopic (object[] obj)
 		{
-			setAllPropertiesGetTopic (obj);
+			this.setAllProperties (obj);
 
 
 			if (gameObject != null) {
@@ -99,36 +93,13 @@ namespace ummisco.gama.unity.topics
 
 
 
-
-
-		public object convertParameter (object val, ParameterInfo par)
-		{
-			object propValue = Convert.ChangeType (val, par.ParameterType);
-			return propValue;
-		}
-
-
-		public void setAllPropertiesGetTopic (object args)
+		public new void setAllProperties (object args)
 		{
 			object[] obj = (object[])args;
 			this.message = (GamaMessage)obj [0];
 			this.gameObject = (GameObject)obj [1];
 			this.valueIs = (string)obj [2];
 		}
-
-
-		public GameObject getGameObjectByName (string objectName)
-		{
-			foreach (GameObject gameO in MqttSetting.allObjects) {
-				if (gameO.activeInHierarchy) {
-					if (objectName.Equals (gameO.name)) {
-						return gameO;
-					}
-				}					
-			}
-			return null;
-		}
-
 
 	}
 }

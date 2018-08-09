@@ -33,7 +33,7 @@ namespace ummisco.gama.unity.topics
 		}
 
 
-		public new void ProcessMonoFreeTopic (object obj)
+		public void ProcessMonoFreeTopic (object obj)
 		{
 		
 			Debug.Log ("->>>>>>>>>>>>>>--> --->>>  this is from mono free Topic");
