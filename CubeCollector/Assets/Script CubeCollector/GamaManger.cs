@@ -113,14 +113,23 @@ public class GamaManger : MonoBehaviour
 
 			switch (e.Topic) {
 			case MqttSetting.MAIN_TOPIC:
-				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.MAIN_TOPIC);
+				Debug.Log ("-> Topic to deal with is : " + MqttSetting.MAIN_TOPIC);
 
 				topicGameObject = gameObject; 
 
 				break;
 			case MqttSetting.MONO_FREE_TOPIC:
 				//------------------------------------------------------------------------------
-				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.MONO_FREE_TOPIC);
+				Debug.Log ("-> Topic to deal with is : " + MqttSetting.MONO_FREE_TOPIC);
+
+				topicGameObject = getGameObjectByName (MqttSetting.MONO_FREE_TOPIC_MANAGER);
+
+				topicGameObject.GetComponent (MqttSetting.MONO_FREE_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
+				//------------------------------------------------------------------------------
+				break;
+			case MqttSetting.MULTIPLE_FREE_TOPIC:
+				//------------------------------------------------------------------------------
+				Debug.Log ("-> Topic to deal with is : " + MqttSetting.MULTIPLE_FREE_TOPIC);
 
 				topicGameObject = getGameObjectByName (MqttSetting.MONO_FREE_TOPIC_MANAGER);
 
@@ -129,7 +138,7 @@ public class GamaManger : MonoBehaviour
 				break;
 			case MqttSetting.POSITION_TOPIC:
 				//------------------------------------------------------------------------------
-				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.POSITION_TOPIC);
+				Debug.Log ("-> Topic to deal with is : " + MqttSetting.POSITION_TOPIC);
 
 				topicGameObject = getGameObjectByName (MqttSetting.POSITION_TOPIC_MANAGER);
 
@@ -138,7 +147,7 @@ public class GamaManger : MonoBehaviour
 				break;
 			case MqttSetting.COLOR_TOPIC:
 				//------------------------------------------------------------------------------
-				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.COLOR_TOPIC);
+				Debug.Log ("-> Topic to deal with is : " + MqttSetting.COLOR_TOPIC);
 
 				topicGameObject = getGameObjectByName (MqttSetting.COLOR_TOPIC_MANAGER);
 
@@ -148,7 +157,7 @@ public class GamaManger : MonoBehaviour
 				break;
 			case MqttSetting.GET_TOPIC:
 				//------------------------------------------------------------------------------
-				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.GET_TOPIC);
+				Debug.Log ("-> Topic to deal with is : " + MqttSetting.GET_TOPIC);
 
 				topicGameObject = getGameObjectByName (MqttSetting.GET_TOPIC_MANAGER);
 
@@ -161,7 +170,7 @@ public class GamaManger : MonoBehaviour
 				break;
 			case MqttSetting.SET_TOPIC:
 				//------------------------------------------------------------------------------
-				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.SET_TOPIC);
+				Debug.Log ("-> Topic to deal with is : " + MqttSetting.SET_TOPIC);
 
 				topicGameObject = getGameObjectByName (MqttSetting.SET_TOPIC_MANAGER);
 
@@ -170,7 +179,7 @@ public class GamaManger : MonoBehaviour
 				break;
 			default:
 				//------------------------------------------------------------------------------
-				Debug.Log ("-> Message to deal with as topic: " + MqttSetting.DEFAULT_TOPIC);
+				Debug.Log ("-> Topic to deal with is : " + MqttSetting.DEFAULT_TOPIC);
 				//------------------------------------------------------------------------------
 				break;
 			}

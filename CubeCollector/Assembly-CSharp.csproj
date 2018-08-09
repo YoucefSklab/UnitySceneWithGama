@@ -54,13 +54,14 @@
      <Compile Include="Assets\Script CubeCollector\CameraController.cs" />
      <Compile Include="Assets\Script CubeCollector\EventTrigger.cs" />
      <Compile Include="Assets\Script CubeCollector\GamaManger.cs" />
+     <Compile Include="Assets\Script CubeCollector\MovingObject.cs" />
      <Compile Include="Assets\Script CubeCollector\PlayerController.cs" />
      <Compile Include="Assets\Script CubeCollector\Rotator.cs" />
      <Compile Include="Assets\Script CubeCollector\SceneLoader.cs" />
      <Compile Include="Assets\Script CubeCollector\Topics\ColorTopic.cs" />
      <Compile Include="Assets\Script CubeCollector\Topics\GetTopic.cs" />
      <Compile Include="Assets\Script CubeCollector\Topics\MonoFreeTopic.cs" />
-     <Compile Include="Assets\Script CubeCollector\Topics\MovingObject.cs" />
+     <Compile Include="Assets\Script CubeCollector\Topics\MoveTopic.cs" />
      <Compile Include="Assets\Script CubeCollector\Topics\PositionTopic.cs" />
      <Compile Include="Assets\Script CubeCollector\Topics\SetTopic.cs" />
      <Compile Include="Assets\Script CubeCollector\Topics\Topic.cs" />
@@ -68,8 +69,6 @@
      <Compile Include="Assets\Script Gama\Messaging\GamaReponseMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\ItemAttributes.cs" />
      <Compile Include="Assets\Script Gama\Messaging\MsgSerialization.cs" />
-     <Compile Include="Assets\Script Gama\SetObject\SetObjectsProperties.cs" />
-     <Compile Include="Assets\Script Gama\SetObject\SetTextProperties.cs" />
      <Compile Include="Assets\Script Gama\Utils\GamaMethods.cs" />
      <Compile Include="Assets\Script Gama\Utils\MqttSetting.cs" />
      <Compile Include="Assets\Script Gama\Utils\Tools.cs" />
@@ -107,6 +106,14 @@
      <Compile Include="Assets\Script MQTT\test\mqttTest.cs" />
      <Compile Include="Assets\Script MQTT\Utility\QueueExtension.cs" />
      <Compile Include="Assets\Script MQTT\Utility\Trace.cs" />
+     <Compile Include="Assets\Scripts copie\BoardManager.cs" />
+     <Compile Include="Assets\Scripts copie\Enemy.cs" />
+     <Compile Include="Assets\Scripts copie\GameManager.cs" />
+     <Compile Include="Assets\Scripts copie\Loader.cs" />
+     <Compile Include="Assets\Scripts copie\MovingObject.cs" />
+     <Compile Include="Assets\Scripts copie\Player.cs" />
+     <Compile Include="Assets\Scripts copie\SoundManager.cs" />
+     <Compile Include="Assets\Scripts copie\Wall.cs" />
  <Reference Include="Facebook.Unity.Settings">
  <HintPath>/Users/sklab/Documents/Job Tools/UnitySceneWithGama/CubeCollector/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
  </Reference>

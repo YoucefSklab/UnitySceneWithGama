@@ -20,6 +20,8 @@ namespace ummisco.gama.unity.utils
 		public const string MULTIPLE_FREE_TOPIC_MANAGER = "MultipleFreeTopicManager";
 		public const string REPLAY_TOPIC_MANAGER = "ReplayTopicManager";
 		public const string NOTIFICATION_TOPIC_MANAGER = "NotificationTopicManager";
+		public const string MOVE_TOPIC_MANAGER = "MoveTopicManager";
+
 
 		// Topics to receive
 		public const string MAIN_TOPIC = "Unity";
@@ -57,6 +59,7 @@ namespace ummisco.gama.unity.utils
 		public const string COLOR_TOPIC_SCRIPT = "ColorTopic";
 		public const string SET_TOPIC_SCRIPT = "SetTopic";
 		public const string GET_TOPIC_SCRIPT = "GetTopic";
+		public const string MOVE_TOPIC_SCRIPT = "MoveTopic";
 
 
 
