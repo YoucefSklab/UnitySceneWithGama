@@ -38,29 +38,10 @@ namespace ummisco.gama.unity.topics
 		{
 			this.setAllProperties (obj);
 
-
 			if (targetGameObject != null) {
+				string attribute  = topicMessage.attribute;
+				obj [2] = (object) getValueToSend (targetGameObject, attribute);
 
-				XmlNode[] node = (XmlNode[])topicMessage.attributes;
-				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
-
-				XmlElement elt = (XmlElement)node.GetValue (1);
-				XmlNodeList list = elt.ChildNodes;
-
-				object atr = "";
-				object vl = "";
-
-				foreach (XmlElement item in list) {
-					if (item.Name.Equals ("attribute")) {
-						atr = item.InnerText;
-					}
-					if (item.Name.Equals ("value")) {
-						vl = item.InnerText;
-					}
-				}
-				dataDictionary.Add (atr, vl);
-
-				obj [2] = getValueToSend (targetGameObject, dataDictionary);
 				Debug.Log ("Method called and returned -> " + obj [2]);
 
 			}
@@ -69,25 +50,19 @@ namespace ummisco.gama.unity.topics
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public string getValueToSend (GameObject targetGameObject, Dictionary<object, object> data)
+		public string getValueToSend (GameObject targetGameObject, string attibute)
 		{
 
-			int size = data.Count;
-			List<object> keyList = new List<object> (data.Keys);
-			object obj = data [keyList.ElementAt (0)];
-
 			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetFields ();
-
 			string msgReplay = "";
-
-			foreach (KeyValuePair<object, object> pair in data) {
-				foreach (FieldInfo fi in fieldInfoGet) {
-					if (fi.Name.Equals (pair.Key.ToString ())) {
+		
+			foreach (FieldInfo fi in fieldInfoGet) {
+				if (fi.Name.Equals (attibute)) {
 						UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX);
 						msgReplay = fi.GetValue (ob).ToString ();
 					}
 				}
-			}
+		
 			Debug.Log ("To return this -> " + msgReplay);
 			return msgReplay;
 		}

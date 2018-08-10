@@ -8,18 +8,16 @@ namespace ummisco.gama.unity.messages
 	public class GetTopicMessage : TopicMessage
 	{
 
-
-
-		public object attributes { set; get; }
+		public string attribute { set; get; }
 
 		public GetTopicMessage()
 		{
 
 		}
 
-		public GetTopicMessage (string unread, string sender, string receivers, string contents, string emissionTimeStamp, string objectName, object attributes) : base (unread, sender, receivers, contents, objectName, emissionTimeStamp)
+		public GetTopicMessage (string unread, string sender, string receivers, string contents, string emissionTimeStamp, string objectName, string attribute) : base (unread, sender, receivers, contents, objectName, emissionTimeStamp)
 		{
-			this.attributes = attributes;
+			this.attribute = attribute;
 		}
 
 

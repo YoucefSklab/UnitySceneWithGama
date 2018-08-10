@@ -188,15 +188,15 @@ public class GamaManager : MonoBehaviour
 			case MqttSetting.GET_TOPIC:
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.GET_TOPIC);
+				string value = null;
 
 				GetTopicMessage getTopicMessage = (GetTopicMessage) msgDes.deserialization (receivedMsg, new GetTopicMessage());
 				targetGameObject = getGameObjectByName (getTopicMessage.objectName);
-				obj = new object[]{ getTopicMessage, targetGameObject };
+
 
 				topicGameObject = getGameObjectByName (MqttSetting.GET_TOPIC_MANAGER);
-
-				string value = null;
-				obj = new object[]{ currentMsg, targetGameObject, value };
+				obj = new object[]{ getTopicMessage, targetGameObject, value };
+			
 				topicGameObject.GetComponent (MqttSetting.GET_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				value = (string)obj [2];
 				sendReplay (clientId, "GamaAgent", MqttSetting.REPLAY_TOPIC, value);
