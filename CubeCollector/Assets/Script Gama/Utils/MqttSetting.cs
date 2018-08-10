@@ -55,6 +55,7 @@ namespace ummisco.gama.unity.utils
 		// Topics' Scripts
 		public const string MAIN_TOPIC_SCRIPT = "GamaManager";
 		public const string MONO_FREE_TOPIC_SCRIPT = "MonoFreeTopic";
+		public const string MULTIPLE_FREE_TOPIC_SCRIPT = "MultipleFreeTopic";
 		public const string POSITION_TOPIC_SCRIPT = "PositionTopic";
 		public const string COLOR_TOPIC_SCRIPT = "ColorTopic";
 		public const string SET_TOPIC_SCRIPT = "SetTopic";

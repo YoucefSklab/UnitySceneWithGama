@@ -80,6 +80,7 @@ public class GamaManager : MonoBehaviour
 		client.Subscribe (new string[] { MqttSetting.MAIN_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.NOTIFY_MSG }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
 		client.Subscribe (new string[] { MqttSetting.MONO_FREE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
+		client.Subscribe (new string[] { MqttSetting.MULTIPLE_FREE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.POSITION_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
 		client.Subscribe (new string[] { MqttSetting.COLOR_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.GET_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
@@ -135,13 +136,13 @@ public class GamaManager : MonoBehaviour
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.MULTIPLE_FREE_TOPIC);
 
-				MonoFreeTopicMessage multipleFreetopicMessage = (MonoFreeTopicMessage) msgDes.deserialization (receivedMsg, new MonoFreeTopicMessage());
+				MultipleFreeTopicMessage multipleFreetopicMessage = (MultipleFreeTopicMessage) msgDes.deserialization (receivedMsg, new MultipleFreeTopicMessage());
 				targetGameObject = getGameObjectByName (multipleFreetopicMessage.objectName);
 				obj = new object[]{ multipleFreetopicMessage, targetGameObject };
 
-				topicGameObject = getGameObjectByName (MqttSetting.MONO_FREE_TOPIC_MANAGER);
+				topicGameObject = getGameObjectByName (MqttSetting.MULTIPLE_FREE_TOPIC_MANAGER);
 
-				topicGameObject.GetComponent (MqttSetting.MONO_FREE_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
+				topicGameObject.GetComponent (MqttSetting.MULTIPLE_FREE_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				//------------------------------------------------------------------------------
 				break;
 			case MqttSetting.POSITION_TOPIC:
