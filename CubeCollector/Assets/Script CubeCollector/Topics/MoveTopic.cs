@@ -21,8 +21,9 @@ namespace ummisco.gama.unity.topics
 		public int speed;
 		public float inverseMoveTime;
 		public float moveTime = 0.1f;
+		public MoveTopicMessage topicMessage;
 
-		public MoveTopic (GamaMessage currentMsg, GameObject gameObj) : base (currentMsg, gameObj)
+		public MoveTopic (TopicMessage currentMsg, GameObject gameObj) : base (gameObj)
 		{
 
 		}
@@ -48,7 +49,7 @@ namespace ummisco.gama.unity.topics
 
 			if (targetGameObject != null) {
 
-				XmlNode[] node = (XmlNode[])message.unityAttribute;
+				XmlNode[] node = (XmlNode[])topicMessage.attributes;
 				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
 
 				for (int i = 1; i < node.Length; i++) {
@@ -68,13 +69,13 @@ namespace ummisco.gama.unity.topics
 					}
 					dataDictionary.Add (atr, vl);
 				}
-				sendTopic (targetGameObject, message.getAction (), dataDictionary);
+				sendTopic (targetGameObject, dataDictionary);
 			} 
 		}
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public void sendTopic (GameObject targetGameObject, string methodName, Dictionary<object, object> data)
+		public void sendTopic (GameObject targetGameObject, Dictionary<object, object> data)
 		{
 			int size = data.Count;
 			List<object> keyList = new List<object> (data.Keys);
@@ -84,13 +85,14 @@ namespace ummisco.gama.unity.topics
 			y = int.Parse ((string)data [keyList.ElementAt (1)], CultureInfo.InvariantCulture.NumberFormat);
 			z = int.Parse ((string)data [keyList.ElementAt (2)], CultureInfo.InvariantCulture.NumberFormat);
 
-			Debug.Log ("Move to  (X="+ x + ",Y="+ y + ",Z="+ z + ") position!");
+			Debug.Log ("Move to  (X=" + x + ",Y=" + y + ",Z=" + z + ") position!");
 
-			moveToPosition(x,y,z);
+			moveToPosition (x, y, z);
 		}
 
 
-		public void moveToPosition(int xDir, int yDir, int zDir){
+		public void moveToPosition (int xDir, int yDir, int zDir)
+		{
 
 			//Store start position to move from, based on objects current transform position.
 			Vector3 start = targetGameObject.transform.position;
@@ -112,8 +114,8 @@ namespace ummisco.gama.unity.topics
 			//Square magnitude is used instead of magnitude because it's computationally cheaper.
 			float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 
-			Debug.Log ("Before Moving and it remains "+sqrRemainingDistance.ToString ());
-			Debug.Log ("inverseMoveTime is "+ inverseMoveTime);
+			Debug.Log ("Before Moving and it remains " + sqrRemainingDistance.ToString ());
+			Debug.Log ("inverseMoveTime is " + inverseMoveTime);
 
 		
 
@@ -128,13 +130,20 @@ namespace ummisco.gama.unity.topics
 
 				//Recalculate the remaining distance after moving.
 				sqrRemainingDistance = (transform.position - end).sqrMagnitude;
-				Debug.Log ("Stillll Moving and it remains "+sqrRemainingDistance.ToString ());
+				Debug.Log ("Stillll Moving and it remains " + sqrRemainingDistance.ToString ());
 				//Return and loop until sqrRemainingDistance is close enough to zero to end the function
 				yield return null;
 			}
 
 
 			Debug.Log ("Good! end distination is reached");
+		}
+
+		public override void setAllProperties (object args)
+		{
+			object[] obj = (object[])args;
+			this.topicMessage = (MoveTopicMessage)obj [0];
+			this.targetGameObject = (GameObject)obj [1];
 		}
 
 	}

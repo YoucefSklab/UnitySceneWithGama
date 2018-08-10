@@ -12,9 +12,9 @@ namespace ummisco.gama.unity.topics
 {
 	public class MonoFreeTopic : Topic
 	{
+		public MonoFreeTopicMessage topicMessage;
 
-
-		public MonoFreeTopic (GamaMessage currentMsg, GameObject gameObj) : base (currentMsg, gameObj)
+		public MonoFreeTopic (TopicMessage currentMsg, GameObject gameObj) : base (gameObj)
 		{
 
 		}
@@ -55,7 +55,7 @@ namespace ummisco.gama.unity.topics
 
 			if (targetGameObject != null) {
 
-				XmlNode[] node = (XmlNode[])message.unityAttribute;
+				XmlNode[] node = (XmlNode[])topicMessage.attributes;
 				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
 
 				for (int i = 1; i < node.Length; i++) {
@@ -80,7 +80,7 @@ namespace ummisco.gama.unity.topics
 					//	Debug.Log (pair.Key + "  +++++  " + pair.Value);
 				}
 
-				sendTopic (targetGameObject, message.getAction (), dataDictionary);
+				sendTopic (targetGameObject, (string)topicMessage.methodName, dataDictionary);
 
 			} 
 		}
@@ -100,6 +100,14 @@ namespace ummisco.gama.unity.topics
 			targetGameObject.SendMessage (methodName, Tools.convertParameter (obj, parameter [0]));
 
 			Debug.Log ("Method called");
+		}
+
+
+		public override void setAllProperties (object args)
+		{
+			object[] obj = (object[])args;
+			this.topicMessage = (MonoFreeTopicMessage)obj [0];
+			this.targetGameObject = (GameObject)obj [1];
 		}
 
 	}

@@ -15,8 +15,9 @@ namespace ummisco.gama.unity.topics
 	{
 
 		protected string valueIs = "";
+		public GetTopicMessage topicMessage;
 
-		public GetTopic (GamaMessage currentMsg, GameObject gameObj) : base (currentMsg, gameObj)
+		public GetTopic (TopicMessage currentMsg, GameObject gameObj) : base (gameObj)
 		{
 
 		}
@@ -40,7 +41,7 @@ namespace ummisco.gama.unity.topics
 
 			if (targetGameObject != null) {
 
-				XmlNode[] node = (XmlNode[])message.unityAttribute;
+				XmlNode[] node = (XmlNode[])topicMessage.attributes;
 				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
 
 				XmlElement elt = (XmlElement)node.GetValue (1);
@@ -59,7 +60,7 @@ namespace ummisco.gama.unity.topics
 				}
 				dataDictionary.Add (atr, vl);
 
-				obj [2] = getValueToSend (targetGameObject, message.getAction (), dataDictionary);
+				obj [2] = getValueToSend (targetGameObject, dataDictionary);
 				Debug.Log ("Method called and returned -> " + obj [2]);
 
 			}
@@ -68,7 +69,7 @@ namespace ummisco.gama.unity.topics
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public string getValueToSend (GameObject targetGameObject, string methodName, Dictionary<object, object> data)
+		public string getValueToSend (GameObject targetGameObject, Dictionary<object, object> data)
 		{
 
 			int size = data.Count;
@@ -96,7 +97,7 @@ namespace ummisco.gama.unity.topics
 		public override void setAllProperties (object args)
 		{
 			object[] obj = (object[])args;
-			this.message = (GamaMessage)obj [0];
+			this.topicMessage = (GetTopicMessage)obj [0];
 			this.targetGameObject = (GameObject)obj [1];
 			this.valueIs = (string)obj [2];
 		}

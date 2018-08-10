@@ -15,8 +15,9 @@ namespace ummisco.gama.unity.topics
 {
 	public class PositionTopic : Topic
 	{
+		public PositionTopicMessage topicMessage;
 
-		public PositionTopic (GamaMessage currentMsg, GameObject gameObj) : base (currentMsg, gameObj)
+		public PositionTopic (TopicMessage currentMsg, GameObject gameObj) : base (gameObj)
 		{
 
 		}
@@ -41,7 +42,7 @@ namespace ummisco.gama.unity.topics
 
 			if (targetGameObject != null) {
 
-				XmlNode[] node = (XmlNode[])message.unityAttribute;
+				XmlNode[] node = (XmlNode[])topicMessage.attributes;
 				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
 
 				for (int i = 1; i < node.Length; i++) {
@@ -61,14 +62,14 @@ namespace ummisco.gama.unity.topics
 					}
 					dataDictionary.Add (atr, vl);
 				}
-				sendTopic (targetGameObject, message.getAction (), dataDictionary);
+				sendTopic (targetGameObject, dataDictionary);
 
 			} 
 		}
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public void sendTopic (GameObject targetGameObject, string methodName, Dictionary<object, object> data)
+		public void sendTopic (GameObject targetGameObject, Dictionary<object, object> data)
 		{
 			int size = data.Count;
 			List<object> keyList = new List<object> (data.Keys);
@@ -84,6 +85,13 @@ namespace ummisco.gama.unity.topics
 
 
 			Debug.Log ("position applied ");
+		}
+
+		public override void setAllProperties (object args)
+		{
+			object[] obj = (object[])args;
+			this.topicMessage = (PositionTopicMessage)obj [0];
+			this.targetGameObject = (GameObject)obj [1];
 		}
 	}
 }

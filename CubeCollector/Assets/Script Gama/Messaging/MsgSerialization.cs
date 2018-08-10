@@ -18,12 +18,35 @@ namespace ummisco.gama.unity.messages
 		
 		}
 
-		public GamaMessage msgDeserialization (string aciResponseData)
+		public TopicMessage msgDeserialization (string aciResponseData)
 		{
-			GamaMessage msg;
+			TopicMessage msg;
 			using (TextReader sr = new StringReader (aciResponseData)) {
-				var serializer = new System.Xml.Serialization.XmlSerializer (typeof(GamaMessage));
-				GamaMessage result = (GamaMessage)serializer.Deserialize (sr);
+				var serializer = new System.Xml.Serialization.XmlSerializer (typeof(TopicMessage));
+				TopicMessage result = (TopicMessage)serializer.Deserialize (sr);
+				msg = result;
+			}
+			return msg;
+		}
+
+
+		public SetTopicMessage desSetTopicMsg (string aciResponseData)
+		{
+			SetTopicMessage msg;
+			using (TextReader sr = new StringReader (aciResponseData)) {
+				var serializer = new System.Xml.Serialization.XmlSerializer (typeof(SetTopicMessage));
+				SetTopicMessage result = (SetTopicMessage)serializer.Deserialize (sr);
+				msg = result;
+			}
+			return msg;
+		}
+
+		public object deserialization (string aciResponseData, object classDeserialization)
+		{
+			object msg;
+			using (TextReader sr = new StringReader (aciResponseData)) {
+				var serializer = new System.Xml.Serialization.XmlSerializer (classDeserialization.GetType ());
+				object result = (object)serializer.Deserialize (sr);
 				msg = result;
 			}
 			return msg;
@@ -43,8 +66,8 @@ namespace ummisco.gama.unity.messages
 		public string getMsgAttribute (string aciResponseData, string att)
 		{
 			using (TextReader sr = new StringReader (aciResponseData)) {
-				var serializer = new System.Xml.Serialization.XmlSerializer (typeof(GamaMessage));
-				GamaMessage msg = (GamaMessage)serializer.Deserialize (sr);
+				var serializer = new System.Xml.Serialization.XmlSerializer (typeof(TopicMessage));
+				TopicMessage msg = (TopicMessage)serializer.Deserialize (sr);
 				switch (att) {
 				case "unread":
 					return msg.unread;

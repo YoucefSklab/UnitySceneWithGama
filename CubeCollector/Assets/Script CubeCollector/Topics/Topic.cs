@@ -15,8 +15,6 @@ namespace ummisco.gama.unity.topics
 		protected MsgSerialization msgDes = new MsgSerialization ();
 		protected GamaMethods gama = new GamaMethods ();
 
-		protected GamaMessage message { get ; set; }
-
 		protected GameObject targetGameObject { get ; set; }
 
 
@@ -39,9 +37,8 @@ namespace ummisco.gama.unity.topics
 
 	
 
-		public Topic (GamaMessage currentMsg, GameObject gameO)
+		public Topic (GameObject gameO)
 		{
-			this.message = currentMsg;
 			this.targetGameObject = targetGameObject;
 		}
 
@@ -58,8 +55,7 @@ namespace ummisco.gama.unity.topics
 		public virtual void setAllProperties (object args)
 		{
 			object[] obj = (object[])args;
-			this.message = (GamaMessage)obj [0];
-			this.targetGameObject = (GameObject)obj [1];
+			this.targetGameObject = (GameObject)obj [0];
 		}
 
 

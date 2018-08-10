@@ -36,11 +36,11 @@ public class GamaManager : MonoBehaviour
 	public MqttClient client = new MqttClient (MqttSetting.SERVER_URL, MqttSetting.SERVER_PORT, false, null);
 	public GamaMethods gama = new GamaMethods ();
 	public MsgSerialization msgDes = new MsgSerialization ();
-	public GamaMessage currentMsg;
+	public TopicMessage currentMsg;
 
 	public GameObject[] allObjects = null;
 	public GameObject gamaManager = null;
-	public GameObject targetGameObject = null;	
+	public GameObject targetGameObject = null;
 	public GameObject topicGameObject = null;
 	public object[] obj = null;
 
@@ -103,13 +103,12 @@ public class GamaManager : MonoBehaviour
 			}
 		
 			receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
-			GamaMessage currentMsg = msgDes.msgDeserialization (receivedMsg);
-
+			Debug.Log ("-> Received Message is : " + receivedMsg);
 			allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 
-			targetGameObject = getGameObjectByName (currentMsg.getObjectName ());
-
-			obj = new object[]{ currentMsg, targetGameObject};
+		//	TopicMessage currentMsg = msgDes.msgDeserialization (receivedMsg);
+		//	targetGameObject = getGameObjectByName (currentMsg.getObjectName ());
+		//	obj = new object[]{ currentMsg, targetGameObject };
 
 
 			switch (e.Topic) {
@@ -123,6 +122,10 @@ public class GamaManager : MonoBehaviour
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.MONO_FREE_TOPIC);
 
+				MonoFreeTopicMessage monoFreeTopicMessage = (MonoFreeTopicMessage) msgDes.deserialization (receivedMsg, new MonoFreeTopicMessage());
+				targetGameObject = getGameObjectByName (monoFreeTopicMessage.objectName);
+				obj = new object[]{ monoFreeTopicMessage, targetGameObject };
+
 				topicGameObject = getGameObjectByName (MqttSetting.MONO_FREE_TOPIC_MANAGER);
 
 				topicGameObject.GetComponent (MqttSetting.MONO_FREE_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
@@ -131,6 +134,10 @@ public class GamaManager : MonoBehaviour
 			case MqttSetting.MULTIPLE_FREE_TOPIC:
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.MULTIPLE_FREE_TOPIC);
+
+				MonoFreeTopicMessage multipleFreetopicMessage = (MonoFreeTopicMessage) msgDes.deserialization (receivedMsg, new MonoFreeTopicMessage());
+				targetGameObject = getGameObjectByName (multipleFreetopicMessage.objectName);
+				obj = new object[]{ multipleFreetopicMessage, targetGameObject };
 
 				topicGameObject = getGameObjectByName (MqttSetting.MONO_FREE_TOPIC_MANAGER);
 
@@ -141,6 +148,10 @@ public class GamaManager : MonoBehaviour
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.POSITION_TOPIC);
 
+				PositionTopicMessage positionTopicMessage = (PositionTopicMessage) msgDes.deserialization (receivedMsg, new PositionTopicMessage());
+				targetGameObject = getGameObjectByName (positionTopicMessage.objectName);
+				obj = new object[]{ positionTopicMessage, targetGameObject };
+
 				topicGameObject = getGameObjectByName (MqttSetting.POSITION_TOPIC_MANAGER);
 
 				topicGameObject.GetComponent (MqttSetting.POSITION_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
@@ -149,6 +160,10 @@ public class GamaManager : MonoBehaviour
 			case MqttSetting.MOVE_TOPIC:
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.MOVE_TOPIC);
+
+				MoveTopicMessage moveTopicMessage = (MoveTopicMessage) msgDes.deserialization (receivedMsg, new MoveTopicMessage());
+				targetGameObject = getGameObjectByName (moveTopicMessage.objectName);
+				obj = new object[]{ moveTopicMessage, targetGameObject };
 
 				topicGameObject = getGameObjectByName (MqttSetting.MOVE_TOPIC_MANAGER);
 
@@ -159,6 +174,10 @@ public class GamaManager : MonoBehaviour
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.COLOR_TOPIC);
 
+				ColorTopicMessage colorTopicMessage = (ColorTopicMessage) msgDes.deserialization (receivedMsg, new ColorTopicMessage());
+				targetGameObject = getGameObjectByName (colorTopicMessage.objectName);
+				obj = new object[]{ colorTopicMessage, targetGameObject };
+
 				topicGameObject = getGameObjectByName (MqttSetting.COLOR_TOPIC_MANAGER);
 
 				topicGameObject.GetComponent (MqttSetting.COLOR_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
@@ -168,6 +187,10 @@ public class GamaManager : MonoBehaviour
 			case MqttSetting.GET_TOPIC:
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.GET_TOPIC);
+
+				GetTopicMessage getTopicMessage = (GetTopicMessage) msgDes.deserialization (receivedMsg, new GetTopicMessage());
+				targetGameObject = getGameObjectByName (getTopicMessage.objectName);
+				obj = new object[]{ getTopicMessage, targetGameObject };
 
 				topicGameObject = getGameObjectByName (MqttSetting.GET_TOPIC_MANAGER);
 
@@ -181,6 +204,10 @@ public class GamaManager : MonoBehaviour
 			case MqttSetting.SET_TOPIC:
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.SET_TOPIC);
+
+				SetTopicMessage setTopicMessage = (SetTopicMessage) msgDes.deserialization (receivedMsg, new SetTopicMessage());
+				targetGameObject = getGameObjectByName (setTopicMessage.objectName);
+				obj = new object[]{ setTopicMessage, targetGameObject };
 
 				topicGameObject = getGameObjectByName (MqttSetting.SET_TOPIC_MANAGER);
 
@@ -257,7 +284,7 @@ public class GamaManager : MonoBehaviour
 		
 	}
 
-	public void handleMessage (GamaMessage msg)
+	public void handleMessage (TopicMessage msg)
 	{
 
 	}
