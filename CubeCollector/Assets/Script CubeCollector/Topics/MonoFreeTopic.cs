@@ -33,6 +33,54 @@ namespace ummisco.gama.unity.topics
 		}
 
 
+
+
+		public void ProcessTopic (object obj)
+		{
+
+			Debug.Log ("->>>>>>>>>>>>>>--> --->>>  this is from mono free Topic");
+
+			setAllProperties (obj);
+
+			BindingFlags flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+			MethodInfo[] info = getMethodsInfo (flags);
+
+			for (int i = 0; i < info.Length; i++) {
+				MethodInfo infoItem = info [i];
+				ParameterInfo[] par = infoItem.GetParameters ();
+				for (int j = 0; j < par.Length; j++) {
+					//ParameterInfo parInfo = par [j];
+					//Debug.Log ("->>>>>>>>>>>>>>--> parametre Name >>=>>=>>=  " + parInfo.Name);
+					//Debug.Log ("->>>>>>>>>>>>>>--> parametre Type>>=>>=>>=  " + parInfo.ParameterType);
+				}
+			}
+
+			if (targetGameObject != null) {
+				sendTopic (targetGameObject, (string)topicMessage.methodName, (string) topicMessage.attribute);
+			} 
+		}
+
+		// The method to call Game Objects methods
+		//----------------------------------------
+		public void sendTopic (GameObject targetGameObject, string methodName, string attributeValue)
+		{
+			MethodInfo methInfo = targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethod (methodName);
+			ParameterInfo[] parameter = methInfo.GetParameters ();
+			object obj = attributeValue;
+			targetGameObject.SendMessage (methodName, Tools.convertParameter (obj, parameter [0]));
+		}
+
+
+
+		public override void setAllProperties (object args)
+		{
+			object[] obj = (object[])args;
+			this.topicMessage = (MonoFreeTopicMessage)obj [0];
+			this.targetGameObject = (GameObject)obj [1];
+		}
+
+
+		/*
 		public void ProcessTopic (object obj)
 		{
 		
@@ -55,7 +103,7 @@ namespace ummisco.gama.unity.topics
 
 			if (targetGameObject != null) {
 
-				XmlNode[] node = (XmlNode[])topicMessage.attributes;
+				XmlNode[] node = (XmlNode[])topicMessage.attribute;
 				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
 
 				for (int i = 1; i < node.Length; i++) {
@@ -96,19 +144,15 @@ namespace ummisco.gama.unity.topics
 			MethodInfo methInfo = targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethod (methodName);
 			ParameterInfo[] parameter = methInfo.GetParameters ();
 			object obj = data [keyList.ElementAt (0)];
-			//object obj2 = base.convertParameter (obj, parameter [0]);
 			targetGameObject.SendMessage (methodName, Tools.convertParameter (obj, parameter [0]));
 
 			Debug.Log ("Method called");
 		}
 
 
-		public override void setAllProperties (object args)
-		{
-			object[] obj = (object[])args;
-			this.topicMessage = (MonoFreeTopicMessage)obj [0];
-			this.targetGameObject = (GameObject)obj [1];
-		}
+		*/
+
+	
 
 	}
 
