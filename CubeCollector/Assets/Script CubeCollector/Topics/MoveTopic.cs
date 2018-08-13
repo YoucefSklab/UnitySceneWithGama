@@ -49,7 +49,7 @@ namespace ummisco.gama.unity.topics
 
 			if (targetGameObject != null) {
 
-				XmlNode[] node = (XmlNode[])topicMessage.attributes;
+				XmlNode[] node = (XmlNode[])topicMessage.position;
 				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
 
 				for (int i = 1; i < node.Length; i++) {
