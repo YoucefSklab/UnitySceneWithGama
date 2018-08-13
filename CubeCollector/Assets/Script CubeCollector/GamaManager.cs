@@ -86,6 +86,7 @@ public class GamaManager : MonoBehaviour
 		client.Subscribe (new string[] { MqttSetting.GET_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.SET_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.MOVE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+		client.Subscribe (new string[] { MqttSetting.PROPERTY_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
 	}
 
@@ -213,6 +214,19 @@ public class GamaManager : MonoBehaviour
 				topicGameObject = getGameObjectByName (MqttSetting.SET_TOPIC_MANAGER);
 
 				topicGameObject.GetComponent (MqttSetting.SET_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
+				//------------------------------------------------------------------------------
+				break;
+			case MqttSetting.PROPERTY_TOPIC:
+				//------------------------------------------------------------------------------
+				Debug.Log ("-> Topic to deal with is : " + MqttSetting.PROPERTY_TOPIC);
+
+				PropertyTopicMessage propertyTopicMessage = (PropertyTopicMessage) msgDes.deserialization (receivedMsg, new PropertyTopicMessage());
+				targetGameObject = getGameObjectByName (propertyTopicMessage.objectName);
+				obj = new object[]{ propertyTopicMessage, targetGameObject };
+
+				topicGameObject = getGameObjectByName (MqttSetting.PROPERTY_TOPIC_MANAGER);
+
+				topicGameObject.GetComponent (MqttSetting.PROPERTY_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				//------------------------------------------------------------------------------
 				break;
 			default:

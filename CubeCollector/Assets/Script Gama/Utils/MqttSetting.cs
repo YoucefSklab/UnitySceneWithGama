@@ -21,12 +21,14 @@ namespace ummisco.gama.unity.utils
 		public const string REPLAY_TOPIC_MANAGER = "ReplayTopicManager";
 		public const string NOTIFICATION_TOPIC_MANAGER = "NotificationTopicManager";
 		public const string MOVE_TOPIC_MANAGER = "MoveTopicManager";
+		public const string PROPERTY_TOPIC_MANAGER = "PropertyTopicManager";
 
 
 		// Topics to receive
 		public const string MAIN_TOPIC = "Unity";
 		public const string GET_TOPIC = "get";
 		public const string SET_TOPIC = "set";
+		public const string PROPERTY_TOPIC = "property";
 
 		public const string MONO_FREE_TOPIC = "monoFree";
 		public const string MULTIPLE_FREE_TOPIC = "multipleFree";
@@ -61,7 +63,7 @@ namespace ummisco.gama.unity.utils
 		public const string SET_TOPIC_SCRIPT = "SetTopic";
 		public const string GET_TOPIC_SCRIPT = "GetTopic";
 		public const string MOVE_TOPIC_SCRIPT = "MoveTopic";
-
+		public const string PROPERTY_TOPIC_SCRIPT = "PropertyTopic";
 
 
 		public static GameObject[] allObjects = null;
@@ -78,6 +80,8 @@ namespace ummisco.gama.unity.utils
 			topicsList.Add (SET_TOPIC);
 			topicsList.Add (GET_TOPIC);
 			topicsList.Add (MOVE_TOPIC);
+			topicsList.Add (PROPERTY_TOPIC);
+
 
 			return topicsList;
 		}

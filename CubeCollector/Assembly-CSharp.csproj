@@ -64,6 +64,7 @@
      <Compile Include="Assets\Script CubeCollector\Topics\MoveTopic.cs" />
      <Compile Include="Assets\Script CubeCollector\Topics\MultipleFreeTopic.cs" />
      <Compile Include="Assets\Script CubeCollector\Topics\PositionTopic.cs" />
+     <Compile Include="Assets\Script CubeCollector\Topics\PropertyTopic.cs" />
      <Compile Include="Assets\Script CubeCollector\Topics\SetTopic.cs" />
      <Compile Include="Assets\Script CubeCollector\Topics\Topic.cs" />
      <Compile Include="Assets\Script Gama\Messaging\ColorTopicMessage.cs" />
@@ -76,6 +77,7 @@
      <Compile Include="Assets\Script Gama\Messaging\MsgSerialization.cs" />
      <Compile Include="Assets\Script Gama\Messaging\MultipleFreeTopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\PositionTopicMessage.cs" />
+     <Compile Include="Assets\Script Gama\Messaging\PropertyTopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\SetTopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\TopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Utils\GamaMethods.cs" />
