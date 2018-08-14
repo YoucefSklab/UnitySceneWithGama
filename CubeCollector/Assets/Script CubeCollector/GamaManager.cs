@@ -44,6 +44,8 @@ public class GamaManager : MonoBehaviour
 	public GameObject topicGameObject = null;
 	public object[] obj = null;
 
+	public List<GameObject> objectsList = new List<GameObject>();
+
 
 
 	List<MqttMsgPublishEventArgs> msgList = new List<MqttMsgPublishEventArgs> ();
@@ -87,6 +89,7 @@ public class GamaManager : MonoBehaviour
 		client.Subscribe (new string[] { MqttSetting.SET_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.MOVE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.PROPERTY_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+		client.Subscribe (new string[] { MqttSetting.CREATE_TOPIC}, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
 	}
 
@@ -229,6 +232,19 @@ public class GamaManager : MonoBehaviour
 				topicGameObject.GetComponent (MqttSetting.PROPERTY_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				//------------------------------------------------------------------------------
 				break;
+
+			case MqttSetting.CREATE_TOPIC:
+				//------------------------------------------------------------------------------
+				Debug.Log ("-> Topic to deal with is : " + MqttSetting.CREATE_TOPIC);
+
+				CreateTopicMessage createTopicMessage = (CreateTopicMessage) msgDes.deserialization (receivedMsg, new CreateTopicMessage());
+				obj = new object[]{createTopicMessage };
+
+				topicGameObject = getGameObjectByName (MqttSetting.CREATE_TOPIC_MANAGER);
+
+				topicGameObject.GetComponent (MqttSetting.CREATE_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
+				//------------------------------------------------------------------------------
+				break;
 			default:
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.DEFAULT_TOPIC);
@@ -362,5 +378,14 @@ public class GamaManager : MonoBehaviour
 			}					
 		}
 		return null;
+	}
+
+
+	public void addObjectToList(GameObject obj){
+		objectsList.Add (obj);
+	}
+
+	public void removeObjectFromList(GameObject obj){
+		objectsList.Remove (obj);
 	}
 }

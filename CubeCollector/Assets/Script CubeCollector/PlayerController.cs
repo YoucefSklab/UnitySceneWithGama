@@ -30,6 +30,13 @@ public class PlayerController : MonoBehaviour
 	private int count;
 
 
+	// $$$$$$$$$$$$$$
+	public GameObject testObject;
+	public Shader shader;
+	public Texture texture;
+	public Color color;
+
+
 
 	protected void Start ()
 	{
@@ -75,6 +82,39 @@ public class PlayerController : MonoBehaviour
 
 			gamaManager.SendMessage ("sendGotBoxMsg");
 		}
+
+
+		//spawn object
+
+		//testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		testObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+		testObject.name = "gooooooooood";
+
+
+		//testObject = new GameObject("CreatedGameObject");
+		//Add Components
+		testObject.AddComponent<Rigidbody>();
+		//testObject.AddComponent<MeshFilter>(); // already added to cube by creation
+		testObject.AddComponent<BoxCollider>();
+		//testObject.AddComponent<MeshRenderer>(); // already added to cube by creation
+
+		color = Tools.stringToColor ("black");
+
+
+		Renderer rend = testObject.GetComponent<Renderer>();
+		//rend.material = new Material(Shader.Find("Player"));
+
+
+		//Renderer rend = GetComponent<Renderer>();
+		//rend.material = new Material(shader);
+		//rend.material.mainTexture = texture;
+		rend.material.color = color;
+
+		Debug.Log ("The material name is: ");
+
+
+
+
 	}
 
 	public void SetCountText ()
