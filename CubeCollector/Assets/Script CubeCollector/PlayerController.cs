@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
 	public GameObject gamaManager;
 	public GamaMethods gama = new GamaMethods ();
 	private Rigidbody rb;
-	private int count;
+	public int count;
 
 
 	// $$$$$$$$$$$$$$
@@ -121,6 +121,7 @@ public class PlayerController : MonoBehaviour
 
 		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
 		rb.AddForce (movement * speed);
+
 
 		//--------------------------------
 

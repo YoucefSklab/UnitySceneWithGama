@@ -1,15 +1,18 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 
 namespace ummisco.gama.unity.notification
 {
 	public class NotificationRegistry
 	{
-		public NotificationRegistry ()
-		{
-			
-		}
+		public static List<NotificationEntry> notificationsList;
+
+
+
+
+
 
 		public static void getCallingMethod ()
 		{
@@ -20,6 +23,10 @@ namespace ummisco.gama.unity.notification
 			                        + stackTrace.GetFrame (1).GetMethod ().Name;
 
 			Debug.Log ("--> Method long name is : " + methodLongName);
+		}
+
+		public static void addToList(NotificationEntry notif){
+			notificationsList.Add (notif);
 		}
 	}
 }

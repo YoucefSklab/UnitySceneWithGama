@@ -79,6 +79,7 @@
      <Compile Include="Assets\Script Gama\Messaging\MoveTopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\MsgSerialization.cs" />
      <Compile Include="Assets\Script Gama\Messaging\MultipleFreeTopicMessage.cs" />
+     <Compile Include="Assets\Script Gama\Messaging\NotificationMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\NotificationTopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\PositionTopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\PropertyTopicMessage.cs" />

@@ -10,20 +10,26 @@ namespace ummisco.gama.unity.messages
 
 
 		//public string purpose { get; set;}
-		public string fieldType { get; set;}
-		public string fieldName { get; set;}
-		public string fieldValue { get; set;}
-		public string fieldOperator { get; set;}
+		public string notificationId { get; set; }
 
-		public NotificationTopicMessage()
+		public string fieldType { get; set; }
+
+		public string fieldName { get; set; }
+
+		public string fieldValue { get; set; }
+
+		public string fieldOperator { get; set; }
+
+		public NotificationTopicMessage ()
 		{
 
 		}
 
 		public NotificationTopicMessage (string unread, string sender, string receivers, string contents, string emissionTimeStamp, string objectName,
-			string fieldType, string fieldName, string fieldValue, string fieldOperator) : base (unread, sender, receivers, contents, objectName, emissionTimeStamp)
+			string notificationId, string fieldType, string fieldName, string fieldValue, string fieldOperator) : base (unread, sender, receivers, contents, objectName, emissionTimeStamp)
 		{
 			//this.purpose = purpose;
+			this.notificationId = notificationId;
 			this.fieldType = fieldType;
 			this.fieldName = fieldName;
 			this.fieldValue = fieldValue;

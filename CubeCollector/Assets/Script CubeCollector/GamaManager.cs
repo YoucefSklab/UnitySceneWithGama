@@ -44,7 +44,7 @@ public class GamaManager : MonoBehaviour
 	public GameObject topicGameObject = null;
 	public object[] obj = null;
 
-	public List<GameObject> objectsList = new List<GameObject>();
+	public List<GameObject> objectsList = new List<GameObject> ();
 
 
 
@@ -80,7 +80,6 @@ public class GamaManager : MonoBehaviour
 		//client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
 		client.Connect (clientId); 
 		client.Subscribe (new string[] { MqttSetting.MAIN_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
-		client.Subscribe (new string[] { MqttSetting.NOTIFY_MSG }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
 		client.Subscribe (new string[] { MqttSetting.MONO_FREE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
 		client.Subscribe (new string[] { MqttSetting.MULTIPLE_FREE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.POSITION_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
@@ -89,8 +88,8 @@ public class GamaManager : MonoBehaviour
 		client.Subscribe (new string[] { MqttSetting.SET_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.MOVE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.PROPERTY_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
-		client.Subscribe (new string[] { MqttSetting.CREATE_TOPIC}, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
-		client.Subscribe (new string[] { MqttSetting.NOTIFICATION_TOPIC}, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+		client.Subscribe (new string[] { MqttSetting.CREATE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+		client.Subscribe (new string[] { MqttSetting.NOTIFICATION_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
 		NotificationRegistry.getCallingMethod ();
 	}
@@ -107,18 +106,13 @@ public class GamaManager : MonoBehaviour
 
 			MqttMsgPublishEventArgs e = msgList [0];
 			if (!MqttSetting.getTopicsInList ().Contains (e.Topic)) {
-				Debug.Log ("-> The Topic doesn't exist in the defined list. Please check!");
+				Debug.Log ("-> The Topic '"+e.Topic+"' doesn't exist in the defined list. Please check!");
 				return;
 			}
 		
 			receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
 			Debug.Log ("-> Received Message is : " + receivedMsg);
 			allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
-
-		//	TopicMessage currentMsg = msgDes.msgDeserialization (receivedMsg);
-		//	targetGameObject = getGameObjectByName (currentMsg.getObjectName ());
-		//	obj = new object[]{ currentMsg, targetGameObject };
-
 
 			switch (e.Topic) {
 			case MqttSetting.MAIN_TOPIC:
@@ -131,7 +125,7 @@ public class GamaManager : MonoBehaviour
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.MONO_FREE_TOPIC);
 
-				MonoFreeTopicMessage monoFreeTopicMessage = (MonoFreeTopicMessage) msgDes.deserialization (receivedMsg, new MonoFreeTopicMessage());
+				MonoFreeTopicMessage monoFreeTopicMessage = (MonoFreeTopicMessage)msgDes.deserialization (receivedMsg, new MonoFreeTopicMessage ());
 				targetGameObject = getGameObjectByName (monoFreeTopicMessage.objectName);
 				obj = new object[]{ monoFreeTopicMessage, targetGameObject };
 
@@ -144,7 +138,7 @@ public class GamaManager : MonoBehaviour
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.MULTIPLE_FREE_TOPIC);
 
-				MultipleFreeTopicMessage multipleFreetopicMessage = (MultipleFreeTopicMessage) msgDes.deserialization (receivedMsg, new MultipleFreeTopicMessage());
+				MultipleFreeTopicMessage multipleFreetopicMessage = (MultipleFreeTopicMessage)msgDes.deserialization (receivedMsg, new MultipleFreeTopicMessage ());
 				targetGameObject = getGameObjectByName (multipleFreetopicMessage.objectName);
 				obj = new object[]{ multipleFreetopicMessage, targetGameObject };
 
@@ -157,7 +151,7 @@ public class GamaManager : MonoBehaviour
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.POSITION_TOPIC);
 
-				PositionTopicMessage positionTopicMessage = (PositionTopicMessage) msgDes.deserialization (receivedMsg, new PositionTopicMessage());
+				PositionTopicMessage positionTopicMessage = (PositionTopicMessage)msgDes.deserialization (receivedMsg, new PositionTopicMessage ());
 				targetGameObject = getGameObjectByName (positionTopicMessage.objectName);
 				obj = new object[]{ positionTopicMessage, targetGameObject };
 
@@ -170,7 +164,7 @@ public class GamaManager : MonoBehaviour
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.MOVE_TOPIC);
 
-				MoveTopicMessage moveTopicMessage = (MoveTopicMessage) msgDes.deserialization (receivedMsg, new MoveTopicMessage());
+				MoveTopicMessage moveTopicMessage = (MoveTopicMessage)msgDes.deserialization (receivedMsg, new MoveTopicMessage ());
 				targetGameObject = getGameObjectByName (moveTopicMessage.objectName);
 				obj = new object[]{ moveTopicMessage, targetGameObject };
 
@@ -183,7 +177,7 @@ public class GamaManager : MonoBehaviour
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.COLOR_TOPIC);
 
-				ColorTopicMessage colorTopicMessage = (ColorTopicMessage) msgDes.deserialization (receivedMsg, new ColorTopicMessage());
+				ColorTopicMessage colorTopicMessage = (ColorTopicMessage)msgDes.deserialization (receivedMsg, new ColorTopicMessage ());
 				targetGameObject = getGameObjectByName (colorTopicMessage.objectName);
 				obj = new object[]{ colorTopicMessage, targetGameObject };
 
@@ -198,7 +192,7 @@ public class GamaManager : MonoBehaviour
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.GET_TOPIC);
 				string value = null;
 
-				GetTopicMessage getTopicMessage = (GetTopicMessage) msgDes.deserialization (receivedMsg, new GetTopicMessage());
+				GetTopicMessage getTopicMessage = (GetTopicMessage)msgDes.deserialization (receivedMsg, new GetTopicMessage ());
 				targetGameObject = getGameObjectByName (getTopicMessage.objectName);
 
 
@@ -207,14 +201,14 @@ public class GamaManager : MonoBehaviour
 			
 				topicGameObject.GetComponent (MqttSetting.GET_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				value = (string)obj [2];
-				sendReplay (clientId, "GamaAgent", MqttSetting.REPLAY_TOPIC, value);
+				sendReplay (clientId, "GamaAgent", value);
 				//------------------------------------------------------------------------------
 				break;
 			case MqttSetting.SET_TOPIC:
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.SET_TOPIC);
 
-				SetTopicMessage setTopicMessage = (SetTopicMessage) msgDes.deserialization (receivedMsg, new SetTopicMessage());
+				SetTopicMessage setTopicMessage = (SetTopicMessage)msgDes.deserialization (receivedMsg, new SetTopicMessage ());
 				targetGameObject = getGameObjectByName (setTopicMessage.objectName);
 				obj = new object[]{ setTopicMessage, targetGameObject };
 
@@ -227,7 +221,7 @@ public class GamaManager : MonoBehaviour
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.PROPERTY_TOPIC);
 
-				PropertyTopicMessage propertyTopicMessage = (PropertyTopicMessage) msgDes.deserialization (receivedMsg, new PropertyTopicMessage());
+				PropertyTopicMessage propertyTopicMessage = (PropertyTopicMessage)msgDes.deserialization (receivedMsg, new PropertyTopicMessage ());
 				targetGameObject = getGameObjectByName (propertyTopicMessage.objectName);
 				obj = new object[]{ propertyTopicMessage, targetGameObject };
 
@@ -241,8 +235,8 @@ public class GamaManager : MonoBehaviour
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.CREATE_TOPIC);
 
-				CreateTopicMessage createTopicMessage = (CreateTopicMessage) msgDes.deserialization (receivedMsg, new CreateTopicMessage());
-				obj = new object[]{createTopicMessage };
+				CreateTopicMessage createTopicMessage = (CreateTopicMessage)msgDes.deserialization (receivedMsg, new CreateTopicMessage ());
+				obj = new object[]{ createTopicMessage };
 
 				topicGameObject = getGameObjectByName (MqttSetting.CREATE_TOPIC_MANAGER);
 
@@ -253,12 +247,13 @@ public class GamaManager : MonoBehaviour
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.NOTIFICATION_TOPIC);
 
-				NotificationTopicMessage notificationTopicMessage = (NotificationTopicMessage) msgDes.deserialization (receivedMsg, new NotificationTopicMessage());
-				obj = new object[]{notificationTopicMessage };
+				NotificationTopicMessage notificationTopicMessage = (NotificationTopicMessage)msgDes.deserialization (receivedMsg, new NotificationTopicMessage ());
+				obj = new object[]{ notificationTopicMessage };
 
 				topicGameObject = getGameObjectByName (MqttSetting.NOTIFICATION_TOPIC_MANAGER);
 
 				topicGameObject.GetComponent (MqttSetting.NOTIFICATION_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
+
 				//------------------------------------------------------------------------------
 				break;
 			default:
@@ -271,7 +266,8 @@ public class GamaManager : MonoBehaviour
 			msgList.Remove (e);
 		}
 
-
+		checkForNotifications ();
+	
 	}
 
 
@@ -306,18 +302,21 @@ public class GamaManager : MonoBehaviour
 
 	public void sendGotBoxMsg ()
 	{
-		GamaReponseMessage msg = new GamaReponseMessage (clientId, "GamaAgent", MqttSetting.NOTIFY_MSG, "Got a Box notification", DateTime.Now.ToString ());
+
+		GamaReponseMessage msg = new GamaReponseMessage (clientId, "GamaAgent", "Got a Box notification", DateTime.Now.ToString ());
 
 		string message = msgDes.msgSerialization (msg);
 		client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes (message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
 		//client.Publish ("Gama", System.Text.Encoding.UTF8.GetBytes ("Good, Another box2"));
 	}
 
-	public void sendReplay (string sender, string receiver, string topic, string replayMsg)
+	// à revoir en utilisant publishMessage
+	public void sendReplay (string sender, string receiver, string replayMsg)
 	{
-		GamaReponseMessage msg = new GamaReponseMessage (sender, receiver, topic, replayMsg, DateTime.Now.ToString ());
+		GamaReponseMessage msg = new GamaReponseMessage (sender, receiver, replayMsg, DateTime.Now.ToString ());
 		string message = msgDes.msgSerialization (msg);
-		client.Publish (topic, System.Text.Encoding.UTF8.GetBytes (message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+
+		publishMessage(message, MqttSetting.REPLAY_TOPIC);
 	}
 
 	void OnDestroy ()
@@ -397,11 +396,41 @@ public class GamaManager : MonoBehaviour
 	}
 
 
-	public void addObjectToList(GameObject obj){
+	public void addObjectToList (GameObject obj)
+	{
 		objectsList.Add (obj);
 	}
 
-	public void removeObjectFromList(GameObject obj){
+	public void removeObjectFromList (GameObject obj)
+	{
 		objectsList.Remove (obj);
+	}
+
+
+	public void checkForNotifications ()
+	{
+		if (NotificationRegistry.notificationsList.Count >= 1) {
+			foreach (NotificationEntry el in NotificationRegistry.notificationsList) {
+				if (el.notify) {
+					string msg = getReplayNotificationMessage (el);
+					publishMessage (msg, MqttSetting.NOTIFY_MSG);
+					el.notify = false;
+				}
+			}
+		}	
+	}
+
+	public string getReplayNotificationMessage(NotificationEntry el)
+	{
+		NotificationMessage msg = new NotificationMessage ("Unity", el.agentId, "Contents Not set", DateTime.Now.ToString (), el.notificationId);
+		string message = msgDes.serialization (msg);
+		Debug.Log ("Serialization finished : "+message);
+		return message;
+	}
+
+	public void publishMessage(string message, string topic){
+		Debug.Log ("ready to publish the notification");
+		client.Publish (topic, System.Text.Encoding.UTF8.GetBytes (message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+		Debug.Log ("notification published");
 	}
 }

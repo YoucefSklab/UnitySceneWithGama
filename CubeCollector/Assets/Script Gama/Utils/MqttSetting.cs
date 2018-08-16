@@ -53,7 +53,7 @@ namespace ummisco.gama.unity.utils
 
 
 		// Message types
-		public const string NOTIFY_MSG = "notify";
+		public const string NOTIFY_MSG = "notification";
 		public const string REPLAY_MSG = "replay";
 		public const string ASK_MSG = "ask";
 
@@ -76,8 +76,10 @@ namespace ummisco.gama.unity.utils
 
 		public static GameObject[] allObjects = null;
 
-		public static List<string> getTopicsInList(){
-			List<string> topicsList = new List<string>();
+
+		public static List<string> getTopicsInList ()
+		{
+			List<string> topicsList = new List<string> ();
 			topicsList.Add (MAIN_TOPIC);
 			topicsList.Add (MONO_FREE_TOPIC);
 			topicsList.Add (MULTIPLE_FREE_TOPIC);
