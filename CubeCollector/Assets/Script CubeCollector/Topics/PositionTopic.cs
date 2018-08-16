@@ -83,7 +83,6 @@ namespace ummisco.gama.unity.topics
 			Vector3 movement = new Vector3 (x, y, z);
 			targetGameObject.transform.position = movement;
 
-
 			Debug.Log ("position applied ");
 		}
 

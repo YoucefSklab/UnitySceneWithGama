@@ -16,6 +16,9 @@ using System;
 using System.Text;
 using System.IO;
 using System.Reflection;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -36,7 +39,9 @@ public class PlayerController : MonoBehaviour
 	public Texture texture;
 	public Color color;
 
+	UnityEvent m_MyEvent;
 
+	System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
 
 	protected void Start ()
 	{
@@ -48,7 +53,66 @@ public class PlayerController : MonoBehaviour
 		//MqttSetting.allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 		//gamaManager = gama.getGameObjectByName ("GamaManager");
 
+
+
+		//-------------------------------
+
+		st = new System.Diagnostics.StackTrace(true);
+		if (m_MyEvent == null)
+			m_MyEvent = new UnityEvent();
+
+		m_MyEvent.AddListener(notify);
+		//m_MyEvent.AddListener(notify2);
+
+
+		EventTrigger trigger = GetComponent<EventTrigger>();
+		EventTrigger.Entry entry = new EventTrigger.Entry();
+		entry.eventID = EventTriggerType.PointerDown;
+		entry.callback.AddListener((data) => { notify(); });
+		//entry.callback.AddListener((data) => { OnPointerDownDelegate((PointerEventData)data); });
+		Debug.Log("---->>> "+entry.eventID.ToString ());
+
+		Debug.Log("---->>> Element size: "+trigger.triggers.Count);
+		trigger.triggers.Add(entry);
+
+		Debug.Log("---->>> Element size: "+trigger.triggers.Count);
+
+		//--------------------------------
+
 	}
+
+	public void OnPointerDownDelegate(PointerEventData data)
+	{
+		Debug.Log("OnPointerDownDelegate called.");
+	}
+	//----------------------------------------------------------------
+	/// <summary>
+	/// Ceci est un test de notification. On verra ce que ça va donner!
+	/// </summary>
+	void Update()
+	{
+		//notify ();
+		if (Input.anyKeyDown && m_MyEvent != null)
+		{
+			m_MyEvent.Invoke();
+
+		}
+
+	}
+
+	void notify2()
+	{
+		Debug.Log("-> ---> Send notification really");
+	}
+
+	void notify()
+	{
+		Debug.Log("-> Send notification");
+		notify2 ();
+	}
+	//-----------------------------------------------------------------
+
+
 
 	void FixedUpdate ()
 	{
@@ -57,6 +121,25 @@ public class PlayerController : MonoBehaviour
 
 		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
 		rb.AddForce (movement * speed);
+
+		//--------------------------------
+
+		// Create a StackTrace that captures
+		// filename, line number, and column
+		// information for the current thread.
+
+		for(int i =0; i< st.FrameCount; i++ )
+		{
+			// Note that high up the call stack, there is only
+			// one stack frame.
+			System.Diagnostics.StackFrame sf = st.GetFrame(i);
+			Debug.Log("-> "+st.GetFrames ().Length);
+			Debug.Log("High up the call stack, Method: "+ sf.GetMethod());
+			Debug.Log("High up the call stack, Line Number: " + sf.GetFileLineNumber());
+
+		}
+
+		//--------------------------------
 	}
 
 	public void UpdatePosition (float moveHorizontal, float moveVertical)
@@ -83,39 +166,17 @@ public class PlayerController : MonoBehaviour
 			gamaManager.SendMessage ("sendGotBoxMsg");
 		}
 
-
-		//spawn object
-
-		//testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		testObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-		testObject.name = "gooooooooood";
-
-
-		//testObject = new GameObject("CreatedGameObject");
+		testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		testObject.name = "TestGameObject";
 		//Add Components
 		testObject.AddComponent<Rigidbody>();
-		//testObject.AddComponent<MeshFilter>(); // already added to cube by creation
 		testObject.AddComponent<BoxCollider>();
-		//testObject.AddComponent<MeshRenderer>(); // already added to cube by creation
-
 		color = Tools.stringToColor ("black");
-
-
 		Renderer rend = testObject.GetComponent<Renderer>();
-		//rend.material = new Material(Shader.Find("Player"));
-
-
-		//Renderer rend = GetComponent<Renderer>();
-		//rend.material = new Material(shader);
-		//rend.material.mainTexture = texture;
 		rend.material.color = color;
-
-		Debug.Log ("The material name is: ");
-
-
-
-
+	
 	}
+
 
 	public void SetCountText ()
 	{

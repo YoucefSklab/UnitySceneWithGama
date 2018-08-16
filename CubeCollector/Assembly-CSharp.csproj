@@ -64,6 +64,7 @@
      <Compile Include="Assets\Script CubeCollector\Topics\MonoFreeTopic.cs" />
      <Compile Include="Assets\Script CubeCollector\Topics\MoveTopic.cs" />
      <Compile Include="Assets\Script CubeCollector\Topics\MultipleFreeTopic.cs" />
+     <Compile Include="Assets\Script CubeCollector\Topics\NotificationTopic.cs" />
      <Compile Include="Assets\Script CubeCollector\Topics\PositionTopic.cs" />
      <Compile Include="Assets\Script CubeCollector\Topics\PropertyTopic.cs" />
      <Compile Include="Assets\Script CubeCollector\Topics\SetTopic.cs" />
@@ -78,10 +79,13 @@
      <Compile Include="Assets\Script Gama\Messaging\MoveTopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\MsgSerialization.cs" />
      <Compile Include="Assets\Script Gama\Messaging\MultipleFreeTopicMessage.cs" />
+     <Compile Include="Assets\Script Gama\Messaging\NotificationTopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\PositionTopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\PropertyTopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\SetTopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\TopicMessage.cs" />
+     <Compile Include="Assets\Script Gama\Notification\NotificationEntry.cs" />
+     <Compile Include="Assets\Script Gama\Notification\NotificationRegistry.cs" />
      <Compile Include="Assets\Script Gama\Utils\GamaMethods.cs" />
      <Compile Include="Assets\Script Gama\Utils\MqttSetting.cs" />
      <Compile Include="Assets\Script Gama\Utils\Tools.cs" />

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ummisco.gama.unity.messages;
 using ummisco.gama.unity.utils;
-
+using ummisco.gama.unity.notification;
 
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
@@ -90,7 +90,9 @@ public class GamaManager : MonoBehaviour
 		client.Subscribe (new string[] { MqttSetting.MOVE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.PROPERTY_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.CREATE_TOPIC}, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+		client.Subscribe (new string[] { MqttSetting.NOTIFICATION_TOPIC}, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
+		NotificationRegistry.getCallingMethod ();
 	}
 
 
@@ -98,6 +100,8 @@ public class GamaManager : MonoBehaviour
 	{
 
 		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
+
+		//Debug.Log ("-> The number of all created gameObjects is : "+ objectsList.Count);
 
 		if (msgList.Count > 0) {
 
@@ -243,6 +247,18 @@ public class GamaManager : MonoBehaviour
 				topicGameObject = getGameObjectByName (MqttSetting.CREATE_TOPIC_MANAGER);
 
 				topicGameObject.GetComponent (MqttSetting.CREATE_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
+				//------------------------------------------------------------------------------
+				break;
+			case MqttSetting.NOTIFICATION_TOPIC:
+				//------------------------------------------------------------------------------
+				Debug.Log ("-> Topic to deal with is : " + MqttSetting.NOTIFICATION_TOPIC);
+
+				NotificationTopicMessage notificationTopicMessage = (NotificationTopicMessage) msgDes.deserialization (receivedMsg, new NotificationTopicMessage());
+				obj = new object[]{notificationTopicMessage };
+
+				topicGameObject = getGameObjectByName (MqttSetting.NOTIFICATION_TOPIC_MANAGER);
+
+				topicGameObject.GetComponent (MqttSetting.NOTIFICATION_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				//------------------------------------------------------------------------------
 				break;
 			default:

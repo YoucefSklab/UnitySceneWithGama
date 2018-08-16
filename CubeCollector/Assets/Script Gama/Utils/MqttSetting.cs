@@ -48,7 +48,7 @@ namespace ummisco.gama.unity.utils
 
 		// Topics to send
 		public const string REPLAY_TOPIC = "replay";
-		public const string NOTIFICATION_TOPIC = "notification";
+		public const string NOTIFICATION_TOPIC = "subscribeToNotification";
 
 
 
@@ -71,6 +71,7 @@ namespace ummisco.gama.unity.utils
 		public const string MOVE_TOPIC_SCRIPT = "MoveTopic";
 		public const string PROPERTY_TOPIC_SCRIPT = "PropertyTopic";
 		public const string CREATE_TOPIC_SCRIPT = "CreateTopic";
+		public const string NOTIFICATION_TOPIC_SCRIPT = "NotificationTopic";
 
 
 		public static GameObject[] allObjects = null;
@@ -89,7 +90,7 @@ namespace ummisco.gama.unity.utils
 			topicsList.Add (MOVE_TOPIC);
 			topicsList.Add (PROPERTY_TOPIC);
 			topicsList.Add (CREATE_TOPIC);
-
+			topicsList.Add (NOTIFICATION_TOPIC);
 
 			return topicsList;
 		}
