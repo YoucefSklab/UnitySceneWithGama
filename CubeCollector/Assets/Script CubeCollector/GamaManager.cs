@@ -44,6 +44,8 @@ public class GamaManager : MonoBehaviour
 	public GameObject topicGameObject = null;
 	public object[] obj = null;
 
+	public Boolean notificationSent = false;
+
 	public List<GameObject> objectsList = new List<GameObject> ();
 
 
@@ -69,6 +71,8 @@ public class GamaManager : MonoBehaviour
 		allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 
 		gamaManager = getGameObjectByName (MqttSetting.GAMA_MANAGER_OBJECT_NAME);
+
+		notificationSent = false;
 
 	}
 
@@ -106,7 +110,7 @@ public class GamaManager : MonoBehaviour
 
 			MqttMsgPublishEventArgs e = msgList [0];
 			if (!MqttSetting.getTopicsInList ().Contains (e.Topic)) {
-				Debug.Log ("-> The Topic '"+e.Topic+"' doesn't exist in the defined list. Please check!");
+				Debug.Log ("-> The Topic '" + e.Topic + "' doesn't exist in the defined list. Please check!");
 				return;
 			}
 		
@@ -316,7 +320,7 @@ public class GamaManager : MonoBehaviour
 		GamaReponseMessage msg = new GamaReponseMessage (sender, receiver, replayMsg, DateTime.Now.ToString ());
 		string message = msgDes.msgSerialization (msg);
 
-		publishMessage(message, MqttSetting.REPLAY_TOPIC);
+		publishMessage (message, MqttSetting.REPLAY_TOPIC);
 	}
 
 	void OnDestroy ()
@@ -411,26 +415,26 @@ public class GamaManager : MonoBehaviour
 	{
 		if (NotificationRegistry.notificationsList.Count >= 1) {
 			foreach (NotificationEntry el in NotificationRegistry.notificationsList) {
+				if (!notificationSent) // TODO Implement a mecanism of notification frequency! 
 				if (el.notify) {
 					string msg = getReplayNotificationMessage (el);
 					publishMessage (msg, MqttSetting.NOTIFY_MSG);
 					el.notify = false;
+					notificationSent = true;
 				}
 			}
 		}	
 	}
 
-	public string getReplayNotificationMessage(NotificationEntry el)
+	public string getReplayNotificationMessage (NotificationEntry el)
 	{
 		NotificationMessage msg = new NotificationMessage ("Unity", el.agentId, "Contents Not set", DateTime.Now.ToString (), el.notificationId);
-		string message = msgDes.serialization (msg);
-		Debug.Log ("Serialization finished : "+message);
+		string message = msgDes.serializationPlainXml (msg);
 		return message;
 	}
 
-	public void publishMessage(string message, string topic){
-		Debug.Log ("ready to publish the notification");
+	public void publishMessage (string message, string topic)
+	{
 		client.Publish (topic, System.Text.Encoding.UTF8.GetBytes (message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
-		Debug.Log ("notification published");
 	}
 }
