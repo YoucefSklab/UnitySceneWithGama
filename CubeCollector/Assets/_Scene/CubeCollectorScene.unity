@@ -396,6 +396,7 @@ MonoBehaviour:
   winText: {fileID: 2074133869}
   receivedMqttMessage: {fileID: 1717643857}
   gamaManager: {fileID: 0}
+  count: 0
   testObject: {fileID: 0}
   shader: {fileID: 0}
   texture: {fileID: 0}
@@ -475,7 +476,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 143374726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0.42, z: 0}
+  m_LocalPosition: {x: -0.04, y: 0.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2124,6 +2125,7 @@ MonoBehaviour:
   gamaManager: {fileID: 0}
   targetGameObject: {fileID: 0}
   topicGameObject: {fileID: 0}
+  notificationSent: 0
   objectsList: []
 --- !u!4 &1953198850
 Transform:

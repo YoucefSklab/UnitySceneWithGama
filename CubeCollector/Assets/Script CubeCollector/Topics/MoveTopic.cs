@@ -69,6 +69,7 @@ namespace ummisco.gama.unity.topics
 					}
 					dataDictionary.Add (atr, vl);
 				}
+
 				sendTopic (targetGameObject, dataDictionary);
 			} 
 		}

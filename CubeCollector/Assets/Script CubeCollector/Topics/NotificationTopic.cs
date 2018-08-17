@@ -43,28 +43,28 @@ namespace ummisco.gama.unity.topics
 					switch (el.fieldType) {
 
 					case "field":
-						Debug.Log ("Field notification");
+						//Debug.Log ("Field notification");
 						if (isNotification (el)) {
-							Debug.Log ("------->>  Yes you have to send notification");
+							//Debug.Log ("------->>  Yes you have to send notification");
 							el.notify = true;
 						} else {
-							Debug.Log ("------->>  Sorry, No need to send notification");
+							//Debug.Log ("------->>  Sorry, No need to send notification");
 						}
 						break;
 					case "property":
 
-						Debug.Log ("Property notification");
+						//Debug.Log ("Property notification");
 						break;
 					default:
 					
 						break;
 					}
 
-					Debug.Log ("Game Object: " + el.objectName);
-					Debug.Log ("Field Name: " + el.fieldName);
-					Debug.Log ("Field Type: " + el.fieldType);
-					Debug.Log ("FIeld Value: " + el.fieldValue);
-					Debug.Log ("Field Operator: " + el.fieldOperator);
+				//	Debug.Log ("Game Object: " + el.objectName);
+				//	Debug.Log ("Field Name: " + el.fieldName);
+				//	Debug.Log ("Field Type: " + el.fieldType);
+				//	Debug.Log ("FIeld Value: " + el.fieldValue);
+				//	Debug.Log ("Field Operator: " + el.fieldOperator);
 				}
 
 

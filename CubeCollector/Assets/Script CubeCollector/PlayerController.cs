@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
 	public int count;
 
 
-	// $$$$$$$$$$$$$$
+
 	public GameObject testObject;
 	public Shader shader;
 	public Texture texture;
@@ -41,7 +41,6 @@ public class PlayerController : MonoBehaviour
 
 	UnityEvent m_MyEvent;
 
-	System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
 
 	protected void Start ()
 	{
@@ -52,65 +51,16 @@ public class PlayerController : MonoBehaviour
 		receivedMqttMessage.text = "";
 		//MqttSetting.allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 		//gamaManager = gama.getGameObjectByName ("GamaManager");
-
-
-
-		//-------------------------------
-
-		st = new System.Diagnostics.StackTrace(true);
-		if (m_MyEvent == null)
-			m_MyEvent = new UnityEvent();
-
-		m_MyEvent.AddListener(notify);
-		//m_MyEvent.AddListener(notify2);
-
-
-		EventTrigger trigger = GetComponent<EventTrigger>();
-		EventTrigger.Entry entry = new EventTrigger.Entry();
-		entry.eventID = EventTriggerType.PointerDown;
-		entry.callback.AddListener((data) => { notify(); });
-		//entry.callback.AddListener((data) => { OnPointerDownDelegate((PointerEventData)data); });
-		Debug.Log("---->>> "+entry.eventID.ToString ());
-
-		Debug.Log("---->>> Element size: "+trigger.triggers.Count);
-		trigger.triggers.Add(entry);
-
-		Debug.Log("---->>> Element size: "+trigger.triggers.Count);
-
-		//--------------------------------
-
+		Console.WriteLine ("test");
 	}
 
-	public void OnPointerDownDelegate(PointerEventData data)
-	{
-		Debug.Log("OnPointerDownDelegate called.");
-	}
-	//----------------------------------------------------------------
-	/// <summary>
-	/// Ceci est un test de notification. On verra ce que ça va donner!
-	/// </summary>
+
+
 	void Update()
 	{
-		//notify ();
-		if (Input.anyKeyDown && m_MyEvent != null)
-		{
-			m_MyEvent.Invoke();
-
-		}
+		
 
 	}
-
-	void notify2()
-	{
-		Debug.Log("-> ---> Send notification really");
-	}
-
-	void notify()
-	{
-		Debug.Log("-> Send notification");
-		notify2 ();
-	}
-	//-----------------------------------------------------------------
 
 
 
@@ -121,26 +71,6 @@ public class PlayerController : MonoBehaviour
 
 		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
 		rb.AddForce (movement * speed);
-
-
-		//--------------------------------
-
-		// Create a StackTrace that captures
-		// filename, line number, and column
-		// information for the current thread.
-
-		for(int i =0; i< st.FrameCount; i++ )
-		{
-			// Note that high up the call stack, there is only
-			// one stack frame.
-			System.Diagnostics.StackFrame sf = st.GetFrame(i);
-			Debug.Log("-> "+st.GetFrames ().Length);
-			Debug.Log("High up the call stack, Method: "+ sf.GetMethod());
-			Debug.Log("High up the call stack, Line Number: " + sf.GetFileLineNumber());
-
-		}
-
-		//--------------------------------
 	}
 
 	public void UpdatePosition (float moveHorizontal, float moveVertical)

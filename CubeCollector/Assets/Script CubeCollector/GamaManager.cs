@@ -115,7 +115,7 @@ public class GamaManager : MonoBehaviour
 			}
 		
 			receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
-			Debug.Log ("-> Received Message is : " + receivedMsg);
+			//Debug.Log ("-> Received Message is : " + receivedMsg);
 			allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 
 			switch (e.Topic) {

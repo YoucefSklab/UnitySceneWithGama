@@ -89,11 +89,41 @@ namespace ummisco.gama.unity.messages
 		public string msgSerialization (GamaReponseMessage msgResponseData)
 		{
 			XmlSerializer serializer = new XmlSerializer (msgResponseData.GetType ());
-			using (StringWriter writer = new StringWriter ()) {
-				serializer.Serialize (writer, msgResponseData);
+			var settings = new XmlWriterSettings();
+			settings.Indent = true;
+			settings.OmitXmlDeclaration = true;
+
+			using (var stream = new StringWriter())
+			using (var writer = XmlWriter.Create(stream, settings))
+			//using (StringWriter writer = new StringWriter ()) 
+			{
+
+				// removes namespace
+				var xmlns = new XmlSerializerNamespaces();
+				xmlns.Add(string.Empty, string.Empty);
+
+
+
+				serializer.Serialize (writer, msgResponseData, xmlns);
 				UnityEngine.Debug.Log ("The result is " + writer.ToString ());
-				return writer.ToString ();
+
+				return stream.ToString();
+				//return writer.ToString ();
 			}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		}
 
 
