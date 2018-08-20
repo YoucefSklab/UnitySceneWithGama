@@ -80,8 +80,10 @@ public class GamaManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		// To put only in start bloc
+		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
 
-		//client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
+
 		client.Connect (clientId); 
 		client.Subscribe (new string[] { MqttSetting.MAIN_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.MONO_FREE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE }); 
@@ -101,8 +103,6 @@ public class GamaManager : MonoBehaviour
 
 	void FixedUpdate ()
 	{
-
-		client.MqttMsgPublishReceived += client_MqttMsgPublishReceived; 
 
 		//Debug.Log ("-> The number of all created gameObjects is : "+ objectsList.Count);
 
@@ -156,6 +156,9 @@ public class GamaManager : MonoBehaviour
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.POSITION_TOPIC);
 
 				PositionTopicMessage positionTopicMessage = (PositionTopicMessage)msgDes.deserialization (receivedMsg, new PositionTopicMessage ());
+
+				Debug.Log ("-> Topic Timestamp is : " + positionTopicMessage.emissionTimeStamp);
+
 				targetGameObject = getGameObjectByName (positionTopicMessage.objectName);
 				obj = new object[]{ positionTopicMessage, targetGameObject };
 
@@ -280,7 +283,7 @@ public class GamaManager : MonoBehaviour
 	{ 
 		msgList.Add (e);
 		receivedMsg = System.Text.Encoding.UTF8.GetString (e.Message);
-		//Debug.Log (">  New Message received on topic : " + e.Topic);
+		Debug.Log (">  New Message received on topic : " + e.Topic);
 		//Debug.Log (">  msgList count : " + msgList.Count);
 	}
 

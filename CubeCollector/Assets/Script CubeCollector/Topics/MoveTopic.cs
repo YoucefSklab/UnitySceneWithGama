@@ -32,7 +32,7 @@ namespace ummisco.gama.unity.topics
 		public override void Start ()
 		{
 			inverseMoveTime = 1f / moveTime;
-			speed = 10;
+			speed = 100;
 		}
 
 		// Update is called once per frame
@@ -86,7 +86,7 @@ namespace ummisco.gama.unity.topics
 			y = int.Parse ((string)data [keyList.ElementAt (1)], CultureInfo.InvariantCulture.NumberFormat);
 			z = int.Parse ((string)data [keyList.ElementAt (2)], CultureInfo.InvariantCulture.NumberFormat);
 
-			Debug.Log ("Move to  (X=" + x + ",Y=" + y + ",Z=" + z + ") position!");
+		//	Debug.Log ("Move to  (X=" + x + ",Y=" + y + ",Z=" + z + ") position!");
 
 			moveToPosition (x, y, z);
 		}
