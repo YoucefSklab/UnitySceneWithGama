@@ -172,6 +172,8 @@ public class GamaManager : MonoBehaviour
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.MOVE_TOPIC);
 
+				Debug.Log ("-> The messqge is: "+ receivedMsg);
+
 				MoveTopicMessage moveTopicMessage = (MoveTopicMessage)msgDes.deserialization (receivedMsg, new MoveTopicMessage ());
 				targetGameObject = getGameObjectByName (moveTopicMessage.objectName);
 				obj = new object[]{ moveTopicMessage, targetGameObject };

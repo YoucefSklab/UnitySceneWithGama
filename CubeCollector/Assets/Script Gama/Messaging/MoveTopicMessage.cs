@@ -11,15 +11,17 @@ namespace ummisco.gama.unity.messages
 
 
 		public object position { set; get; }
+		public int speed { set; get; }
 
 		public MoveTopicMessage()
 		{
 
 		}
 
-		public MoveTopicMessage (string unread, string sender, string receivers, string contents, string emissionTimeStamp, string objectName, object position) : base (unread, sender, receivers, contents, objectName, emissionTimeStamp)
+		public MoveTopicMessage (string unread, string sender, string receivers, string contents, string emissionTimeStamp, string objectName, object position, int speed) : base (unread, sender, receivers, contents, objectName, emissionTimeStamp)
 		{
 			this.position = position;
+			this.speed = speed;
 		}
 
 

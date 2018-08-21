@@ -18,7 +18,6 @@ namespace ummisco.gama.unity.topics
 
 
 		public Rigidbody rb;
-		public int speed;
 		public float inverseMoveTime;
 		public float moveTime = 0.1f;
 		public MoveTopicMessage topicMessage;
@@ -32,7 +31,7 @@ namespace ummisco.gama.unity.topics
 		public override void Start ()
 		{
 			inverseMoveTime = 1f / moveTime;
-			speed = 100;
+
 		}
 
 		// Update is called once per frame
@@ -70,13 +69,13 @@ namespace ummisco.gama.unity.topics
 					dataDictionary.Add (atr, vl);
 				}
 
-				sendTopic (targetGameObject, dataDictionary);
+				sendTopic (targetGameObject, dataDictionary, topicMessage.speed);
 			} 
 		}
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public void sendTopic (GameObject targetGameObject, Dictionary<object, object> data)
+		public void sendTopic (GameObject targetGameObject, Dictionary<object, object> data, int speed)
 		{
 			int size = data.Count;
 			List<object> keyList = new List<object> (data.Keys);
@@ -88,11 +87,13 @@ namespace ummisco.gama.unity.topics
 
 		//	Debug.Log ("Move to  (X=" + x + ",Y=" + y + ",Z=" + z + ") position!");
 
-			moveToPosition (x, y, z);
+			Debug.Log ("Move to  (X=" + x + ",Y=" + y + ",Z=" + z + ") with speed "+speed);
+
+			moveToPosition (x, y, z, speed);
 		}
 
 
-		public void moveToPosition (int xDir, int yDir, int zDir)
+		public void moveToPosition (int xDir, int yDir, int zDir, int speed)
 		{
 
 			//Store start position to move from, based on objects current transform position.
