@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Linq;
 using System;
 using System.Xml;
+using System.Globalization;
 
 
 namespace ummisco.gama.unity.topics
@@ -45,7 +46,7 @@ namespace ummisco.gama.unity.topics
 
 			string type = topicMessage.type;
 			string color = topicMessage.color;
-			string position = topicMessage.position;
+			object position = topicMessage.position;
 
 			sendTopic (topicMessage.objectName, type, color, position);
 
@@ -54,14 +55,12 @@ namespace ummisco.gama.unity.topics
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public void sendTopic (string objectName, string type, string color, string position)
+		public void sendTopic (string objectName, string type, string color, object position)
 		{
 
 			GameObject objectManager = getGameObjectByName (MqttSetting.GAMA_MANAGER_OBJECT_NAME, UnityEngine.Object.FindObjectsOfType<GameObject> ());
 
 
-
-		
 			switch (type) {
 			case "Capsule":
 				newObject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
@@ -88,11 +87,54 @@ namespace ummisco.gama.unity.topics
 			
 			}
 
+
+			// Set the name of the game object
+			//--------------------------------
 			newObject.name = objectName;
-			//Add Components
+
+		
+			// Set the position to the new GameObject
+			//---------------------------------------
+			XmlNode[] node = (XmlNode[])topicMessage.position;
+			Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
+
+			for (int i = 1; i < node.Length; i++) {
+				XmlElement elt = (XmlElement)node.GetValue (i);
+				XmlNodeList list = elt.ChildNodes;
+
+				object atr = "";
+				object vl = "";
+
+				foreach (XmlElement item in list) {
+					if (item.Name.Equals ("attribute")) {
+						atr = item.InnerText;
+					}
+					if (item.Name.Equals ("value")) {
+						vl = item.InnerText;
+					}
+				}
+				dataDictionary.Add (atr, vl);
+			}
+
+			int size = dataDictionary.Count;
+			List<object> keyList = new List<object> (dataDictionary.Keys);
+			float x, y, z;
+
+			x = float.Parse ((string)dataDictionary [keyList.ElementAt (0)], CultureInfo.InvariantCulture.NumberFormat);
+			y = float.Parse ((string)dataDictionary [keyList.ElementAt (1)], CultureInfo.InvariantCulture.NumberFormat);
+			z = float.Parse ((string)dataDictionary [keyList.ElementAt (2)], CultureInfo.InvariantCulture.NumberFormat);
+
+			Debug.Log ("----->>>>    X,Y,Z  " + x + "," + y + "," + z);
+
+			Vector3 movement = new Vector3 (x, y, z);
+			newObject.transform.position = movement;
+
+
+			//Add Components to the Game Object
+			//---------------------------------
 			newObject.AddComponent<Rigidbody>();
-			//testObject.AddComponent<MeshFilter>(); // already added to cube by creation
-			//testObject.AddComponent<MeshRenderer>(); // already added to cube by creation
+			//testObject.AddComponent<MeshFilter>(); // already added by creation
+			//testObject.AddComponent<MeshRenderer>(); // already added when created
 			newObject.AddComponent<BoxCollider>();
 
 			objectColor = Tools.stringToColor (color);
@@ -102,6 +144,8 @@ namespace ummisco.gama.unity.topics
 			//rend.material = new Material(shader);
 			//rend.material.mainTexture = texture;
 			rend.material.color = objectColor;
+
+
 
 			Debug.Log ("Object poision not set. This has to be completed!");
 

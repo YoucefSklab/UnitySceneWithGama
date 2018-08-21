@@ -11,14 +11,14 @@ namespace ummisco.gama.unity.messages
 
 		public string type { set; get; }
 		public string color { set; get; }
-		public string position { set; get; }
+		public object position { set; get; }
 
 		public CreateTopicMessage()
 		{
 
 		}
 
-		public CreateTopicMessage (string unread, string sender, string receivers, string contents, string emissionTimeStamp, string objectName, string type, string color, string position) : base (unread, sender, receivers, contents, objectName, emissionTimeStamp)
+		public CreateTopicMessage (string unread, string sender, string receivers, string contents, string emissionTimeStamp, string objectName, string type, string color, object position) : base (unread, sender, receivers, contents, objectName, emissionTimeStamp)
 		{
 			this.type = type;
 			this.color = color;

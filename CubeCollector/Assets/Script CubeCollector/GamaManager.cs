@@ -95,6 +95,7 @@ public class GamaManager : MonoBehaviour
 		client.Subscribe (new string[] { MqttSetting.MOVE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.PROPERTY_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.CREATE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+		client.Subscribe (new string[] { MqttSetting.DESTROY_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 		client.Subscribe (new string[] { MqttSetting.NOTIFICATION_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
 		NotificationRegistry.getCallingMethod ();
@@ -252,7 +253,7 @@ public class GamaManager : MonoBehaviour
 				break;
 			case MqttSetting.DESTROY_TOPIC:
 				//------------------------------------------------------------------------------
-				Debug.Log ("-> Topic to deal with is : " + MqttSetting.CREATE_TOPIC);
+				Debug.Log ("-> Topic to deal with is : " + MqttSetting.DESTROY_TOPIC);
 
 				DestroyTopicMessage destroyTopicMessage = (DestroyTopicMessage)msgDes.deserialization (receivedMsg, new DestroyTopicMessage ());
 				obj = new object[]{ destroyTopicMessage };

@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
 
 			gamaManager.SendMessage ("sendGotBoxMsg");
 		}
-
+		/*
 		testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		testObject.name = "TestGameObject";
 		//Add Components
@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
 		color = Tools.stringToColor ("black");
 		Renderer rend = testObject.GetComponent<Renderer>();
 		rend.material.color = color;
-	
+	  */
 	}
 
 
