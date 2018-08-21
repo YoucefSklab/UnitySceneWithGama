@@ -22,7 +22,9 @@ namespace ummisco.gama.unity.utils
 		public const string NOTIFICATION_TOPIC_MANAGER = "NotificationTopicManager";
 		public const string MOVE_TOPIC_MANAGER = "MoveTopicManager";
 		public const string PROPERTY_TOPIC_MANAGER = "PropertyTopicManager";
+		// Create Destroy game Objects
 		public const string CREATE_TOPIC_MANAGER = "CreateTopicManager";
+		public const string DESTROY_TOPIC_MANAGER = "DestroyTopicManager";
 
 
 
@@ -40,8 +42,9 @@ namespace ummisco.gama.unity.utils
 		public const string MOVE_TOPIC = "move";
 
 
-		// Topics to anipulation scene
+		// Topics to Create/ Detroy GameObjects
 		public const string CREATE_TOPIC = "create";
+		public const string DESTROY_TOPIC = "destroy";
 
 		public const string DEFAULT_TOPIC = "default";
 
@@ -70,9 +73,9 @@ namespace ummisco.gama.unity.utils
 		public const string GET_TOPIC_SCRIPT = "GetTopic";
 		public const string MOVE_TOPIC_SCRIPT = "MoveTopic";
 		public const string PROPERTY_TOPIC_SCRIPT = "PropertyTopic";
-		public const string CREATE_TOPIC_SCRIPT = "CreateTopic";
 		public const string NOTIFICATION_TOPIC_SCRIPT = "NotificationTopic";
-
+		public const string CREATE_TOPIC_SCRIPT = "CreateTopic";
+		public const string DESTROY_TOPIC_SCRIPT = "DestroyTopic";
 
 		public static GameObject[] allObjects = null;
 
@@ -91,8 +94,9 @@ namespace ummisco.gama.unity.utils
 			topicsList.Add (GET_TOPIC);
 			topicsList.Add (MOVE_TOPIC);
 			topicsList.Add (PROPERTY_TOPIC);
-			topicsList.Add (CREATE_TOPIC);
 			topicsList.Add (NOTIFICATION_TOPIC);
+			topicsList.Add (CREATE_TOPIC);
+			topicsList.Add (DESTROY_TOPIC);
 
 			return topicsList;
 		}

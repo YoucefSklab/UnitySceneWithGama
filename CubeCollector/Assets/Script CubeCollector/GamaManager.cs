@@ -250,6 +250,18 @@ public class GamaManager : MonoBehaviour
 				topicGameObject.GetComponent (MqttSetting.CREATE_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				//------------------------------------------------------------------------------
 				break;
+			case MqttSetting.DESTROY_TOPIC:
+				//------------------------------------------------------------------------------
+				Debug.Log ("-> Topic to deal with is : " + MqttSetting.CREATE_TOPIC);
+
+				DestroyTopicMessage destroyTopicMessage = (DestroyTopicMessage)msgDes.deserialization (receivedMsg, new DestroyTopicMessage ());
+				obj = new object[]{ destroyTopicMessage };
+
+				topicGameObject = getGameObjectByName (MqttSetting.DESTROY_TOPIC_MANAGER);
+
+				topicGameObject.GetComponent (MqttSetting.DESTROY_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
+				//------------------------------------------------------------------------------
+				break;
 			case MqttSetting.NOTIFICATION_TOPIC:
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.NOTIFICATION_TOPIC);
