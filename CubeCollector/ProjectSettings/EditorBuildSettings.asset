@@ -4,4 +4,7 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 0
+    path: Assets/_Scene/CubeCollectorScene.unity
+    guid: ec5471d1670f147eab0ac0b1ea51de24

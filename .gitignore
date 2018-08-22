@@ -4,3 +4,7 @@
 *.mdb
 *.backup
 *.bak
+**.dll
+**.mdb
+**.info
+**.log

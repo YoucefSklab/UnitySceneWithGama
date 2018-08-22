@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEditor;
 using System.IO;
 using ummisco.gama.unity.messages;
 

@@ -20,7 +20,7 @@ using System.Reflection;
 using System.ComponentModel;
 using ummisco.gama.unity.topics;
 using System.Globalization;
-using UnityEditor.Experimental.AssetImporters;
+
 
 
 public class GamaManager : MonoBehaviour
