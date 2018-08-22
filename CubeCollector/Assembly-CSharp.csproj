@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\CubeGenerator.cs" />
      <Compile Include="Assets\Script CubeCollector\CameraController.cs" />
      <Compile Include="Assets\Script CubeCollector\EventTrigger.cs" />
      <Compile Include="Assets\Script CubeCollector\GamaManager.cs" />

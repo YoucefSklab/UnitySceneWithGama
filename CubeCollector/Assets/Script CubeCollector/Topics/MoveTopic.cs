@@ -19,7 +19,7 @@ namespace ummisco.gama.unity.topics
 
 		public Rigidbody rb;
 		public float inverseMoveTime;
-		public float moveTime = 0.1f;
+		public float moveTime = 10000.1f;
 		public MoveTopicMessage topicMessage;
 
 		public MoveTopic (TopicMessage currentMsg, GameObject gameObj) : base (gameObj)
@@ -69,31 +69,31 @@ namespace ummisco.gama.unity.topics
 					dataDictionary.Add (atr, vl);
 				}
 
-				sendTopic (targetGameObject, dataDictionary, topicMessage.speed);
+				sendTopic (dataDictionary, topicMessage.speed);
 			} 
 		}
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public void sendTopic (GameObject targetGameObject, Dictionary<object, object> data, int speed)
+		public void sendTopic (Dictionary<object, object> data, int speed)
 		{
 			int size = data.Count;
 			List<object> keyList = new List<object> (data.Keys);
-			int x, y, z; 
+			float x, y, z; 
 
-			x = int.Parse ((string)data [keyList.ElementAt (0)], CultureInfo.InvariantCulture.NumberFormat);
-			y = int.Parse ((string)data [keyList.ElementAt (1)], CultureInfo.InvariantCulture.NumberFormat);
-			z = int.Parse ((string)data [keyList.ElementAt (2)], CultureInfo.InvariantCulture.NumberFormat);
+			x = float.Parse ((string)data [keyList.ElementAt (0)], CultureInfo.InvariantCulture.NumberFormat);
+			y = float.Parse ((string)data [keyList.ElementAt (1)], CultureInfo.InvariantCulture.NumberFormat);
+			z = float.Parse ((string)data [keyList.ElementAt (2)], CultureInfo.InvariantCulture.NumberFormat);
+		
+			//	Debug.Log ("Move to  (X=" + x + ",Y=" + y + ",Z=" + z + ") position!");
 
-		//	Debug.Log ("Move to  (X=" + x + ",Y=" + y + ",Z=" + z + ") position!");
+			Debug.Log ("Move to  (X=" + x + ",Y=" + y + ",Z=" + z + ") with speed "+speed );
 
-			Debug.Log ("Move to  (X=" + x + ",Y=" + y + ",Z=" + z + ") with speed "+speed);
-
-			moveToPosition (x, y, z, speed);
+			moveToPosition ((float)x, (float)y, (float)z, speed);
 		}
 
 
-		public void moveToPosition (int xDir, int yDir, int zDir, int speed)
+		public void moveToPosition (float xDir, float yDir, float zDir, int speed)
 		{
 
 			//Store start position to move from, based on objects current transform position.
@@ -106,11 +106,11 @@ namespace ummisco.gama.unity.topics
 
 			rb.AddForce (movement * speed);
 
-			//StartCoroutine (SmoothMovement (end));
+			//StartCoroutine (SmoothMovement (end, speed));
 		}
 
 		//Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
-		protected IEnumerator SmoothMovement (Vector3 end)
+		protected IEnumerator SmoothMovement (Vector3 end, int speed)
 		{
 			//Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter. 
 			//Square magnitude is used instead of magnitude because it's computationally cheaper.
@@ -120,12 +120,15 @@ namespace ummisco.gama.unity.topics
 			Debug.Log ("inverseMoveTime is " + inverseMoveTime);
 
 		
-
+			inverseMoveTime = 100f;
 
 			//While that distance is greater than a very small amount (Epsilon, almost zero):
 			while (sqrRemainingDistance > float.Epsilon) {
 				//Find a new position proportionally closer to the end, based on the moveTime
-				Vector3 newPostion = Vector3.MoveTowards (rb.position, end, inverseMoveTime * Time.deltaTime);
+				//Vector3 newPostion = Vector3.MoveTowards (rb.position, end, inverseMoveTime * Time.deltaTime);
+				Vector3 newPostion = Vector3.MoveTowards (rb.position, end, speed * Time.deltaTime);
+
+				Debug.Log ("New position is " + newPostion.ToString ());
 
 				//Call MovePosition on attached Rigidbody2D and move it to the calculated position.
 				rb.MovePosition (newPostion);

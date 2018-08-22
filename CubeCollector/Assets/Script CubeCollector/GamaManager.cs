@@ -20,6 +20,7 @@ using System.Reflection;
 using System.ComponentModel;
 using ummisco.gama.unity.topics;
 using System.Globalization;
+using UnityEditor.Experimental.AssetImporters;
 
 
 public class GamaManager : MonoBehaviour
@@ -48,6 +49,7 @@ public class GamaManager : MonoBehaviour
 
 	public List<GameObject> objectsList = new List<GameObject> ();
 
+	public GameObject setTopicManager, getTotpicManager, moveTopicManager, notificationTopicManager;
 
 
 	List<MqttMsgPublishEventArgs> msgList = new List<MqttMsgPublishEventArgs> ();
@@ -73,6 +75,23 @@ public class GamaManager : MonoBehaviour
 		gamaManager = getGameObjectByName (MqttSetting.GAMA_MANAGER_OBJECT_NAME);
 
 		notificationSent = false;
+
+		// Create the Topic's manager GameObjects
+		new GameObject (MqttSetting.COLOR_TOPIC_MANAGER).AddComponent<ColorTopic> ();
+		new GameObject (MqttSetting.POSITION_TOPIC_MANAGER).AddComponent<PositionTopic> ();
+		new GameObject (MqttSetting.SET_TOPIC_MANAGER).AddComponent<SetTopic> ();
+		new GameObject (MqttSetting.GET_TOPIC_MANAGER).AddComponent<GetTopic> ();
+		new GameObject (MqttSetting.MONO_FREE_TOPIC_MANAGER).AddComponent<MonoFreeTopic> ();
+		new GameObject (MqttSetting.MULTIPLE_FREE_TOPIC_MANAGER).AddComponent<MultipleFreeTopic> ();
+		new GameObject (MqttSetting.CREATE_TOPIC_MANAGER).AddComponent<CreateTopic> ();
+		new GameObject (MqttSetting.DESTROY_TOPIC_MANAGER).AddComponent<DestroyTopic> ();
+		new GameObject (MqttSetting.MOVE_TOPIC_MANAGER).AddComponent<MoveTopic> ();
+		new GameObject (MqttSetting.NOTIFICATION_TOPIC_MANAGER).AddComponent<NotificationTopic> ();
+		new GameObject (MqttSetting.PROPERTY_TOPIC_MANAGER).AddComponent<PropertyTopic> ();
+
+
+
+
 
 	}
 
@@ -172,7 +191,7 @@ public class GamaManager : MonoBehaviour
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.MOVE_TOPIC);
 
-				Debug.Log ("-> The messqge is: "+ receivedMsg);
+				Debug.Log ("-> The messqge is: " + receivedMsg);
 
 				MoveTopicMessage moveTopicMessage = (MoveTopicMessage)msgDes.deserialization (receivedMsg, new MoveTopicMessage ());
 				targetGameObject = getGameObjectByName (moveTopicMessage.objectName);
