@@ -72,7 +72,7 @@ public class GamaManager : MonoBehaviour
 		MqttSetting.allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 		allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 
-		gamaManager = getGameObjectByName (MqttSetting.GAMA_MANAGER_OBJECT_NAME);
+		gamaManager = gameObject;
 
 		notificationSent = false;
 
@@ -154,7 +154,7 @@ public class GamaManager : MonoBehaviour
 				obj = new object[]{ monoFreeTopicMessage, targetGameObject };
 
 				topicGameObject = getGameObjectByName (MqttSetting.MONO_FREE_TOPIC_MANAGER);
-
+				Debug.Log ("-> topicGameObject Name is  : " + topicGameObject.name);
 				topicGameObject.GetComponent (MqttSetting.MONO_FREE_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				//------------------------------------------------------------------------------
 				break;

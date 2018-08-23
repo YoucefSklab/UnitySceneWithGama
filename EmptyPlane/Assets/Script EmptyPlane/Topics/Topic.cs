@@ -49,6 +49,7 @@ namespace ummisco.gama.unity.topics
 
 		public virtual MethodInfo[] getMethodsInfo (BindingFlags flags)
 		{
+			setScript ();
 			return targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetMethods (flags);
 		}
 
@@ -63,6 +64,10 @@ namespace ummisco.gama.unity.topics
 
 
 
+		}
+
+		public void setScript(){
+			this.scripts = targetGameObject.GetComponents<MonoBehaviour>();
 		}
 
 

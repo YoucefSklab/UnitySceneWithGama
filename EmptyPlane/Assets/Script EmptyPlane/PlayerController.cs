@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
 		//gamaManager = gama.getGameObjectByName ("GamaManager");
 		Console.WriteLine ("test");
 
+
 		/*
 
 		FieldInfo[] fieldInfoSet = gameObject.GetComponent<PlayerController> ().GetType ().GetFields ();
@@ -234,6 +235,12 @@ public class PlayerController : MonoBehaviour
 	public void setReceivedText (string text)
 	{
 		receivedMqttMessage.text = text;
+	}
+
+
+	public void setWinText (string text)
+	{
+		winText.text = text;
 	}
 
 	public void setSpeed (int s)
