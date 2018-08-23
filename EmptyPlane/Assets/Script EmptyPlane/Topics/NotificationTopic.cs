@@ -28,6 +28,7 @@ namespace ummisco.gama.unity.topics
 		public override void Start ()
 		{
 			NotificationRegistry.notificationsList = new List<NotificationEntry> ();
+
 		}
 
 		// Update is called once per frame
@@ -88,13 +89,17 @@ namespace ummisco.gama.unity.topics
 
 			GameObject targetGameObject = getGameObjectByName (entry.objectName);
 
-			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetFields ();
+			scripts = targetGameObject.GetComponents<MonoBehaviour>();
+
+			Debug.Log ("-------------->>>> The Operator" + scripts[0].GetType ());
+		
+			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetFields ();
 
 
 
 			foreach (FieldInfo fi in fieldInfoGet) {
 				if (fi.Name.Equals (entry.fieldName)) {
-					UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX);
+					UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (scripts[0].GetType ());
 					object target = fi.GetValue (ob);
 				
 				//	Debug.Log ("-------------->>>> The Operator" + entry.fieldOperator);
@@ -130,14 +135,15 @@ namespace ummisco.gama.unity.topics
 		{
 
 			GameObject targetGameObject = getGameObjectByName (entry.objectName);
+			scripts = targetGameObject.GetComponents<MonoBehaviour>();
 
-			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetFields ();
+			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetFields ();
 
 
 
 			foreach (FieldInfo fi in fieldInfoGet) {
 				if (fi.Name.Equals (entry.fieldName)) {
-					UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX);
+					UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (scripts[0].GetType ());
 					object target = fi.GetValue (ob);
 					//return IsValueEqual (entry.fieldValue, target, entry.fieldOperator);
 					//return Compare(entry.fieldOperator, (fi.GetType ()) target, (object) entry.fieldValue);
@@ -196,12 +202,12 @@ namespace ummisco.gama.unity.topics
 			List<object> keyList = new List<object> (data.Keys);
 			object obj = data [keyList.ElementAt (0)];
 
-			FieldInfo[] fieldInfoSet = targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetFields ();
+			FieldInfo[] fieldInfoSet = targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetFields ();
 
 			foreach (KeyValuePair<object, object> pair in data) {
 				foreach (FieldInfo fi in fieldInfoSet) {
 					if (fi.Name.Equals (pair.Key.ToString ())) {
-						UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX);
+						UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (scripts[0].GetType ());
 						fi.SetValue (ob, (Convert.ChangeType (pair.Value, fi.FieldType)));
 					}
 				}
@@ -212,6 +218,7 @@ namespace ummisco.gama.unity.topics
 		{
 			object[] obj = (object[])args;
 			this.topicMessage = (NotificationTopicMessage)obj [0];
+
 		}
 
 

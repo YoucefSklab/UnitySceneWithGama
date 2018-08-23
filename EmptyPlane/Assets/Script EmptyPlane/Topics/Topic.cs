@@ -17,6 +17,7 @@ namespace ummisco.gama.unity.topics
 
 		protected GameObject targetGameObject { get ; set; }
 
+		protected MonoBehaviour[] scripts { get ; set ;}
 
 		void Awake ()
 		{
@@ -26,7 +27,7 @@ namespace ummisco.gama.unity.topics
 		// Use this for initialization
 		public virtual void Start ()
 		{
-
+			
 		}
 
 		// Update is called once per frame
@@ -40,13 +41,15 @@ namespace ummisco.gama.unity.topics
 		public Topic (GameObject gameO)
 		{
 			this.targetGameObject = targetGameObject;
+			this.scripts = targetGameObject.GetComponents<MonoBehaviour>();
+
 		}
 
 
 
 		public virtual MethodInfo[] getMethodsInfo (BindingFlags flags)
 		{
-			return targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethods (flags);
+			return targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetMethods (flags);
 		}
 
 
@@ -56,6 +59,10 @@ namespace ummisco.gama.unity.topics
 		{
 			object[] obj = (object[])args;
 			this.targetGameObject = (GameObject)obj [0];
+			this.scripts = targetGameObject.GetComponents<MonoBehaviour>();
+
+
+
 		}
 
 
@@ -105,7 +112,7 @@ namespace ummisco.gama.unity.topics
 			int size = data.Count;
 			List<object> keyList = new List<object> (data.Keys);
 
-			MethodInfo methInfo = targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethod (methodName);
+			MethodInfo methInfo = targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetMethod (methodName);
 			ParameterInfo[] parameter = methInfo.GetParameters ();
 			object obj = data [keyList.ElementAt (0)];
 			targetGameObject.SendMessage (methodName, Tools.convertParameter (obj, parameter [0]));

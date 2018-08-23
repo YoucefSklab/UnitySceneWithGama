@@ -69,6 +69,7 @@ namespace ummisco.gama.unity.topics
 			object[] obj = (object[])args;
 			this.topicMessage = (ColorTopicMessage)obj [0];
 			this.targetGameObject = (GameObject)obj [1];
+			this.scripts = targetGameObject.GetComponents<MonoBehaviour>();
 		}
 
 	}

@@ -53,12 +53,12 @@ namespace ummisco.gama.unity.topics
 		public string getValueToSend (GameObject targetGameObject, string attibute)
 		{
 
-			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetFields ();
+			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetFields ();
 			string msgReplay = "";
 		
 			foreach (FieldInfo fi in fieldInfoGet) {
 				if (fi.Name.Equals (attibute)) {
-						UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX);
+						UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (scripts[0].GetType ());
 						msgReplay = fi.GetValue (ob).ToString ();
 					}
 				}

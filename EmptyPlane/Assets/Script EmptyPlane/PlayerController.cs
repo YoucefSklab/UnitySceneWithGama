@@ -13,7 +13,7 @@ using ummisco.gama.unity.messages;
 using ummisco.gama.unity.utils;
 
 using System;
-using System.Text;
+//using System.Text;
 using System.IO;
 using System.Reflection;
 using UnityEngine.Events;
@@ -52,9 +52,123 @@ public class PlayerController : MonoBehaviour
 		//MqttSetting.allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 		//gamaManager = gama.getGameObjectByName ("GamaManager");
 		Console.WriteLine ("test");
+
+		/*
+
+		FieldInfo[] fieldInfoSet = gameObject.GetComponent<PlayerController> ().GetType ().GetFields ();
+
+	
+			foreach (FieldInfo fi in fieldInfoSet) {
+			
+			Debug.Log ("Name is  ----> :"+fi.Name);
+			Debug.Log ("Its type is ----> :"+fi.FieldType);
+
+			if (fi.FieldType.Equals (typeof(UnityEngine.UI.Text))) {
+				Debug.Log (" ------------------------ ");
+			}
+
+				if (fi.Name.Equals (pair.Key.ToString ())) {
+
+					Debug.Log ("Its type is ----> :"+fi.FieldType);
+
+					UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (scripts[0].GetType ());
+					fi.SetValue (ob, (Convert.ChangeType (pair.Value, fi.FieldType)));
+				}
+
+			}
+
+		*/
+
+
+		/*
+
+		Component[] cs = (Component[])gameObject.GetComponents (typeof(Component));
+		foreach (Component c in cs) 
+		{
+			PropertyInfo[] propertyInfo = c.GetType().GetProperties();
+			foreach (PropertyInfo p in propertyInfo) {
+				Debug.Log("Property Name is : "+p.Name);
+			}
+		}
+		*/
+
+
+
+		/*
+
+		string property = "localScale";
+
+		string test = "(1.0,1.0,1.0)";
+
+
+		Vector3 vect = parseVector3 (test);
+
+		Debug.Log ("------->>   its type is : " + vect);
+
+		Component[] cs = (Component[])gameObject.GetComponents (typeof(Component));
+		foreach (Component c in cs) {
+			//Debug.Log("name: "+c.name+" type: "+c.GetType() +" basetype: "+c.GetType().BaseType);
+
+			PropertyInfo propertyInfo = c.GetType().GetProperty(property);
+			if (propertyInfo != null) {
+				
+				Debug.Log ("------->>   Good. Property exist. Its name is : " + propertyInfo.Name + " and its value is: " + propertyInfo.GetValue ((System.Object)c, null));
+
+				Debug.Log ("------->>   its type is : " + propertyInfo.PropertyType);
+
+
+
+
+
+				object val = vect; //Convert.ChangeType (value, propertyInfo.PropertyType);
+				System.Object obj = (System.Object)c;
+				propertyInfo.SetValue(
+					obj, 
+					val, 
+					null);
+				
+			} else {
+				//Debug.Log ("------->>   Sorry. Property doesn't exist : "+property +" and component is "+ c.name);
+			}
+
+		
+
+
+
+		}
+
+		*/
+
+	
+
+
+
 	}
 
 
+	public Vector3 parseVector3(string sourceString) {
+
+		string outString;
+		Vector3 outVector3;
+		string[] splitString;//= new Array();
+
+		// Trim extranious parenthesis
+
+		outString = sourceString.Substring(1, sourceString.Length - 2);
+
+		// Split delimted values into an array
+
+		splitString = outString.Split("," [0]);
+
+		// Build new Vector3 from array elements
+
+		outVector3.x = float.Parse(splitString[0]);
+		outVector3.y = float.Parse(splitString[1]);
+		outVector3.z = float.Parse(splitString[2]);
+
+		return outVector3;
+
+	}
 
 	void Update()
 	{

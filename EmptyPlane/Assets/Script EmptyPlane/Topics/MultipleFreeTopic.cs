@@ -94,7 +94,7 @@ namespace ummisco.gama.unity.topics
 			int size = data.Count;
 			List<object> keyList = new List<object> (data.Keys);
 
-			MethodInfo methInfo = targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetMethod (methodName);
+			MethodInfo methInfo = targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetMethod (methodName);
 			ParameterInfo[] parameter = methInfo.GetParameters ();
 
 			int nbr = 0;

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Linq;
 using System;
 using System.Xml;
+using UnityEngine.UI;
 
 
 namespace ummisco.gama.unity.topics
@@ -15,6 +16,7 @@ namespace ummisco.gama.unity.topics
 	{
 
 		public SetTopicMessage topicMessage;
+		public object setObject; 
 
 		public SetTopic (SetTopicMessage topicMessage, GameObject gameObj) : base (gameObj)
 		{
@@ -74,16 +76,72 @@ namespace ummisco.gama.unity.topics
 		{
 
 			int size = data.Count;
+
 			List<object> keyList = new List<object> (data.Keys);
 			object obj = data [keyList.ElementAt (0)];
 
-			FieldInfo[] fieldInfoSet = targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX).GetType ().GetFields ();
-	
+			FieldInfo[] fieldInfoSet = targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetFields ();
+			Debug.Log ("Its type is 1 ----> :");
 			foreach (KeyValuePair<object, object> pair in data) {
 				foreach (FieldInfo fi in fieldInfoSet) {
 					if (fi.Name.Equals (pair.Key.ToString ())) {
-						UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (targetGameObject.name + MqttSetting.SCRIPT_PRIFIX);
-						fi.SetValue (ob, (Convert.ChangeType (pair.Value, fi.FieldType)));
+						UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (scripts[0].GetType ());
+
+
+
+						if (fi.FieldType.Equals (typeof(UnityEngine.UI.Text))) {
+
+
+
+							Component[] cs = (Component[])targetGameObject.GetComponents (typeof(Component));
+							foreach (Component c in cs) {
+								if (c.name.Equals (pair.Key.ToString ())) {
+									Text txt =  targetGameObject.GetComponent<Text>(); 
+
+									txt.text="Score : ";
+								}
+							}
+							
+
+
+						
+						//	Debug.Log ("try to get the fields lis  " + fi.GetType ().GetField ("text").ToString ());
+
+
+							FieldInfo[] fieldInfoSet2 = fi.FieldType.GetFields ();
+							Debug.Log ("Its fieldInfoSet2 is 1 ----> : " + fieldInfoSet2.ToList ().ToString ());
+							foreach (FieldInfo fi2 in fieldInfoSet2) {
+								Debug.Log ("Its Name is 1 ----> : " + fi2.Name);
+								//Debug.Log ("Its Value is 1 ----> : " + fi2.GetValue ());
+							}
+
+							//fi.FieldType.GetFields ();
+
+							//fi.SetValue (ob, setObject);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+						} else {
+							fi.SetValue (ob, (Convert.ChangeType (pair.Value, fi.FieldType)));
+
+						}
+
+						Debug.Log ("Its type is 2 ----> :"+fi.FieldType);
+
+
+					//	fi.SetValue (ob, (Convert.ChangeType (pair.Value, fi.FieldType)));
 					}
 				}
 			}
@@ -94,6 +152,7 @@ namespace ummisco.gama.unity.topics
 			object[] obj = (object[])args;
 			this.topicMessage = (SetTopicMessage)obj [0];
 			this.targetGameObject = (GameObject)obj [1];
+			this.scripts = targetGameObject.GetComponents<MonoBehaviour>();
 		}
 
 	}

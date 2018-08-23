@@ -132,10 +132,10 @@ namespace ummisco.gama.unity.topics
 
 			//Add Components to the Game Object
 			//---------------------------------
-			newObject.AddComponent<Rigidbody>();
+			// newObject.AddComponent<Rigidbody>();
 			//testObject.AddComponent<MeshFilter>(); // already added by creation
 			//testObject.AddComponent<MeshRenderer>(); // already added when created
-			newObject.AddComponent<BoxCollider>();
+			//newObject.AddComponent<BoxCollider>();
 
 			objectColor = Tools.stringToColor (color);
 			Renderer rend = newObject.GetComponent<Renderer>();
