@@ -6,7 +6,7 @@ Mac OS:
 
 Step 1 : Install an MQTT Broker # brew install mosquitto
 
-Step 2 : Download the the file EmptyScene.zip from: UnitySceneWithGama -> EmptyPlane -> Build EmptyPlane
+Step 2 : Download the file EmptyScene.zip from: UnitySceneWithGama -> EmptyPlane -> Build EmptyPlane
 
 Step 3 : Run the EmptyScene file.
 
