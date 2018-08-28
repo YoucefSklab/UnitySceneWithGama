@@ -99,7 +99,6 @@ namespace ummisco.gama.unity.utils
 				if (n.Value == fieldName) {
 					itExist = true;
 				}
-				Debug.Log ("---->  "+n.Name);
 				if (n.Name == "red") {
 					red = Int32.Parse (n.InnerText);
 				}

@@ -42,48 +42,20 @@ namespace ummisco.gama.unity.topics
 
 			if (targetGameObject != null) {
 
-				XmlNode[] node = (XmlNode[])topicMessage.position;
-				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
+				XmlNode[] positionNode = (XmlNode[])topicMessage.position;
 
-				for (int i = 1; i < node.Length; i++) {
-					XmlElement elt = (XmlElement)node.GetValue (i);
-					XmlNodeList list = elt.ChildNodes;
+				Vector3 position = ConvertType.vector3FromXmlNode (positionNode, MqttSetting.GAMA_POINT);
 
-					object atr = "";
-					object vl = "";
-
-					foreach (XmlElement item in list) {
-						if (item.Name.Equals ("attribute")) {
-							atr = item.InnerText;
-						}
-						if (item.Name.Equals ("value")) {
-							vl = item.InnerText;
-						}
-					}
-					dataDictionary.Add (atr, vl);
-				}
-				sendTopic (targetGameObject, dataDictionary);
+				sendTopic (position);
 
 			} 
 		}
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public void sendTopic (GameObject targetGameObject, Dictionary<object, object> data)
+		public void sendTopic (Vector3 position)
 		{
-			int size = data.Count;
-			List<object> keyList = new List<object> (data.Keys);
-			float x, y, z;
-
-			x = float.Parse ((string)data [keyList.ElementAt (0)], CultureInfo.InvariantCulture.NumberFormat);
-			y = float.Parse ((string)data [keyList.ElementAt (1)], CultureInfo.InvariantCulture.NumberFormat);
-			z = float.Parse ((string)data [keyList.ElementAt (2)], CultureInfo.InvariantCulture.NumberFormat);
-			//Debug.Log ("----->>>>    X,Y,Z  " + x + "," + y + "," + z);
-    
-			Vector3 movement = new Vector3 (x, y, z);
-			targetGameObject.transform.position = movement;
-
-			Debug.Log ("position applied ");
+			targetGameObject.transform.position = position;
 		}
 
 		public override void setAllProperties (object args)

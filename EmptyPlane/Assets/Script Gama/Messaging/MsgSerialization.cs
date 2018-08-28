@@ -89,25 +89,23 @@ namespace ummisco.gama.unity.messages
 		public string msgSerialization (GamaReponseMessage msgResponseData)
 		{
 			XmlSerializer serializer = new XmlSerializer (msgResponseData.GetType ());
-			var settings = new XmlWriterSettings();
+			var settings = new XmlWriterSettings ();
 			settings.Indent = true;
 			settings.OmitXmlDeclaration = true;
 
-			using (var stream = new StringWriter())
-			using (var writer = XmlWriter.Create(stream, settings))
-			//using (StringWriter writer = new StringWriter ()) 
-			{
+			using (var stream = new StringWriter ())
+			using (var writer = XmlWriter.Create (stream, settings))
+ {			//using (StringWriter writer = new StringWriter ()) 
 
 				// removes namespace
-				var xmlns = new XmlSerializerNamespaces();
-				xmlns.Add(string.Empty, string.Empty);
-
+				var xmlns = new XmlSerializerNamespaces ();
+				xmlns.Add (string.Empty, string.Empty);
 
 
 				serializer.Serialize (writer, msgResponseData, xmlns);
-				UnityEngine.Debug.Log ("The result is " + writer.ToString ());
+	
 
-				return stream.ToString();
+				return stream.ToString ();
 				//return writer.ToString ();
 			}
 
@@ -135,7 +133,7 @@ namespace ummisco.gama.unity.messages
 			using (StringWriter writer = new StringWriter ()) {
 
 				serializer.Serialize (writer, msgResponseData);
-				UnityEngine.Debug.Log ("The result is " + writer.ToString ());
+			
 				return writer.ToString ();
 			}
 		}
@@ -144,25 +142,22 @@ namespace ummisco.gama.unity.messages
 		{
 
 			XmlSerializer serializer = new XmlSerializer (msgResponseData.GetType ());
-			var settings = new XmlWriterSettings();
+			var settings = new XmlWriterSettings ();
 			settings.Indent = true;
 			settings.OmitXmlDeclaration = true;
 
-			using (var stream = new StringWriter())
-			using (var writer = XmlWriter.Create(stream, settings))
-			//using (StringWriter writer = new StringWriter ()) 
-			{
+			using (var stream = new StringWriter ())
+			using (var writer = XmlWriter.Create (stream, settings))
+ {			//using (StringWriter writer = new StringWriter ()) 
 
 				// removes namespace
-				var xmlns = new XmlSerializerNamespaces();
-				xmlns.Add(string.Empty, string.Empty);
+				var xmlns = new XmlSerializerNamespaces ();
+				xmlns.Add (string.Empty, string.Empty);
 
 
 				serializer.Serialize (writer, msgResponseData, xmlns);
-				return stream.ToString();
+				return stream.ToString ();
 
-
-				UnityEngine.Debug.Log ("The result is " + writer.ToString ());
 				//return writer.ToString ();
 			}
 		}
