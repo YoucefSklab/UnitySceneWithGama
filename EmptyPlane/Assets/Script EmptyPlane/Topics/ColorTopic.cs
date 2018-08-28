@@ -51,17 +51,19 @@ namespace ummisco.gama.unity.topics
 
 			if (targetGameObject != null) {
 
-				string color = topicMessage.color;
-				sendTopic (targetGameObject, color);
+			
+				sendTopic (targetGameObject);
 
 			} 
 		}
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public void sendTopic (GameObject targetGameObject, string color)
+		public void sendTopic (GameObject targetGameObject)
 		{
-			targetGameObject.GetComponent<Renderer> ().material.color = Tools.stringToColor (color);
+			targetGameObject.GetComponent<Renderer> ().material.color = new Color(topicMessage.red, topicMessage.green, topicMessage.blue);  // Tools.stringToColor (color);
+		
+			Debug.Log ("Recieved color is: RED: "+  topicMessage.red + " GREEN: "+ topicMessage.green + " BLUE: " + topicMessage.blue );
 		}
 
 		public override void setAllProperties (object args)

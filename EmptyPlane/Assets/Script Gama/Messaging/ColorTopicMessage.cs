@@ -10,16 +10,20 @@ namespace ummisco.gama.unity.messages
 
 
 
-		public string color { set; get; }
+		public int red { set; get; }
+		public int green { set; get; }
+		public int blue { set; get; }
 
 		public ColorTopicMessage()
 		{
 
 		}
 
-		public ColorTopicMessage (string unread, string sender, string receivers, string contents, string emissionTimeStamp, string objectName, string color) : base (unread, sender, receivers, contents, objectName, emissionTimeStamp)
+		public ColorTopicMessage (string unread, string sender, string receivers, string contents, string emissionTimeStamp, string objectName, int red, int green, int blue) : base (unread, sender, receivers, contents, objectName, emissionTimeStamp)
 		{
-			this.color = color;
+			this.red = red;
+			this.green = green;
+			this.blue = blue;
 		}
 
 

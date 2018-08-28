@@ -33,7 +33,7 @@ public class CubeGenerator : MonoBehaviour {
 		ob.AddComponent<Rigidbody>();
 		ob.AddComponent<BoxCollider>();
 
-		Color objectColor = Tools.stringToColor ("red");
+		Color objectColor = ConvertType.stringToColor ("red");
 		Renderer rend = ob.GetComponent<Renderer>();
 		rend.material.color = objectColor;
 

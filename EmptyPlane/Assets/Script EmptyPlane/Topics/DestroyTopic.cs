@@ -41,7 +41,7 @@ namespace ummisco.gama.unity.topics
 		{
 			setAllProperties (obj);
 
-			Debug.Log ("Order received. Let's destroy the GameObject ");
+			// Debug.Log ("Order received. Let's destroy the GameObject ");
 
 			GameObject objectToDestroy = getGameObjectByName (topicMessage.objectName, UnityEngine.Object.FindObjectsOfType<GameObject> ());
 

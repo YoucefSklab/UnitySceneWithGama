@@ -40,7 +40,7 @@ namespace ummisco.gama.unity.topics
 
 			if (targetGameObject != null) {
 				string attribute  = topicMessage.attribute;
-				obj [2] = (object) getValueToSend (targetGameObject, attribute);
+				obj [2] = (object) getValueToSend (attribute);
 
 				Debug.Log ("Method called and returned -> " + obj [2]);
 
@@ -50,8 +50,9 @@ namespace ummisco.gama.unity.topics
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public string getValueToSend (GameObject targetGameObject, string attibute)
+		public string getValueToSend (string attibute)
 		{
+
 
 			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetFields ();
 			string msgReplay = "";
@@ -75,6 +76,8 @@ namespace ummisco.gama.unity.topics
 			this.topicMessage = (GetTopicMessage)obj [0];
 			this.targetGameObject = (GameObject)obj [1];
 			this.valueIs = (string)obj [2];
+			this.scripts = targetGameObject.GetComponents<MonoBehaviour>();
+
 		}
 
 	}

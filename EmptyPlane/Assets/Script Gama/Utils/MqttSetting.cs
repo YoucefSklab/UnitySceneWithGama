@@ -83,6 +83,15 @@ namespace ummisco.gama.unity.utils
 		public static GameObject[] allObjects = null;
 
 
+		// Gama Data Types:
+
+		public const string GAMA_POINT = "msi.gama.metamodel.shape.GamaPoint";
+		public const string GAMA_RGB_COLOR = "ummisco.gama.unity.data.type.rgbColor";
+
+
+
+
+
 		public static List<string> getTopicsInList ()
 		{
 			List<string> topicsList = new List<string> ();

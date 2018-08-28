@@ -37,7 +37,7 @@ namespace ummisco.gama.unity.topics
 		public void ProcessTopic (object obj)
 		{
 
-			Debug.Log ("->>>>>>>>>>>>>>--> --->>>  this is from multiple free Topic");
+			//Debug.Log (" --->>>  this is from multiple free Topic");
 
 			setAllProperties (obj);
 

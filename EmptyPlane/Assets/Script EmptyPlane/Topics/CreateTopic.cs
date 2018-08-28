@@ -42,26 +42,24 @@ namespace ummisco.gama.unity.topics
 		{
 			setAllProperties (obj);
 
-			Debug.Log ("Order received. Let's create the object ");
+			//Debug.Log ("Order received. Let's create the object ");
 
-			string type = topicMessage.type;
-			string color = topicMessage.color;
-			object position = topicMessage.position;
 
-			sendTopic (topicMessage.objectName, type, color, position);
+
+			sendTopic ();
 
 		}
 
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public void sendTopic (string objectName, string type, string color, object position)
+		public void sendTopic ()
 		{
 
 			GameObject objectManager = getGameObjectByName (MqttSetting.GAMA_MANAGER_OBJECT_NAME, UnityEngine.Object.FindObjectsOfType<GameObject> ());
 
 
-			switch (type) {
+			switch (topicMessage.type) {
 			case "Capsule":
 				newObject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
 				break;
@@ -90,54 +88,28 @@ namespace ummisco.gama.unity.topics
 
 			// Set the name of the game object
 			//--------------------------------
-			newObject.name = objectName;
+			newObject.name = topicMessage.objectName;
 
 		
 			// Set the position to the new GameObject
 			//---------------------------------------
-			XmlNode[] node = (XmlNode[])topicMessage.position;
-			Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
-
-			for (int i = 1; i < node.Length; i++) {
-				XmlElement elt = (XmlElement)node.GetValue (i);
-				XmlNodeList list = elt.ChildNodes;
-
-				object atr = "";
-				object vl = "";
-
-				foreach (XmlElement item in list) {
-					if (item.Name.Equals ("attribute")) {
-						atr = item.InnerText;
-					}
-					if (item.Name.Equals ("value")) {
-						vl = item.InnerText;
-					}
-				}
-				dataDictionary.Add (atr, vl);
-			}
-
-			int size = dataDictionary.Count;
-			List<object> keyList = new List<object> (dataDictionary.Keys);
-			float x, y, z;
-
-			x = float.Parse ((string)dataDictionary [keyList.ElementAt (0)], CultureInfo.InvariantCulture.NumberFormat);
-			y = float.Parse ((string)dataDictionary [keyList.ElementAt (1)], CultureInfo.InvariantCulture.NumberFormat);
-			z = float.Parse ((string)dataDictionary [keyList.ElementAt (2)], CultureInfo.InvariantCulture.NumberFormat);
-
-			Debug.Log ("----->>>>    X,Y,Z  " + x + "," + y + "," + z);
-
-			Vector3 movement = new Vector3 (x, y, z);
+			XmlNode[] positionNode = (XmlNode[])topicMessage.position;
+			Vector3 movement = ConvertType.vector3FromXmlNode (positionNode, MqttSetting.GAMA_POINT);
 			newObject.transform.position = movement;
 
 
+			XmlNode[] colorNode = (XmlNode[])topicMessage.color;
+			objectColor = ConvertType.rgbColorFromXmlNode (colorNode, MqttSetting.GAMA_RGB_COLOR);
+
 			//Add Components to the Game Object
 			//---------------------------------
-			// newObject.AddComponent<Rigidbody>();
+			//newObject.AddComponent<Rigidbody>();
 			//testObject.AddComponent<MeshFilter>(); // already added by creation
 			//testObject.AddComponent<MeshRenderer>(); // already added when created
 			//newObject.AddComponent<BoxCollider>();
+			//objectColor = ConvertType.stringToColor (color);
 
-			objectColor = Tools.stringToColor (color);
+
 			Renderer rend = newObject.GetComponent<Renderer>();
 			//rend.material = new Material(Shader.Find("Player"));
 			//Renderer rend = GetComponent<Renderer>();
@@ -147,7 +119,7 @@ namespace ummisco.gama.unity.topics
 
 
 
-			Debug.Log ("Object poision not set. This has to be completed!");
+			Debug.Log ("The color is "+objectColor.ToString ());
 
 			objectManager.SendMessage ("addObjectToList", newObject);
 

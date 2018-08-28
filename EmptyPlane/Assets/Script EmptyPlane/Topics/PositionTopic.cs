@@ -78,7 +78,7 @@ namespace ummisco.gama.unity.topics
 			x = float.Parse ((string)data [keyList.ElementAt (0)], CultureInfo.InvariantCulture.NumberFormat);
 			y = float.Parse ((string)data [keyList.ElementAt (1)], CultureInfo.InvariantCulture.NumberFormat);
 			z = float.Parse ((string)data [keyList.ElementAt (2)], CultureInfo.InvariantCulture.NumberFormat);
-			Debug.Log ("----->>>>    X,Y,Z  " + x + "," + y + "," + z);
+			//Debug.Log ("----->>>>    X,Y,Z  " + x + "," + y + "," + z);
     
 			Vector3 movement = new Vector3 (x, y, z);
 			targetGameObject.transform.position = movement;

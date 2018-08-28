@@ -37,55 +37,45 @@ namespace ummisco.gama.unity.topics
 		public void ProcessTopic (object obj)
 		{
 			setAllProperties (obj);
-
-
 			if (targetGameObject != null) {
 
-				string property = topicMessage.property;
-				string value = topicMessage.value;
-
-				sendTopic (targetGameObject, property, value);
+				sendTopic ();
 			} 
-
-
 		}
 
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public void sendTopic (GameObject targetGameObject, string property, string value)
+		public void sendTopic ()
 		{
-
-
+			
 			Component[] cs = (Component[])targetGameObject.GetComponents (typeof(Component));
 			foreach (Component c in cs) {
 				//Debug.Log("name: "+c.name+" type: "+c.GetType() +" basetype: "+c.GetType().BaseType);
-				PropertyInfo propertyInfo = c.GetType().GetProperty(property);
+				PropertyInfo propertyInfo = c.GetType().GetProperty(topicMessage.property);
 				if (propertyInfo != null) {
 					//Debug.Log ("------->>   Good. Property exist. Its name is : " + propertyInfo.Name + " and its value is: " + propertyInfo.GetValue ((System.Object)c, null));
 
 					System.Object obj = (System.Object)c;
 
 					if (propertyInfo.PropertyType.Equals (typeof(Vector3))) {
-						Debug.Log ("------->>0à00000000000000   its type is : " + propertyInfo.PropertyType);
 
-						Vector3 vect = parseVector3 (value);
-						//object obje = vect;
+						XmlNode[] node = (XmlNode[])topicMessage.value;
+
+						Vector3 vect = ConvertType.vector3FromXmlNode (node, MqttSetting.GAMA_POINT);
 						propertyInfo.SetValue(
 							obj, 
 							(object) vect, 
 							null);
 					} else {
 						
-						object val =  Convert.ChangeType (value, propertyInfo.PropertyType);
+						object val =  Convert.ChangeType (topicMessage.value, propertyInfo.PropertyType);
 
 						propertyInfo.SetValue(
 							obj, 
 							val, 
 							null);
 					}
-
-						
 
 
 				} else {

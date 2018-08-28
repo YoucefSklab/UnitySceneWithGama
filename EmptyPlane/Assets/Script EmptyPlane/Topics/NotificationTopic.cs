@@ -91,7 +91,7 @@ namespace ummisco.gama.unity.topics
 
 			scripts = targetGameObject.GetComponents<MonoBehaviour>();
 
-			Debug.Log ("-------------->>>> The Operator" + scripts[0].GetType ());
+			// Debug.Log ("-------------->>>> The Operator" + scripts[0].GetType ());
 		
 			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetFields ();
 

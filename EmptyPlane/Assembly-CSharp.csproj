@@ -86,13 +86,14 @@
      <Compile Include="Assets\Script Gama\Messaging\NotificationTopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\PositionTopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\PropertyTopicMessage.cs" />
+     <Compile Include="Assets\Script Gama\Messaging\ReplayMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\SetTopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Messaging\TopicMessage.cs" />
      <Compile Include="Assets\Script Gama\Notification\NotificationEntry.cs" />
      <Compile Include="Assets\Script Gama\Notification\NotificationRegistry.cs" />
+     <Compile Include="Assets\Script Gama\Utils\ConvertType.cs" />
      <Compile Include="Assets\Script Gama\Utils\GamaMethods.cs" />
      <Compile Include="Assets\Script Gama\Utils\MqttSetting.cs" />
-     <Compile Include="Assets\Script Gama\Utils\Tools.cs" />
      <Compile Include="Assets\Script MQTT\Exceptions\MqttClientException.cs" />
      <Compile Include="Assets\Script MQTT\Exceptions\MqttCommunicationException.cs" />
      <Compile Include="Assets\Script MQTT\Exceptions\MqttConnectionException.cs" />

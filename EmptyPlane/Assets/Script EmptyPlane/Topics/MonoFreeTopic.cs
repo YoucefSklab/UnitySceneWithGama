@@ -38,7 +38,6 @@ namespace ummisco.gama.unity.topics
 		public void ProcessTopic (object obj)
 		{
 
-			Debug.Log ("->>>>>>>>>>>>>>--> --->>>  this is from mono free Topic");
 
 			setAllProperties (obj);
 
@@ -67,7 +66,7 @@ namespace ummisco.gama.unity.topics
 			MethodInfo methInfo = targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetMethod (methodName);
 			ParameterInfo[] parameter = methInfo.GetParameters ();
 			object obj = attributeValue;
-			targetGameObject.SendMessage (methodName, Tools.convertParameter (obj, parameter [0]));
+			targetGameObject.SendMessage (methodName, ConvertType.convertParameter (obj, parameter [0]));
 		}
 
 
@@ -84,8 +83,6 @@ namespace ummisco.gama.unity.topics
 		public void ProcessTopic (object obj)
 		{
 		
-			Debug.Log ("->>>>>>>>>>>>>>--> --->>>  this is from mono free Topic");
-
 			setAllProperties (obj);
 
 			BindingFlags flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
