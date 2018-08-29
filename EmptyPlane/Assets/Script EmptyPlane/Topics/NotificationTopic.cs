@@ -61,11 +61,11 @@ namespace ummisco.gama.unity.topics
 						break;
 					}
 
-				//	Debug.Log ("Game Object: " + el.objectName);
-				//	Debug.Log ("Field Name: " + el.fieldName);
-				//	Debug.Log ("Field Type: " + el.fieldType);
-				//	Debug.Log ("FIeld Value: " + el.fieldValue);
-				//	Debug.Log ("Field Operator: " + el.fieldOperator);
+					//	Debug.Log ("Game Object: " + el.objectName);
+					//	Debug.Log ("Field Name: " + el.fieldName);
+					//	Debug.Log ("Field Type: " + el.fieldType);
+					//	Debug.Log ("FIeld Value: " + el.fieldValue);
+					//	Debug.Log ("Field Operator: " + el.fieldOperator);
 				}
 
 
@@ -80,7 +80,7 @@ namespace ummisco.gama.unity.topics
 			setAllProperties (obj);
 
 			NotificationEntry notif = new NotificationEntry (topicMessage.notificationId, topicMessage.objectName, topicMessage.fieldType, topicMessage.fieldName, topicMessage.fieldValue, topicMessage.fieldOperator, topicMessage.sender);
-			NotificationRegistry.addToList(notif);
+			NotificationRegistry.addToList (notif);
 		
 		}
 
@@ -89,26 +89,26 @@ namespace ummisco.gama.unity.topics
 
 			GameObject targetGameObject = getGameObjectByName (entry.objectName);
 
-			scripts = targetGameObject.GetComponents<MonoBehaviour>();
+			scripts = targetGameObject.GetComponents<MonoBehaviour> ();
 
 			// Debug.Log ("-------------->>>> The Operator" + scripts[0].GetType ());
 		
-			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetFields ();
+			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (scripts [0].GetType ()).GetType ().GetFields ();
 
 
 
 			foreach (FieldInfo fi in fieldInfoGet) {
 				if (fi.Name.Equals (entry.fieldName)) {
-					UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (scripts[0].GetType ());
+					UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (scripts [0].GetType ());
 					object target = fi.GetValue (ob);
 				
-				//	Debug.Log ("-------------->>>> The Operator" + entry.fieldOperator);
-				//	Debug.Log ("-------------->>>> The field value" + fi.GetValue (ob));
-				//	Debug.Log ("-------------->>>> The field introduced value " + entry.fieldValue);
+					//	Debug.Log ("-------------->>>> The Operator" + entry.fieldOperator);
+					//	Debug.Log ("-------------->>>> The field value" + fi.GetValue (ob));
+					//	Debug.Log ("-------------->>>> The field introduced value " + entry.fieldValue);
 
 					switch (fi.FieldType.ToString ()) {
 					case "System.Int32":
-						return Compare<System.Int32>(entry.fieldOperator, (System.Int32) 
+						return Compare<System.Int32> (entry.fieldOperator, (System.Int32)
 							Convert.ChangeType (fi.GetValue (ob), fi.FieldType), 
 							(System.Int32)Convert.ChangeType (entry.fieldValue, fi.FieldType));
 						break;
@@ -135,15 +135,15 @@ namespace ummisco.gama.unity.topics
 		{
 
 			GameObject targetGameObject = getGameObjectByName (entry.objectName);
-			scripts = targetGameObject.GetComponents<MonoBehaviour>();
+			scripts = targetGameObject.GetComponents<MonoBehaviour> ();
 
-			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetFields ();
+			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (scripts [0].GetType ()).GetType ().GetFields ();
 
 
 
 			foreach (FieldInfo fi in fieldInfoGet) {
 				if (fi.Name.Equals (entry.fieldName)) {
-					UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (scripts[0].GetType ());
+					UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (scripts [0].GetType ());
 					object target = fi.GetValue (ob);
 					//return IsValueEqual (entry.fieldValue, target, entry.fieldOperator);
 					//return Compare(entry.fieldOperator, (fi.GetType ()) target, (object) entry.fieldValue);
@@ -202,12 +202,12 @@ namespace ummisco.gama.unity.topics
 			List<object> keyList = new List<object> (data.Keys);
 			object obj = data [keyList.ElementAt (0)];
 
-			FieldInfo[] fieldInfoSet = targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetFields ();
+			FieldInfo[] fieldInfoSet = targetGameObject.GetComponent (scripts [0].GetType ()).GetType ().GetFields ();
 
 			foreach (KeyValuePair<object, object> pair in data) {
 				foreach (FieldInfo fi in fieldInfoSet) {
 					if (fi.Name.Equals (pair.Key.ToString ())) {
-						UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (scripts[0].GetType ());
+						UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (scripts [0].GetType ());
 						fi.SetValue (ob, (Convert.ChangeType (pair.Value, fi.FieldType)));
 					}
 				}

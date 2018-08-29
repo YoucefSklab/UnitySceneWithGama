@@ -8,8 +8,7 @@ namespace ummisco.gama.unity.notification
 {
 	public class NotificationEntry
 	{
-
-
+		
 		public string notificationId { get; set; }
 
 		public string objectName { get; set; }

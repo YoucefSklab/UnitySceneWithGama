@@ -18,6 +18,7 @@ using System.IO;
 using System.Reflection;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using ummisco.gama.unity.notification;
 
 
 public class PlayerController : MonoBehaviour
@@ -32,9 +33,6 @@ public class PlayerController : MonoBehaviour
 	private Rigidbody rb;
 	public int count;
 
-
-
-	public GameObject testObject;
 	public Shader shader;
 	public Texture texture;
 	public Color color;
@@ -52,6 +50,16 @@ public class PlayerController : MonoBehaviour
 		//MqttSetting.allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 		//gamaManager = gama.getGameObjectByName ("GamaManager");
 		Console.WriteLine ("test");
+
+
+
+
+
+
+
+
+
+
 
 
 		/*
@@ -141,11 +149,26 @@ public class PlayerController : MonoBehaviour
 		*/
 
 	
-
-
+		EventTrigger myEventTrigger = GetComponent<EventTrigger> (); //you need to have an EventTrigger component attached this gameObject
+		myEventTrigger.AddListener (EventTriggerType.Move, OnMoveEvent);
 
 	}
 
+
+	public void OnMoveEvent(AxisEventData data)
+	{
+		Debug.Log("OnMove called.");
+	}
+
+	public void OnDragEventExample()
+	{
+		Debug.Log("OnMove called.");
+	}
+
+	void onClickListener (PointerEventData eventData)
+	{
+		Debug.Log("onClickListener called.");
+	}
 
 	public Vector3 parseVector3(string sourceString) {
 
@@ -211,16 +234,7 @@ public class PlayerController : MonoBehaviour
 
 			gamaManager.SendMessage ("sendGotBoxMsg");
 		}
-		/*
-		testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		testObject.name = "TestGameObject";
-		//Add Components
-		testObject.AddComponent<Rigidbody>();
-		testObject.AddComponent<BoxCollider>();
-		color = Tools.stringToColor ("black");
-		Renderer rend = testObject.GetComponent<Renderer>();
-		rend.material.color = color;
-	  */
+
 	}
 
 

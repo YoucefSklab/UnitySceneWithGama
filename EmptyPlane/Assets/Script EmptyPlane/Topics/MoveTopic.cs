@@ -46,69 +46,43 @@ namespace ummisco.gama.unity.topics
 
 			rb = targetGameObject.GetComponent<Rigidbody> ();
 
-			if (targetGameObject != null) {
+			XmlNode[] positionNode = (XmlNode[])topicMessage.position;
+			Vector3 movement = ConvertType.vector3FromXmlNode (positionNode, MqttSetting.GAMA_POINT);
 
-				XmlNode[] node = (XmlNode[])topicMessage.position;
-
-				Dictionary<object, object> dataDictionary = new Dictionary<object, object> ();
-
-				for (int i = 1; i < node.Length; i++) {
-					XmlElement elt = (XmlElement)node.GetValue (i);
-					XmlNodeList list = elt.ChildNodes;
-
-					object atr = "";
-					object vl = "";
-
-					foreach (XmlElement item in list) {
-						if (item.Name.Equals ("attribute")) {
-							atr = item.InnerText;
-
-						}
-						if (item.Name.Equals ("value")) {
-							vl = item.InnerText;
-						}
-					}
-					dataDictionary.Add (atr, vl);
-				}
-
-				sendTopic (dataDictionary, topicMessage.speed);
-			} 
+			sendTopic (movement);
+	
 		}
 
 		// The method to call Game Objects methods
 		//----------------------------------------
-		public void sendTopic (Dictionary<object, object> data, int speed)
+		public void sendTopic (Vector3 movement )
 		{
-			int size = data.Count;
-			List<object> keyList = new List<object> (data.Keys);
-			float x, y, z; 
 
-			x = float.Parse ((string)data [keyList.ElementAt (0)], CultureInfo.InvariantCulture.NumberFormat);
-			y = float.Parse ((string)data [keyList.ElementAt (1)], CultureInfo.InvariantCulture.NumberFormat);
-			z = float.Parse ((string)data [keyList.ElementAt (2)], CultureInfo.InvariantCulture.NumberFormat);
-		
-			//	Debug.Log ("Move to  (X=" + x + ",Y=" + y + ",Z=" + z + ") position!");
+			if (topicMessage.smoothMove) {
+				smoothMoveToPosition (movement, topicMessage.speed);
+			} else {
+				freeMoveToPosition (movement, topicMessage.speed);
+			}
 
-			Debug.Log ("Move to  (X=" + x + ",Y=" + y + ",Z=" + z + ") with speed "+speed );
 
-			moveToPosition ((float)x, (float)y, (float)z, speed);
 		}
 
 
-		public void moveToPosition (float xDir, float yDir, float zDir, int speed)
+		public void freeMoveToPosition (Vector3 position, int speed)
+		{
+			rb.AddForce (position * speed);
+		}
+
+		public void smoothMoveToPosition (Vector3 position, int speed)
 		{
 
 			//Store start position to move from, based on objects current transform position.
 			Vector3 start = targetGameObject.transform.position;
 
 			// Calculate end position based on the direction parameters passed in when calling Move.
-			Vector3 end = start + new Vector3 (xDir, yDir, zDir);
+			Vector3 end = start + position;
 
-			Vector3 movement = new Vector3 (xDir, yDir, zDir);
-
-			rb.AddForce (movement * speed);
-
-			//StartCoroutine (SmoothMovement (end, speed));
+			StartCoroutine (SmoothMovement (end, speed));
 		}
 
 		//Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
@@ -121,11 +95,11 @@ namespace ummisco.gama.unity.topics
 			Debug.Log ("Before Moving and it remains " + sqrRemainingDistance.ToString ());
 			Debug.Log ("inverseMoveTime is " + inverseMoveTime);
 
-		
+
 			inverseMoveTime = 100f;
 
-			//While that distance is greater than a very small amount (Epsilon, almost zero):
-			while (sqrRemainingDistance > float.Epsilon) {
+			//While that distance is greater than a very small amount (Epsilon, almost 
+			while (sqrRemainingDistance > 0.1f) {
 				//Find a new position proportionally closer to the end, based on the moveTime
 				//Vector3 newPostion = Vector3.MoveTowards (rb.position, end, inverseMoveTime * Time.deltaTime);
 				Vector3 newPostion = Vector3.MoveTowards (rb.position, end, speed * Time.deltaTime);
@@ -137,14 +111,20 @@ namespace ummisco.gama.unity.topics
 
 				//Recalculate the remaining distance after moving.
 				sqrRemainingDistance = (transform.position - end).sqrMagnitude;
-				Debug.Log ("Stillll Moving and it remains " + sqrRemainingDistance.ToString ());
+				Debug.Log ("Still Moving and it remains " + sqrRemainingDistance.ToString ());
 				//Return and loop until sqrRemainingDistance is close enough to zero to end the function
 				yield return null;
 			}
 
+			rb.position = end;
+			rb.velocity = Vector3.zero;
+			rb.angularVelocity = Vector3.zero;
+
 
 			Debug.Log ("Good! end distination is reached");
 		}
+
+
 
 		public override void setAllProperties (object args)
 		{

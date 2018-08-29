@@ -101,22 +101,8 @@ namespace ummisco.gama.unity.topics
 			XmlNode[] colorNode = (XmlNode[])topicMessage.color;
 			objectColor = ConvertType.rgbColorFromXmlNode (colorNode, MqttSetting.GAMA_RGB_COLOR);
 
-			//Add Components to the Game Object
-			//---------------------------------
-			//newObject.AddComponent<Rigidbody>();
-			//testObject.AddComponent<MeshFilter>(); // already added by creation
-			//testObject.AddComponent<MeshRenderer>(); // already added when created
-			//newObject.AddComponent<BoxCollider>();
-			//objectColor = ConvertType.stringToColor (color);
-
-
 			Renderer rend = newObject.GetComponent<Renderer>();
-			//rend.material = new Material(Shader.Find("Player"));
-			//Renderer rend = GetComponent<Renderer>();
-			//rend.material = new Material(shader);
-			//rend.material.mainTexture = texture;
 			rend.material.color = objectColor;
-
 
 
 			Debug.Log ("The color is "+objectColor.ToString ());

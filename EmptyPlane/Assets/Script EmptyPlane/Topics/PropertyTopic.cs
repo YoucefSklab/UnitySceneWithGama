@@ -111,30 +111,6 @@ namespace ummisco.gama.unity.topics
 
 
 
-		public Vector3 parseVector3(string sourceString) {
-
-			string outString;
-			Vector3 outVector3;
-			string[] splitString;//= new Array();
-
-			// Trim extranious parenthesis
-
-			outString = sourceString.Substring(1, sourceString.Length - 2);
-
-			// Split delimted values into an array
-
-			splitString = outString.Split("," [0]);
-
-			// Build new Vector3 from array elements
-
-			outVector3.x = float.Parse(splitString[0]);
-			outVector3.y = float.Parse(splitString[1]);
-			outVector3.z = float.Parse(splitString[2]);
-
-			return outVector3;
-
-		}
-
 	}
 
 }
