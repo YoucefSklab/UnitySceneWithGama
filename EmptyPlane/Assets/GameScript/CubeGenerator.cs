@@ -109,7 +109,7 @@ public class CubeGenerator : MonoBehaviour {
 
 		if (isMove) {
 			//transform.position = new Vector3 (moveHorizontal+3, 0.0f, moveVertical+4);
-			moveToPosition (moveHorizontal+3,  0.0f, moveVertical+9, 10);
+			moveToPosition (moveHorizontal+20,  0.0f, moveVertical+18, 10);
 			isMove = false;
 		}
 
@@ -169,6 +169,8 @@ public class CubeGenerator : MonoBehaviour {
 
 			//Call MovePosition on attached Rigidbody2D and move it to the calculated position.
 			rb.MovePosition (newPostion);
+
+			Debug.DrawLine(transform.position, newPostion, Color.yellow, 0.2f, true);
 
 			//Recalculate the remaining distance after moving.
 			sqrRemainingDistance = (transform.position - end).sqrMagnitude;

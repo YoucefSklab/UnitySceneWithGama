@@ -8,6 +8,7 @@ using System.Linq;
 using System;
 using System.Xml;
 using ummisco.gama.unity.notification;
+using System.Xml.Linq;
 
 
 
@@ -34,41 +35,49 @@ namespace ummisco.gama.unity.topics
 		// Update is called once per frame
 		public override void Update ()
 		{
+
+
 			if (NotificationRegistry.notificationsList.Count >= 1) {
-
-
-
 
 				foreach (NotificationEntry el in NotificationRegistry.notificationsList) {
 
-					switch (el.fieldType) {
-
-					case "field":
-						//Debug.Log ("Field notification");
-						if (isNotification (el)) {
-							//Debug.Log ("------->>  Yes you have to send notification");
-							el.notify = true;
-						} else {
-							//Debug.Log ("------->>  Sorry, No need to send notification");
-						}
-						break;
-					case "property":
-
-						//Debug.Log ("Property notification");
-						break;
-					default:
+					if (!el.notify && !el.isSent) {
 					
-						break;
+						switch (el.fieldType) {
+
+						case "field":
+							Debug.Log ("Check for field notification");
+							if (isFieldNotification (el)) {
+								Debug.Log ("------->>  Yes you have to send  a field notification");
+								el.notify = true;
+							} else {
+								
+								//Debug.Log ("------->>  Sorry, No need to send notification");
+							}
+							break;
+						case "property":
+
+							Debug.Log ("Check for propety notification with id: "+el.notificationId + " and name : "+el.fieldName);
+
+							if (isPropertyNotification (el)) {
+								Debug.Log ("------->>  Yes you have to send a property notification");
+								el.notify = true;
+							} else {
+
+								//Debug.Log ("------->>  Sorry, No need to send notification");
+							}
+
+							//Debug.Log ("Property notification");
+							break;
+						default:
+						
+							break;
+						}
+					} else {
+						if (!el.isSent)
+							Debug.Log ("Notification " + el.notificationId + " should have been sent!");
 					}
-
-					//	Debug.Log ("Game Object: " + el.objectName);
-					//	Debug.Log ("Field Name: " + el.fieldName);
-					//	Debug.Log ("Field Type: " + el.fieldType);
-					//	Debug.Log ("FIeld Value: " + el.fieldValue);
-					//	Debug.Log ("Field Operator: " + el.fieldOperator);
 				}
-
-
 			}
 		}
 
@@ -84,7 +93,11 @@ namespace ummisco.gama.unity.topics
 		
 		}
 
-		public Boolean isNotification (NotificationEntry entry)
+
+
+
+
+		public Boolean isFieldNotification (NotificationEntry entry)
 		{
 
 			GameObject targetGameObject = getGameObjectByName (entry.objectName);
@@ -96,27 +109,57 @@ namespace ummisco.gama.unity.topics
 			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (scripts [0].GetType ()).GetType ().GetFields ();
 
 
-
 			foreach (FieldInfo fi in fieldInfoGet) {
 				if (fi.Name.Equals (entry.fieldName)) {
 					UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (scripts [0].GetType ());
 					object target = fi.GetValue (ob);
 				
-					//	Debug.Log ("-------------->>>> The Operator" + entry.fieldOperator);
-					//	Debug.Log ("-------------->>>> The field value" + fi.GetValue (ob));
-					//	Debug.Log ("-------------->>>> The field introduced value " + entry.fieldValue);
+					Debug.Log ("-------------->>>> The field name: " + entry.fieldName);
+					//Debug.Log ("-------------->>>> The field type: " + entry.fieldType);
+					//Debug.Log ("-------------->>>> The Operator: " + entry.fieldOperator);
+					//Debug.Log ("-------------->>>> The current field value: " + fi.GetValue (ob));
+					//Debug.Log ("-------------->>>> The field introduced value: " + entry.fieldValue);
 
-					switch (fi.FieldType.ToString ()) {
-					case "System.Int32":
-						return Compare<System.Int32> (entry.fieldOperator, (System.Int32)
-							Convert.ChangeType (fi.GetValue (ob), fi.FieldType), 
-							(System.Int32)Convert.ChangeType (entry.fieldValue, fi.FieldType));
-						break;
-					default:
+					XmlNode[] node = (XmlNode[])entry.fieldValue;
 
-						break;
+					foreach (XmlNode n in node) {
+						if (n is XmlText) {
+
+							switch (fi.FieldType.ToString ()) {
+
+							case "System.Int32":
+								return Compare<System.Int32> (entry.fieldOperator, (System.Int32)
+									Convert.ChangeType (fi.GetValue (ob), fi.FieldType), 
+									(System.Int32)Convert.ChangeType (n.Value, fi.FieldType));
+							case "System.Double":
+								return Compare<System.Double> (entry.fieldOperator, (System.Double)
+									Convert.ChangeType (fi.GetValue (ob), fi.FieldType), 
+									(System.Double)Convert.ChangeType (n.Value, fi.FieldType));
+							case "System.Boolean":
+								return Compare<System.Boolean> (entry.fieldOperator, (System.Boolean)
+									Convert.ChangeType (fi.GetValue (ob), fi.FieldType), 
+									(System.Boolean)Convert.ChangeType (n.Value, fi.FieldType));
+							case "System.String":
+								return Compare<System.String> (entry.fieldOperator, (System.String)
+									Convert.ChangeType (fi.GetValue (ob), fi.FieldType), 
+									(System.String)Convert.ChangeType (n.Value, fi.FieldType));
+							case "System.Char":
+								return Compare<System.Char> (entry.fieldOperator, (System.Char)
+									Convert.ChangeType (fi.GetValue (ob), fi.FieldType), 
+									(System.Char)Convert.ChangeType (n.Value, fi.FieldType));
+
+							default:
+
+								break;
+
+							}
+						}
+
+					
 
 					}
+
+		
 
 
 
@@ -131,35 +174,66 @@ namespace ummisco.gama.unity.topics
 		}
 
 
-		public Boolean isNotification2 (NotificationEntry entry)
+
+
+
+
+
+		public Boolean isPropertyNotification (NotificationEntry entry)
 		{
-
+			
 			GameObject targetGameObject = getGameObjectByName (entry.objectName);
-			scripts = targetGameObject.GetComponents<MonoBehaviour> ();
+			Component[] cs = (Component[])targetGameObject.GetComponents (typeof(Component));
 
-			FieldInfo[] fieldInfoGet = targetGameObject.GetComponent (scripts [0].GetType ()).GetType ().GetFields ();
+			Debug.Log ("Check in isPropertyNotification for propety notification");
+			if(entry.fieldName.Equals ("position")) //TODO: to review this and make it work with  all king of properties 
+			{
+				XmlNode[] node = (XmlNode[])entry.fieldValue;
+				Vector3 vect = ConvertType.vector3FromXmlNode (node, MqttSetting.GAMA_POINT);
 
+				Vector3 propValue = (Vector3)targetGameObject.transform.position;
+				Debug.Log ("Return - > "+CompareVector3 (entry.fieldOperator, vect, propValue)+ "v1 = "+vect+ " v2 = " +propValue);
+				return CompareVector3 (entry.fieldOperator, vect, propValue);
 
-
-			foreach (FieldInfo fi in fieldInfoGet) {
-				if (fi.Name.Equals (entry.fieldName)) {
-					UnityEngine.Component ob = (UnityEngine.Component)targetGameObject.GetComponent (scripts [0].GetType ());
-					object target = fi.GetValue (ob);
-					//return IsValueEqual (entry.fieldValue, target, entry.fieldOperator);
-					//return Compare(entry.fieldOperator, (fi.GetType ()) target, (object) entry.fieldValue);
-
-					//return Compare<int>(entry.fieldOperator, (int) Convert.ChangeType (entry.fieldValue, int), (int) Convert.ChangeType (entry.fieldValue, int)); 
-					//, (fi.GetType ()) target, (object) entry.fieldValue);
-
-					//	object propValue = Convert.ChangeType (val, par.ParameterType);
-					//msgReplay = fi.GetValue (ob).ToString ();
-					return Compare<int> (entry.fieldOperator, 12, 12); 
-
-				}
 			}
 
+		// Do not delete
+		/* 
+			foreach (Component c in cs) {
+				Debug.Log ("+++ >> name: " + c.name + " type: " + c.GetType () + " basetype: " + c.GetType ().BaseType);
+				PropertyInfo propertyInfo = c.GetType ().GetProperty (entry.fieldName);
 
+				PropertyInfo[] propertyI = c.GetType ().GetProperties ();
 
+				foreach (PropertyInfo p in propertyI) {
+					Debug.Log ("+++ Property name is : " + p.Name);
+
+				}
+				if (propertyInfo != null) {
+					System.Object obj = (System.Object)c;
+					Debug.Log ("Name +++++++++++  >>>> " + propertyInfo.Name);
+					if (propertyInfo.PropertyType.Equals (typeof(Vector3))) {
+
+						XmlNode[] node = (XmlNode[])entry.fieldValue;
+
+						Vector3 vect = ConvertType.vector3FromXmlNode (node, MqttSetting.GAMA_POINT);
+
+						Debug.Log ("Check for -++++++++++++++++>   " + vect);
+
+						Vector3 propValue = (Vector3)propertyInfo.GetValue (obj, new object[] { 0 });
+
+						return CompareVector3 (entry.fieldOperator, vect, propValue);
+					} else {
+
+						//propetyValue = Convert.ChangeType (entry.fieldValue, propertyInfo.PropertyType);
+
+					}
+
+				} else {
+					//Debug.Log ("------->>   Sorry. Property doesn't exist : "+property +" and component is "+ c.name);
+				}
+			}
+		*/
 			return false;
 		}
 
@@ -182,6 +256,31 @@ namespace ummisco.gama.unity.topics
 				return x.CompareTo (y) < 0;
 			case "<=":
 				return x.CompareTo (y) <= 0;
+			default:
+				return false;
+			}
+		}
+
+
+
+		public static bool CompareVector3 (string op, Vector3 v1, Vector3 v2)
+		{
+
+			Debug.Log ("Check in CompareVector3 for propety notification");
+			
+			switch (op) {
+			case "==":
+				return v1.x.CompareTo (v2.x) == 0;
+			case "!=":
+				return v1.x.CompareTo (v2.x) != 0;
+			case ">":
+				return v1.x.CompareTo (v2.x) > 0;
+			case ">=":
+				return v1.x.CompareTo (v2.x) >= 0;
+			case "<":
+				return v1.x.CompareTo (v2.x) < 0;
+			case "<=":
+				return v1.x.CompareTo (v2.x) <= 0;
 			default:
 				return false;
 			}

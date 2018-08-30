@@ -88,6 +88,46 @@ namespace ummisco.gama.unity.utils
 		}
 
 
+
+
+		public static object valueFromXmlNode (XmlNode[] node, string fieldName)
+		{
+			float X = 0;
+			float Y = 0;
+			float Z = 0;
+			Boolean itExist = false;
+
+	
+
+			foreach (XmlNode n in node) {
+
+
+			
+
+				if (n.Value == fieldName) {
+					itExist = true;
+				}
+
+				if (n.Name == "x") {
+					X = float.Parse (n.InnerText); // convert the strings to float and apply to the Y variable.
+				}
+				if (n.Name == "y") {
+					Y = float.Parse (n.InnerText); // convert the strings to float and apply to the Y variable.
+				}
+				if (n.Name == "z") {
+					Z = float.Parse (n.InnerText); // convert the strings to float and apply to the Y variable.
+				}
+
+			}
+
+			if (itExist) {
+				return new Vector3 (X, Y, Z);
+			} else {
+				return new Vector3 (0, 0, 0);
+			}
+		}
+
+
 		public static Color rgbColorFromXmlNode (XmlNode[] node, string fieldName)
 		{
 			int red = 0;

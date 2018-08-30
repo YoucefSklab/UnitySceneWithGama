@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
 
 
 
+	//	Debug.DrawLine(new Vector3(-3,0,-3), new Vector3(3,0,3), Color.green, 20, false);
 
 
 

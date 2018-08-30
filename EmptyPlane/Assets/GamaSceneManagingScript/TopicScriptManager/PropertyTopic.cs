@@ -37,10 +37,7 @@ namespace ummisco.gama.unity.topics
 		public void ProcessTopic (object obj)
 		{
 			setAllProperties (obj);
-			if (targetGameObject != null) {
-
-				sendTopic ();
-			} 
+			sendTopic ();
 		}
 
 

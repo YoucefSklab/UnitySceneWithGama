@@ -51,7 +51,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\CubeGenerator.cs" />
      <Compile Include="Assets\GamaSceneManagingScript\Messaging\ColorTopicMessage.cs" />
      <Compile Include="Assets\GamaSceneManagingScript\Messaging\CreateTopicMessage.cs" />
      <Compile Include="Assets\GamaSceneManagingScript\Messaging\DestroyTopicMessage.cs" />
@@ -90,6 +89,7 @@
      <Compile Include="Assets\GamaSceneManagingScript\Utils\GamaMethods.cs" />
      <Compile Include="Assets\GamaSceneManagingScript\Utils\MqttSetting.cs" />
      <Compile Include="Assets\GameScript\CameraController.cs" />
+     <Compile Include="Assets\GameScript\CubeGenerator.cs" />
      <Compile Include="Assets\GameScript\EventTrigger.cs" />
      <Compile Include="Assets\GameScript\MovingObject.cs" />
      <Compile Include="Assets\GameScript\PlayerController.cs" />

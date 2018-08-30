@@ -45,8 +45,6 @@ public class GamaManager : MonoBehaviour
 	public GameObject topicGameObject = null;
 	public object[] obj = null;
 
-	public Boolean notificationSent = false;
-
 	public List<GameObject> objectsList = new List<GameObject> ();
 
 	public GameObject setTopicManager, getTotpicManager, moveTopicManager, notificationTopicManager;
@@ -74,7 +72,7 @@ public class GamaManager : MonoBehaviour
 
 		gamaManager = gameObject;
 
-		notificationSent = false;
+
 
 		// Create the Topic's manager GameObjects
 		new GameObject (MqttSetting.COLOR_TOPIC_MANAGER).AddComponent<ColorTopic> ();
@@ -446,12 +444,14 @@ public class GamaManager : MonoBehaviour
 	{
 		if (NotificationRegistry.notificationsList.Count >= 1) {
 			foreach (NotificationEntry el in NotificationRegistry.notificationsList) {
-				if (!notificationSent) // TODO Implement a mecanism of notification frequency! 
-				if (el.notify) {
-					string msg = getReplayNotificationMessage (el);
-					publishMessage (msg, MqttSetting.NOTIFY_MSG);
-					el.notify = false;
-					notificationSent = true;
+				if (!el.isSent) { // TODO Implement a mecanism of notification frequency! 
+					if (el.notify) {
+						string msg = getReplayNotificationMessage (el);
+						publishMessage (msg, MqttSetting.NOTIFY_MSG);
+						el.notify = false;
+						el.isSent = true;
+						Debug.Log ("------------------>>>>  Notification "+el.notificationId+ " is sent");
+					}
 				}
 			}
 		}	

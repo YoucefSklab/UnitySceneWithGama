@@ -17,7 +17,7 @@ namespace ummisco.gama.unity.notification
 
 		public string fieldName { get; set; }
 
-		public string fieldValue { get; set; }
+		public object fieldValue { get; set; }
 
 		public string fieldOperator { get; set; }
 
@@ -25,7 +25,9 @@ namespace ummisco.gama.unity.notification
 
 		public Boolean notify  { get; set; }
 
-		public NotificationEntry (string notificationId, string objectName, string fieldType, string fieldName, string fieldValue, string fieldOperator, string agentId)
+		public Boolean isSent  { get; set; }
+
+		public NotificationEntry (string notificationId, string objectName, string fieldType, string fieldName, object fieldValue, string fieldOperator, string agentId)
 		{
 			this.notificationId = notificationId;
 			this.objectName = objectName;
@@ -35,6 +37,7 @@ namespace ummisco.gama.unity.notification
 			this.fieldOperator = fieldOperator;
 			this.agentId = agentId;
 			this.notify = false;
+			this.isSent = false;
 		}
 
 		public NotificationEntry ()
