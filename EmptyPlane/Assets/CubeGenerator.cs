@@ -155,9 +155,7 @@ public class CubeGenerator : MonoBehaviour {
 		//Square magnitude is used instead of magnitude because it's computationally cheaper.
 		float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 
-		Debug.Log ("Before Moving and it remains " + sqrRemainingDistance.ToString ());
-		Debug.Log ("inverseMoveTime is " + inverseMoveTime);
-
+	
 
 		inverseMoveTime = 100f;
 
@@ -168,14 +166,13 @@ public class CubeGenerator : MonoBehaviour {
 			//Vector3 newPostion = Vector3.MoveTowards (rb.position, end, inverseMoveTime * Time.deltaTime);
 			Vector3 newPostion = Vector3.MoveTowards (rb.position, end, speed * Time.deltaTime);
 
-			Debug.Log ("New position is " + newPostion.ToString ());
 
 			//Call MovePosition on attached Rigidbody2D and move it to the calculated position.
 			rb.MovePosition (newPostion);
 
 			//Recalculate the remaining distance after moving.
 			sqrRemainingDistance = (transform.position - end).sqrMagnitude;
-			Debug.Log ("Stillll Moving and it remains " + sqrRemainingDistance.ToString ());
+
 			//Return and loop until sqrRemainingDistance is close enough to zero to end the function
 			yield return null;
 		}
@@ -185,7 +182,7 @@ public class CubeGenerator : MonoBehaviour {
 		rb.angularVelocity = Vector3.zero;
 
 
-		Debug.Log ("Good! end distination is reached");
+
 	}
 
 }

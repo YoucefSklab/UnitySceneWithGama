@@ -92,10 +92,6 @@ namespace ummisco.gama.unity.topics
 			//Square magnitude is used instead of magnitude because it's computationally cheaper.
 			float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 
-			Debug.Log ("Before Moving and it remains " + sqrRemainingDistance.ToString ());
-			Debug.Log ("inverseMoveTime is " + inverseMoveTime);
-
-
 			inverseMoveTime = 100f;
 
 			//While that distance is greater than a very small amount (Epsilon, almost 
@@ -104,24 +100,23 @@ namespace ummisco.gama.unity.topics
 				//Vector3 newPostion = Vector3.MoveTowards (rb.position, end, inverseMoveTime * Time.deltaTime);
 				Vector3 newPostion = Vector3.MoveTowards (rb.position, end, speed * Time.deltaTime);
 
-				Debug.Log ("New position is " + newPostion.ToString ());
 
 				//Call MovePosition on attached Rigidbody2D and move it to the calculated position.
 				rb.MovePosition (newPostion);
 
 				//Recalculate the remaining distance after moving.
 				sqrRemainingDistance = (transform.position - end).sqrMagnitude;
-				Debug.Log ("Still Moving and it remains " + sqrRemainingDistance.ToString ());
+
 				//Return and loop until sqrRemainingDistance is close enough to zero to end the function
 				yield return null;
 			}
-
-			rb.position = end;
+			Debug.Log ("Position Set! ");
 			rb.velocity = Vector3.zero;
-			rb.angularVelocity = Vector3.zero;
+			rb.transform.position = end;
+			//rb.angularVelocity = Vector3.zero;
+			//rb.Sleep ();
 
 
-			Debug.Log ("Good! end distination is reached");
 		}
 
 

@@ -983,6 +983,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040da45b46cb64c75bd3e9878f5321a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inverseMoveTime: 0
+  moveTime: 10000.1
 --- !u!1001 &513414999
 Prefab:
   m_ObjectHideFlags: 0
