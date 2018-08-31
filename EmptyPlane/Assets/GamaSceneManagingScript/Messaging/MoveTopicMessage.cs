@@ -11,7 +11,7 @@ namespace ummisco.gama.unity.messages
 
 
 		public object position { set; get; }
-		public int speed { set; get; }
+		public float speed { set; get; }
 		public bool smoothMove { set; get; }
 
 		public MoveTopicMessage()
@@ -19,7 +19,7 @@ namespace ummisco.gama.unity.messages
 
 		}
 
-		public MoveTopicMessage (string unread, string sender, string receivers, string contents, string emissionTimeStamp, string objectName, object position, int speed, bool smoothMove) : base (unread, sender, receivers, contents, objectName, emissionTimeStamp)
+		public MoveTopicMessage (string unread, string sender, string receivers, string contents, string emissionTimeStamp, string objectName, object position, float speed, bool smoothMove) : base (unread, sender, receivers, contents, objectName, emissionTimeStamp)
 		{
 			this.position = position;
 			this.speed = speed;

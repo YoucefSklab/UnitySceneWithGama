@@ -150,6 +150,13 @@ public class GamaManager : MonoBehaviour
 				obj = new object[]{ monoFreeTopicMessage, targetGameObject };
 
 				topicGameObject = getGameObjectByName (MqttSetting.MONO_FREE_TOPIC_MANAGER);
+
+				if (targetGameObject == null) {
+					Debug.Log (" Sorry, requested gameObject is null ("+monoFreeTopicMessage.objectName+"). Please check you code! ");
+					break;
+				}
+					
+
 				topicGameObject.GetComponent (MqttSetting.MONO_FREE_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				//------------------------------------------------------------------------------
 				break;
@@ -162,6 +169,12 @@ public class GamaManager : MonoBehaviour
 				obj = new object[]{ multipleFreetopicMessage, targetGameObject };
 
 				topicGameObject = getGameObjectByName (MqttSetting.MULTIPLE_FREE_TOPIC_MANAGER);
+
+
+				if (targetGameObject == null) {
+					Debug.Log (" Sorry, requested gameObject is null ("+multipleFreetopicMessage.objectName+"). Please check you code! ");
+					break;
+				}
 
 				topicGameObject.GetComponent (MqttSetting.MULTIPLE_FREE_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				//------------------------------------------------------------------------------
@@ -177,6 +190,11 @@ public class GamaManager : MonoBehaviour
 
 				topicGameObject = getGameObjectByName (MqttSetting.POSITION_TOPIC_MANAGER);
 
+				if (targetGameObject == null) {
+					Debug.Log (" Sorry, requested gameObject is null ("+positionTopicMessage.objectName+"). Please check you code! ");
+					break;
+				}
+
 				topicGameObject.GetComponent (MqttSetting.POSITION_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				//------------------------------------------------------------------------------
 				break;
@@ -190,6 +208,11 @@ public class GamaManager : MonoBehaviour
 
 				topicGameObject = getGameObjectByName (MqttSetting.MOVE_TOPIC_MANAGER);
 
+				if (targetGameObject == null) {
+					Debug.Log (" Sorry, requested gameObject is null ("+moveTopicMessage.objectName+"). Please check you code! ");
+					break;
+				}
+
 				topicGameObject.GetComponent (MqttSetting.MOVE_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				//------------------------------------------------------------------------------
 				break;
@@ -202,6 +225,11 @@ public class GamaManager : MonoBehaviour
 				obj = new object[]{ colorTopicMessage, targetGameObject };
 
 				topicGameObject = getGameObjectByName (MqttSetting.COLOR_TOPIC_MANAGER);
+
+				if (targetGameObject == null) {
+					Debug.Log (" Sorry, requested gameObject is null ("+colorTopicMessage.objectName+"). Please check you code! ");
+					break;
+				}
 
 				topicGameObject.GetComponent (MqttSetting.COLOR_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 		
@@ -217,6 +245,12 @@ public class GamaManager : MonoBehaviour
 
 
 				topicGameObject = getGameObjectByName (MqttSetting.GET_TOPIC_MANAGER);
+
+				if (targetGameObject == null) {
+					Debug.Log (" Sorry, requested gameObject is null ("+getTopicMessage.objectName+"). Please check you code! ");
+					break;
+				}
+
 				obj = new object[]{ getTopicMessage, targetGameObject, value };
 			
 				topicGameObject.GetComponent (MqttSetting.GET_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
@@ -229,7 +263,17 @@ public class GamaManager : MonoBehaviour
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.SET_TOPIC);
 
 				SetTopicMessage setTopicMessage = (SetTopicMessage)msgDes.deserialization (receivedMsg, new SetTopicMessage ());
+				Debug.Log ("-> Target game object name: " + setTopicMessage.objectName);
+				Debug.Log ("-> Message: " + receivedMsg);
 				targetGameObject = getGameObjectByName (setTopicMessage.objectName);
+
+
+
+				if (targetGameObject == null) {
+					Debug.Log (" Sorry, requested gameObject is null ("+setTopicMessage.objectName+"). Please check you code! ");
+					break;
+				}
+
 				obj = new object[]{ setTopicMessage, targetGameObject };
 
 				topicGameObject = getGameObjectByName (MqttSetting.SET_TOPIC_MANAGER);
@@ -241,11 +285,22 @@ public class GamaManager : MonoBehaviour
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.PROPERTY_TOPIC);
 
+
+
 				PropertyTopicMessage propertyTopicMessage = (PropertyTopicMessage)msgDes.deserialization (receivedMsg, new PropertyTopicMessage ());
+				Debug.Log ("-> Target game object name: " + propertyTopicMessage.objectName);
 				targetGameObject = getGameObjectByName (propertyTopicMessage.objectName);
+				topicGameObject = getGameObjectByName (MqttSetting.PROPERTY_TOPIC_MANAGER);
+
+
+				if (targetGameObject == null) {
+					Debug.Log (" Sorry, requested gameObject is null ("+propertyTopicMessage.objectName+"). Please check you code! ");
+					break;
+				}
+
 				obj = new object[]{ propertyTopicMessage, targetGameObject };
 
-				topicGameObject = getGameObjectByName (MqttSetting.PROPERTY_TOPIC_MANAGER);
+
 
 				topicGameObject.GetComponent (MqttSetting.PROPERTY_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				//------------------------------------------------------------------------------
@@ -254,11 +309,18 @@ public class GamaManager : MonoBehaviour
 			case MqttSetting.CREATE_TOPIC:
 				//------------------------------------------------------------------------------
 				Debug.Log ("-> Topic to deal with is : " + MqttSetting.CREATE_TOPIC);
-
+				Debug.Log ("-> Message: " + receivedMsg);
 				CreateTopicMessage createTopicMessage = (CreateTopicMessage)msgDes.deserialization (receivedMsg, new CreateTopicMessage ());
 				obj = new object[]{ createTopicMessage };
 
 				topicGameObject = getGameObjectByName (MqttSetting.CREATE_TOPIC_MANAGER);
+
+
+				if (topicGameObject == null) {
+					Debug.Log (" Sorry, requested gameObject is null ("+createTopicMessage.objectName+"). Please check you code! ");
+					break;
+				}
+
 
 				topicGameObject.GetComponent (MqttSetting.CREATE_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				//------------------------------------------------------------------------------
@@ -272,6 +334,13 @@ public class GamaManager : MonoBehaviour
 
 				topicGameObject = getGameObjectByName (MqttSetting.DESTROY_TOPIC_MANAGER);
 
+
+				if (topicGameObject == null) {
+					Debug.Log (" Sorry, requested gameObject is null ("+destroyTopicMessage.objectName+"). Please check you code! ");
+					break;
+				}
+
+
 				topicGameObject.GetComponent (MqttSetting.DESTROY_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 				//------------------------------------------------------------------------------
 				break;
@@ -283,6 +352,12 @@ public class GamaManager : MonoBehaviour
 				obj = new object[]{ notificationTopicMessage };
 
 				topicGameObject = getGameObjectByName (MqttSetting.NOTIFICATION_TOPIC_MANAGER);
+
+
+				if (topicGameObject == null) {
+					Debug.Log (" Sorry, requested gameObject is null ("+notificationTopicMessage.objectName+"). Please check you code! ");
+					break;
+				}
 
 				topicGameObject.GetComponent (MqttSetting.NOTIFICATION_TOPIC_SCRIPT).SendMessage ("ProcessTopic", obj);
 

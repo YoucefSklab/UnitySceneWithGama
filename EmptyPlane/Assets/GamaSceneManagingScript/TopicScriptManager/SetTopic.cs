@@ -134,11 +134,39 @@ namespace ummisco.gama.unity.topics
 
 
 						} else {
-							fi.SetValue (ob, (Convert.ChangeType (pair.Value, fi.FieldType)));
+
+							switch (fi.FieldType.ToString ()) {
+
+							case "System.Int32":
+								Debug.Log ("Its type is 21 ----> :"+fi.FieldType);
+								break;
+							case "System.Double":
+								Debug.Log ("Its type is 22 ----> :"+fi.FieldType);
+								fi.SetValue (ob, (System.Double) pair.Value);
+								break;
+							case "System.Boolean":
+								Debug.Log ("Its type is 23 ----> :"+fi.FieldType);
+								break;
+							case "System.String":
+								Debug.Log ("Its type is 24 ----> :"+fi.FieldType);
+								break;
+							case "System.Char":
+								Debug.Log ("Its type is 25 ----> :"+fi.FieldType);
+								break;
+
+							default:
+
+								break;
+
+							}
+
+
+		
+							//fi.SetValue (ob, (Convert.ChangeType (pair.Value, fi.FieldType)));
 
 						}
 
-						Debug.Log ("Its type is 2 ----> :"+fi.FieldType);
+
 
 
 					//	fi.SetValue (ob, (Convert.ChangeType (pair.Value, fi.FieldType)));

@@ -68,12 +68,12 @@ namespace ummisco.gama.unity.topics
 		}
 
 
-		public void freeMoveToPosition (Vector3 position, int speed)
+		public void freeMoveToPosition (Vector3 position, float speed)
 		{
 			rb.AddForce (position * speed);
 		}
 
-		public void smoothMoveToPosition (Vector3 position, int speed)
+		public void smoothMoveToPosition (Vector3 position, float speed)
 		{
 
 			//Store start position to move from, based on objects current transform position.
@@ -86,7 +86,7 @@ namespace ummisco.gama.unity.topics
 		}
 
 		//Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
-		protected IEnumerator SmoothMovement (Vector3 end, int speed)
+		protected IEnumerator SmoothMovement (Vector3 end, float speed)
 		{
 			//Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter. 
 			//Square magnitude is used instead of magnitude because it's computationally cheaper.

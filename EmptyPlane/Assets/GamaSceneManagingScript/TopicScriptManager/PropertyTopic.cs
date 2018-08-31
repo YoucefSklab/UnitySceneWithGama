@@ -56,23 +56,23 @@ namespace ummisco.gama.unity.topics
 					System.Object obj = (System.Object)c;
 
 					if (propertyInfo.PropertyType.Equals (typeof(Vector3))) {
-
 						XmlNode[] node = (XmlNode[])topicMessage.value;
-
 						Vector3 vect = ConvertType.vector3FromXmlNode (node, MqttSetting.GAMA_POINT);
-						propertyInfo.SetValue(
-							obj, 
-							(object) vect, 
-							null);
+						propertyInfo.SetValue( obj, (object) vect, null);
 					} else {
-						
-						object val =  Convert.ChangeType (topicMessage.value, propertyInfo.PropertyType);
 
-						propertyInfo.SetValue(
-							obj, 
-							val, 
-							null);
+						try{
+							XmlNode[] node = (XmlNode[])topicMessage.value;
+							XmlNode n = node[1];
+							object val =  Convert.ChangeType (n.Value, propertyInfo.PropertyType);
+							propertyInfo.SetValue(obj, val, null);
+						}catch(Exception ex){
+							Debug.Log("Error: Please check the property value conversion - " + ex.Message);
+						}
+					
 					}
+
+
 
 
 				} else {

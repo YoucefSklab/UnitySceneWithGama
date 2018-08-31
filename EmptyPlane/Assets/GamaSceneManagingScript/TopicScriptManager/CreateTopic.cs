@@ -8,6 +8,7 @@ using System.Linq;
 using System;
 using System.Xml;
 using System.Globalization;
+using mmisco.gama.unity.Behaviour;
 
 
 namespace ummisco.gama.unity.topics
@@ -89,6 +90,7 @@ namespace ummisco.gama.unity.topics
 			// Set the name of the game object
 			//--------------------------------
 			newObject.name = topicMessage.objectName;
+			newObject.AddComponent<AgentBehaviour> ();
 
 		
 			// Set the position to the new GameObject

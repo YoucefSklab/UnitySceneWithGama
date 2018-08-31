@@ -27,7 +27,7 @@ namespace Completed
 			animator = GetComponent<Animator> ();
 			
 			//Find the Player GameObject using it's tag and store a reference to its transform component.
-			target = GameObject.FindGameObjectWithTag ("Player").transform;
+			target = GameObject.FindGameObjectWithTag ("Player0").transform;
 			
 			//Call the start function of our base class MovingObject.
 			base.Start ();
