@@ -28,6 +28,8 @@ namespace ummisco.gama.unity.utils
 		// Create Destroy game Objects
 		public const string CREATE_TOPIC_MANAGER = "CreateTopicManager";
 		public const string DESTROY_TOPIC_MANAGER = "DestroyTopicManager";
+		public const string MAIN_TOPIC_MANAGER = "MainTopicManager";
+
 
 
 
@@ -67,7 +69,7 @@ namespace ummisco.gama.unity.utils
 		public const string SCRIPT_PRIFIX = "Controller";
 
 		// Topics' Scripts
-		public const string MAIN_TOPIC_SCRIPT = "GamaManager";
+		public const string GAMA_MANAGER_SCRIPT = "GamaManager";
 		public const string MONO_FREE_TOPIC_SCRIPT = "MonoFreeTopic";
 		public const string MULTIPLE_FREE_TOPIC_SCRIPT = "MultipleFreeTopic";
 		public const string POSITION_TOPIC_SCRIPT = "PositionTopic";
@@ -79,6 +81,7 @@ namespace ummisco.gama.unity.utils
 		public const string NOTIFICATION_TOPIC_SCRIPT = "NotificationTopic";
 		public const string CREATE_TOPIC_SCRIPT = "CreateTopic";
 		public const string DESTROY_TOPIC_SCRIPT = "DestroyTopic";
+		public const string MAIN_TOPIC_SCRIPT = "MainTopic";
 
 		public static GameObject[] allObjects = null;
 

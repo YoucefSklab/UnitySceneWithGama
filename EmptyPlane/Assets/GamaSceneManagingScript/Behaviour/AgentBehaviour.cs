@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace mmisco.gama.unity.Behaviour
+namespace ummisco.gama.unity.Behaviour
 {
 	public class AgentBehaviour : MonoBehaviour
 	{

@@ -1,10 +1,16 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/GameScript/CubeGenerator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/GamaSceneManagingScript/TopicScriptManager/CreateTopic.cs">
     <Files>
-      <File FileName="Assets/GamaSceneManagingScript/TopicScriptManager/NotificationTopic.cs" Line="132" Column="7" />
-      <File FileName="Assets/GameScript/PlayerController.cs" Line="56" Column="84" />
-      <File FileName="Assets/GameScript/CubeGenerator.cs" Line="112" Column="37" />
+      <File FileName="Assets/GamaSceneManagingScript/TopicScriptManager/MoveTopic.cs" Line="1" Column="1" />
+      <File FileName="Assets/GamaSceneManagingScript/TopicScriptManager/NotificationTopic.cs" Line="132" Column="10" />
+      <File FileName="Assets/GameScript/PlayerController.cs" Line="1" Column="1" />
+      <File FileName="Assets/GameScript/CubeGenerator.cs" Line="1" Column="1" />
+      <File FileName="Assets/GamaSceneManagingScript/TopicScriptManager/SetTopic.cs" Line="150" Column="54" />
+      <File FileName="Assets/GamaSceneManagingScript/SceneManager/GamaManager.cs" Line="357" Column="17" />
+      <File FileName="Assets/GamaSceneManagingScript/TopicScriptManager/PropertyTopic.cs" Line="49" Column="1" />
+      <File FileName="Assets/GamaSceneManagingScript/Behaviour/AgentBehaviour.cs" Line="19" Column="9" />
+      <File FileName="Assets/GamaSceneManagingScript/TopicScriptManager/CreateTopic.cs" Line="106" Column="21" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

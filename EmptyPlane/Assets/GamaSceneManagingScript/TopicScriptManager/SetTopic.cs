@@ -81,7 +81,7 @@ namespace ummisco.gama.unity.topics
 			object obj = data [keyList.ElementAt (0)];
 
 			FieldInfo[] fieldInfoSet = targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetFields ();
-			Debug.Log ("Its type is 1 ----> :");
+
 			foreach (KeyValuePair<object, object> pair in data) {
 				foreach (FieldInfo fi in fieldInfoSet) {
 					if (fi.Name.Equals (pair.Key.ToString ())) {
@@ -134,24 +134,32 @@ namespace ummisco.gama.unity.topics
 
 
 						} else {
-
+							//TODO: need to complete this list
+							Debug.Log ("Its Name is ----> : "+ fi.Name + " and type is :" +fi.FieldType.ToString ());
 							switch (fi.FieldType.ToString ()) {
 
 							case "System.Int32":
-								Debug.Log ("Its type is 21 ----> :"+fi.FieldType);
+								Debug.Log ("Its type is ----> :"+fi.FieldType);
 								break;
 							case "System.Double":
-								Debug.Log ("Its type is 22 ----> :"+fi.FieldType);
+								Debug.Log ("Its type is ----> :"+fi.FieldType);
 								fi.SetValue (ob, (System.Double) pair.Value);
 								break;
+							case "System.Single":
+								Debug.Log ("Its type is ----> :"+fi.FieldType);
+								fi.SetValue (ob, Convert.ToSingle(pair.Value));
+								break;
 							case "System.Boolean":
-								Debug.Log ("Its type is 23 ----> :"+fi.FieldType);
+								Debug.Log ("Its type is ----> :"+fi.FieldType);
+								fi.SetValue (ob, Convert.ChangeType (pair.Value, fi.FieldType));
 								break;
 							case "System.String":
-								Debug.Log ("Its type is 24 ----> :"+fi.FieldType);
+								Debug.Log ("Its type is ----> :"+fi.FieldType);
+								fi.SetValue (ob, (System.String) pair.Value);
 								break;
 							case "System.Char":
-								Debug.Log ("Its type is 25 ----> :"+fi.FieldType);
+								Debug.Log ("Its type is ----> :"+fi.FieldType);
+								fi.SetValue (ob, (System.Char) pair.Value);
 								break;
 
 							default:

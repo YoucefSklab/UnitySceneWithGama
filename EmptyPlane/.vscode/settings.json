@@ -1,0 +1,16 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/*.meta":true,
+        "**/Library":true,
+        "**/obj":true,
+        "**/Temp":true,
+        "**/ProjectSettings":true,
+        "**/Prefabs":true,
+        "**/Materials":true
+    }
+}
