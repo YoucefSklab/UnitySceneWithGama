@@ -340,7 +340,7 @@ MonoBehaviour:
     IsStatic: 0
     GeneratePhysicMeshCollider: 0
     PhysicMaterial: {fileID: 0}
-  Style: {fileID: 0}
+  Style: {fileID: 11400000, guid: 55b6d5ee799474205b5745d930cce11d, type: 2}
 --- !u!1 &372059114
 GameObject:
   m_ObjectHideFlags: 0
@@ -549,6 +549,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inverseMoveTime: 0
   moveTime: 10000.1
+  mapBuilder: {fileID: 0}
 --- !u!1 &954451046
 GameObject:
   m_ObjectHideFlags: 0
@@ -1317,7 +1318,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1919747842}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.4, y: 0.42, z: 0}
+  m_LocalPosition: {x: 1.4, y: 0.42, z: 0.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

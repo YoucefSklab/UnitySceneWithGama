@@ -19,22 +19,10 @@ namespace Nextzen
         // Public fields
         // These are serialized, so renaming them will break asset compatibility.
 
-        public string ApiKey = "NO9atv-JQf289NztiKv45g";
-
-/* 
-        public TileArea Area = new TileArea(
-            new LngLat(-74.014892578125, 40.70562793820589),
-            new LngLat(-74.00390625, 40.713955826286046),
-            16);
-*/
-         public TileArea Area = new TileArea(
-            new LngLat(-74.009463, 40.711446),
-            new LngLat(-73.999306, 40.706939),
-            16);
-
-        public float UnitsPerMeter = 1.0f;
-
-        public string RegionName = "";
+        public string ApiKey;
+         public TileArea Area ;
+        public float UnitsPerMeter;
+        public string RegionName;
 
         public SceneGroupType GroupOptions;
 
@@ -58,6 +46,9 @@ namespace Nextzen
 
         private TileCache tileCache = new TileCache(50);
 
+
+
+
         public void DownloadTilesAsync()
         {
             TileBounds bounds = new TileBounds(Area);
@@ -67,7 +58,7 @@ namespace Nextzen
             tasks.Clear();
             nTasksForArea = 0;
             generation++;
-
+            
             foreach (var tileAddress in bounds.TileAddressRange)
             {
                 nTasksForArea++;
@@ -156,6 +147,9 @@ namespace Nextzen
                 }
             }
         }
+
+
+        
 
         public bool HasPendingTasks()
         {
@@ -248,8 +242,22 @@ namespace Nextzen
         }
 
 
+
+
+
+
+//-------------------------------
         public void Start(){
             Debug.Log("This is the map builder Agent");
+            ApiKey = "NO9atv-JQf289NztiKv45g";
+            UnitsPerMeter = 1.0f;
+            RegionName = "Test";
+
+            Area = new TileArea(
+            new LngLat(-74.009463, 40.711446),
+            new LngLat(-73.999306, 40.706939),
+            16);
+            DownloadTilesAsync();
         }
     }
 }
