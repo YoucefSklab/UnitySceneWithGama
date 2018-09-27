@@ -25,9 +25,9 @@ public class GamaBuilder : MonoBehaviour {
             new LngLat(-73.999306, 40.706939),
             16);
 		
-   //     regionMap.DownloadTilesAsync();
-	
-	regionMap.GenerateSceneGraph();
+    //regionMap.DownloadTilesAsync();
+    //regionMap.GenerateSceneGraph();
+
 
 
 

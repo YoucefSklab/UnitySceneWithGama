@@ -44,10 +44,6 @@ namespace ummisco.gama.unity.topics
         public void ProcessTopic(object obj)
         {
             setAllProperties(obj);
-
-            Debug.Log("Process main topic ");
-
-
             sendTopic();
 
         }
@@ -60,7 +56,7 @@ namespace ummisco.gama.unity.topics
 
             GameObject objectManager = getGameObjectByName(MqttSetting.GAMA_MANAGER_OBJECT_NAME, UnityEngine.Object.FindObjectsOfType<GameObject>());
 
-            Debug.Log("The content is: " + topicMessage.contents.ToString());
+            //Debug.Log("The content is: " + topicMessage.contents.ToString());
 
             Agent gamaAgent = UtilXml.getAgent((XmlNode[])topicMessage.contents);
 

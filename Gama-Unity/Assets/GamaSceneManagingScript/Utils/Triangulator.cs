@@ -8,9 +8,21 @@ namespace ummisco.gama.unity.utils
     {
         public List<Vector2> m_points = new List<Vector2>();
 
+        public List<Vector2> all_points = new List<Vector2>();
+
         public Triangulator(Vector2[] points)
         {
             m_points = new List<Vector2>(points);
+        }
+
+        public void setPoints(Vector2[] points)
+        {
+            m_points = new List<Vector2>(points);
+        }
+
+        public void setAllPoints(Vector2[] points)
+        {
+            all_points = new List<Vector2>(points);
         }
 
         public int[] Triangulate()
@@ -124,36 +136,62 @@ namespace ummisco.gama.unity.utils
 
 
 
-        public static Vector3[] get3dVertices(Vector2[] poly, int elevation)
+        public Vector3[] get3dVertices(int elevation)
         {
 
-            Vector3[] vertices = new Vector3[poly.Length * 2];
+            Vector3[] vertices = new Vector3[m_points.Count * 2];
+            Vector2[] vertices2D = new Vector2[m_points.Count * 2];
 
-            for (int i = 0; i < poly.Length; i++)
+            for (int i = 0; i < m_points.Count; i++)
             {
-                vertices[i].x = poly[i].x;
-                vertices[i].y = poly[i].y;
+                vertices[i].x = m_points[i].x;
+                vertices[i].y = m_points[i].y;
                 vertices[i].z = -elevation; // front vertex
-                vertices[i + poly.Length].x = poly[i].x;
-                vertices[i + poly.Length].y = poly[i].y;
-                vertices[i + poly.Length].z = elevation;  // back vertex    
+                vertices[i + m_points.Count].x = m_points[i].x;
+                vertices[i + m_points.Count].y = m_points[i].y;
+                vertices[i + m_points.Count].z = elevation;  // back vertex   
+
+                // front vertex
+                vertices2D[i].x = m_points[i].x;
+                vertices2D[i].y = m_points[i].y;
+                // back vertex  
+                vertices2D[i + m_points.Count].x = m_points[i].x;
+                vertices2D[i + m_points.Count].y = m_points[i].y;
             }
+
             return vertices;
         }
 
-        public List<Vector3> get3dVerticesList(Vector2[] poly, int elevation)
+
+        public Vector2[] get2dVertices()
         {
-
-            Vector3[] vertices = new Vector3[poly.Length * 2];
-
-            for (int i = 0; i < poly.Length; i++)
+            Vector2[] vertices2D = new Vector2[m_points.Count * 2];
+            for (int i = 0; i < m_points.Count; i++)
             {
-                vertices[i].x = poly[i].x;
-                vertices[i].y = poly[i].y;
+                // front vertex
+                vertices2D[i].x = m_points[i].x;
+                vertices2D[i].y = m_points[i].y;
+                // back vertex  
+                vertices2D[i + m_points.Count].x = m_points[i].x;
+                vertices2D[i + m_points.Count].y = m_points[i].y;
+            }
+            return vertices2D;
+        }
+
+
+        public List<Vector3> get3dVerticesList(float elevation)
+        {
+            Debug.Log("--> elevation to apply is: " + elevation);
+            Vector3[] vertices = new Vector3[m_points.Count * 2];
+
+            for (int i = 0; i < m_points.Count; i++)
+            {
+                vertices[i].x = m_points[i].x;
+                vertices[i].y = m_points[i].y;
                 vertices[i].z = -elevation; // front vertex
-                vertices[i + poly.Length].x = poly[i].x;
-                vertices[i + poly.Length].y = poly[i].y;
-                vertices[i + poly.Length].z = elevation;  // back vertex    
+                vertices[i + m_points.Count].x = m_points[i].x;
+                vertices[i + m_points.Count].y = m_points[i].y;
+                vertices[i + m_points.Count].z = elevation;  // back vertex    
             }
             return vertices.OfType<Vector3>().ToList();
         }
@@ -189,7 +227,7 @@ namespace ummisco.gama.unity.utils
                 // triangles around the perimeter of the object
                 int n = (i + 1) % m_points.Count;
                 // triangles[count_tris] = i;
-                // triangles[count_tris + 1] = i + poly.Length;
+                // triangles[count_tris + 1] = i + m_points.Count;
                 // triangles[count_tris + 2] = n;
 
                 triangles[count_tris + 0] = n;
@@ -206,45 +244,191 @@ namespace ummisco.gama.unity.utils
 
         public List<int> getTriangulesList()
         {
-            // convert polygon to triangles
+           return get3DTriangulesFrom2D().OfType<int>().ToList();
+        }
 
+
+        //Is a triangle in 2d space oriented clockwise or counter-clockwise
+        //https://math.stackexchange.com/questions/1324179/how-to-tell-if-3-connected-points-are-connected-clockwise-or-counter-clockwise
+        //https://en.wikipedia.org/wiki/Curve_orientation
+        public bool IsTriangleOrientedClockwise(Vector2 p1, Vector2 p2, Vector2 p3)
+        {
+            bool isClockWise = true;
+
+            float determinant = p1.x * p2.y + p3.x * p1.y + p2.x * p3.y - p1.x * p3.y - p3.x * p2.y - p2.x * p1.y;
+
+            if (determinant > 0f)
+            {
+                isClockWise = false;
+            }
+
+            return isClockWise;
+        }
+
+
+
+        public int[] checkClockWise(int[] tr, Vector3[] vert)
+        {
+
+            Debug.Log("Triangles Length is : " + tr.Length);
+            Debug.Log("Vertices Length is : " + vert.Length);
+            for (int i = 0; i < tr.Length; i += 3)
+            {
+
+                Vector2 p1 = new Vector2(vert[tr[i + 0]].x, vert[tr[i + 0]].y);
+                Vector2 p2 = new Vector2(vert[tr[i + 1]].x, vert[tr[i + 1]].y);
+                Vector2 p3 = new Vector2(vert[tr[i + 2]].x, vert[tr[i + 2]].y);
+                if (IsTriangleOrientedClockwise(p1, p2, p3))
+                {
+                    Debug.Log("Yes it is ClockWise ->- {" + tr[i + 0] + "},{" + tr[i + 1] + "},{" + tr[i + 2] + "}");
+                }
+                else
+                {
+                    Debug.Log("No, it is not ->- {" + tr[i + 0] + "},{" + tr[i + 1] + "},{" + tr[i + 2] + "}");
+                    int n = tr[i + 1];
+                    tr[i + 1] = tr[i + 2];
+                    tr[i + 2] = n;
+                    p1 = new Vector2(vert[tr[i + 0]].x, vert[tr[i + 0]].y);
+                    p2 = new Vector2(vert[tr[i + 1]].x, vert[tr[i + 1]].y);
+                    p3 = new Vector2(vert[tr[i + 2]].x, vert[tr[i + 2]].y);
+
+                    if (IsTriangleOrientedClockwise(p1, p2, p3))
+                    {
+                        Debug.Log("This time is ClockWise ->- {" + tr[i + 0] + "},{" + tr[i + 1] + "},{" + tr[i + 2] + "}");
+                    }
+                    else
+                    {
+                        Debug.Log("Sorry, still not ClockWise ->- {" + tr[i + 0] + "},{" + tr[i + 1] + "},{" + tr[i + 2] + "}");
+                    }
+                }
+            }
+            return tr;
+        }
+
+
+
+
+        public int[] get3DTriangulesFrom2D()
+        {
+            // convert the initial polygon to triangles
             int[] tris = Triangulate();
+
             Mesh m = new Mesh();
 
+            // Array to contain all the triangules of the mesh
             int[] triangles = new int[tris.Length * 2 + m_points.Count * 6];
+
+
+            // Compute triangules of front vertices
             int count_tris = 0;
             for (int i = 0; i < tris.Length; i += 3)
             {
-                triangles[i] = tris[i];
+                triangles[i + 0] = tris[i + 0];
                 triangles[i + 1] = tris[i + 1];
                 triangles[i + 2] = tris[i + 2];
-            } // front vertices
+
+                //----
+                // triangles[i + 0] = tris[i + 2];
+                // triangles[i + 1] = tris[i + 1];
+                // triangles[i + 2] = tris[i + 0];
+                if (1 == 1)
+                    if (!IsTriangleOrientedClockwise(m_points[triangles[i]], m_points[triangles[i + 1]], m_points[triangles[i + 2]]))
+                    {
+                        Debug.Log("Front Triangle not  Clockwise > ");
+                        triangles[i + 0] = tris[i + 0];
+                        triangles[i + 1] = tris[i + 2];
+                        triangles[i + 2] = tris[i + 1];
+                        if (!IsTriangleOrientedClockwise(m_points[triangles[i]], m_points[triangles[i + 1]], m_points[triangles[i + 2]]))
+                        {
+                            Debug.Log("Front Triangle also not  Clockwise > ");
+                            triangles[i + 0] = tris[i + 1];
+                            triangles[i + 1] = tris[i + 2];
+                            triangles[i + 2] = tris[i + 0];
+                        }
+                    }
+
+            }
+
+            // Compute triangules of back vertices
             count_tris += tris.Length;
             for (int i = 0; i < tris.Length; i += 3)
             {
-                triangles[count_tris + i] = tris[i + 2] + m_points.Count;
+                //triangles[count_tris + i + 0] = tris[i + 2] + m_points.Count;
+                //triangles[count_tris + i + 1] = tris[i + 1] + m_points.Count;
+                //triangles[count_tris + i + 2] = tris[i + 0] + m_points.Count;
+
+                //-----
+                triangles[count_tris + i + 0] = tris[i + 0] + m_points.Count;
                 triangles[count_tris + i + 1] = tris[i + 1] + m_points.Count;
-                triangles[count_tris + i + 2] = tris[i] + m_points.Count;
-            } // back vertices
+                triangles[count_tris + i + 2] = tris[i + 2] + m_points.Count;
+
+                if (1 == 1)
+                    if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + i + 0]], all_points[triangles[count_tris + i + 1]], all_points[triangles[count_tris + i + 2]]))
+                    {
+                        Debug.Log("Back Triangle also not  Clockwise > ");
+                        triangles[count_tris + i + 0] = tris[i + 0] + m_points.Count;
+                        triangles[count_tris + i + 1] = tris[i + 2] + m_points.Count;
+                        triangles[count_tris + i + 2] = tris[i + 1] + m_points.Count;
+                        if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + i + 0]], all_points[triangles[count_tris + i + 1]], all_points[triangles[count_tris + i + 2]]))
+                        {
+                            Debug.Log("Back Triangle also not  Clockwise > ");
+                            triangles[count_tris + i + 0] = tris[i + 0] + m_points.Count;
+                            triangles[count_tris + i + 1] = tris[i + 2] + m_points.Count;
+                            triangles[count_tris + i + 2] = tris[i + 1] + m_points.Count;
+                        }
+                    }
+
+
+
+            }
+
+
             count_tris += tris.Length;
             for (int i = 0; i < m_points.Count; i++)
             {
                 // triangles around the perimeter of the object
                 int n = (i + 1) % m_points.Count;
-                // triangles[count_tris] = i;
-                // triangles[count_tris + 1] = i + poly.Length;
-                // triangles[count_tris + 2] = n;
+                triangles[count_tris + 0] = i;
+                triangles[count_tris + 1] = i + m_points.Count;
+                triangles[count_tris + 2] = n;
 
+                if (1 == 1)
+                    if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + 0]], all_points[triangles[count_tris + 1]], all_points[triangles[count_tris + 2]]))
+                    {
+                        Debug.Log("Other Triangle also not  Clockwise > ");
+                        triangles[count_tris + 0] = n;
+                        triangles[count_tris + 1] = i + m_points.Count;
+                        triangles[count_tris + 2] = i;
+                    }
+
+
+
+                /* 
+                //---
                 triangles[count_tris + 0] = n;
                 triangles[count_tris + 1] = i + m_points.Count;
                 triangles[count_tris + 2] = i;
+                */
                 triangles[count_tris + 3] = n;
                 triangles[count_tris + 4] = n + m_points.Count;
                 triangles[count_tris + 5] = i + m_points.Count;
+
+                if (1 == 1)
+                    if (!IsTriangleOrientedClockwise(all_points[triangles[count_tris + 3]], all_points[triangles[count_tris + 4]], all_points[triangles[count_tris + 5]]))
+                    {
+                        Debug.Log("Other Triangle also not  Clockwise > ");
+                        triangles[count_tris + 3] = i + m_points.Count;
+                        triangles[count_tris + 4] = n + m_points.Count;
+                        triangles[count_tris + 5] = n;
+                    }
+
+
                 count_tris += 6;
             }
-            return triangles.OfType<int>().ToList();
+            return triangles;
         }
+
+
 
 
 

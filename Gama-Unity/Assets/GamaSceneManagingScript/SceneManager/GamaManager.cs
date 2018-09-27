@@ -131,14 +131,12 @@ public class GamaManager : MonoBehaviour
 
         NotificationRegistry.getCallingMethod();
 
-        Debug.Log("Gama Manger started");
+ 
     }
 
 
     void FixedUpdate()
     {
-
-        Debug.Log("-> The number of all received agents is : " + gamaAgentList.Count);
 
         if (msgList.Count > 0)
         {
@@ -158,8 +156,8 @@ public class GamaManager : MonoBehaviour
             {
                 case MqttSetting.MAIN_TOPIC:
                     //------------------------------------------------------------------------------
-                    Debug.Log("-> Topic to deal with is : " + MqttSetting.MAIN_TOPIC);
-                    Debug.Log("-> The message is : " + e.Message);
+                    //Debug.Log("-> Topic to deal with is : " + MqttSetting.MAIN_TOPIC);
+                    //Debug.Log("-> The message is : " + e.Message);
 
                     topicGameObject = gameObject;
 
@@ -292,8 +290,8 @@ public class GamaManager : MonoBehaviour
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.SET_TOPIC);
 
                     SetTopicMessage setTopicMessage = (SetTopicMessage)msgDes.deserialization(receivedMsg, new SetTopicMessage());
-                    Debug.Log("-> Target game object name: " + setTopicMessage.objectName);
-                    Debug.Log("-> Message: " + receivedMsg);
+                   // Debug.Log("-> Target game object name: " + setTopicMessage.objectName);
+                   // Debug.Log("-> Message: " + receivedMsg);
                     targetGameObject = getGameObjectByName(setTopicMessage.objectName);
 
                     if (targetGameObject == null)
@@ -332,7 +330,7 @@ public class GamaManager : MonoBehaviour
                 case MqttSetting.CREATE_TOPIC:
                     //------------------------------------------------------------------------------
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.CREATE_TOPIC);
-                    Debug.Log("-> Message: " + receivedMsg);
+                   // Debug.Log("-> Message: " + receivedMsg);
                     CreateTopicMessage createTopicMessage = (CreateTopicMessage)msgDes.deserialization(receivedMsg, new CreateTopicMessage());
                     obj = new object[] { createTopicMessage };
 
@@ -384,12 +382,16 @@ public class GamaManager : MonoBehaviour
         }
 
         checkForNotifications();
-        Debug.Log("Check if there are objects to create!");
-        GameObject builder = getGameObjectByName("MapBuilder");
-        if (builder != null)
+        GameObject mapBuilder = getGameObjectByName("MapBuilder");
+        //regionMap = (RegionMap) FindObjectOfType(typeof(RegionMap));
+        //GameObject mapBuilder  = (GameObject) FindObjectOfType(typeof(MapBuilder));
+       
+        if (mapBuilder != null)
         {
-            builder.GetComponent<RegionMap>().SendMessage("DrawNewAgents");
-			Debug.Log("Drawing agent is done! "+(new DateTime()).ToString());
+            mapBuilder.GetComponent<RegionMap>().SendMessage("DrawNewAgents");
+			
+        }else{
+            Debug.Log("No such Object. Sorry");
         }
 
 
@@ -515,8 +517,6 @@ public class GamaManager : MonoBehaviour
 
     public GameObject getGameObjectByName(string objectName)
     {
-        System.Diagnostics.StackTrace stackTrace = new System.Diagnostics.StackTrace();
-        Debug.Log("Get calling method name ->  " + stackTrace.GetFrame(1).GetMethod().Name);
         foreach (GameObject gameObj in allObjects)
         {
             if (gameObj == null)

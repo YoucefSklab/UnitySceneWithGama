@@ -26,7 +26,7 @@ namespace Nextzen.VectorData.Formats
                     using (GZipStream gzStream = new GZipStream(inputMemStream, CompressionMode.Decompress))
                     {
                         this.tile = PbfTile.Parser.ParseFrom(gzStream);
-                        Debug.Log("------------------------>>>>>>>>> "+this.tile.ToString());
+                      //  Debug.Log("---> "+this.tile.ToString());
                      
                     }
                 }
@@ -35,7 +35,7 @@ namespace Nextzen.VectorData.Formats
             {
                 // We can parse the bytes directly.
                 this.tile = PbfTile.Parser.ParseFrom(data);
-                Debug.Log("-----------------------+++++++++->>>>>>>>> "+this.tile.ToString());
+               // Debug.Log("---> "+this.tile.ToString());
             }
         }
 

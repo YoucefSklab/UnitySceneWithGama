@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace Nextzen.Unity
@@ -61,7 +62,7 @@ namespace Nextzen.Unity
                 gameObject = transform.gameObject;
             }
 
-         
+
             return gameObject;
         }
 
@@ -78,10 +79,10 @@ namespace Nextzen.Unity
                 data.Merge(featureMesh.Mesh);
                 gameObjectMeshData.Add(gameObject, data);
 
-                Debug.Log("Game Object Created: "+gameObject.name);
-                Debug.Log("         Its Vertices: "+data.MeshDataVerticesToString());
-                Debug.Log("         Its UVs: "+data.MeshDataUVsToString());
-                Debug.Log("         Its Submeshes: "+data.MeshDataSubmeshesToString());
+                Debug.Log("Game Object Created: " + gameObject.name);
+                Debug.Log("         Its Vertices: " + data.MeshDataVerticesToString());
+                Debug.Log("         Its UVs: " + data.MeshDataUVsToString());
+                Debug.Log("         Its Submeshes: " + data.MeshDataSubmeshesToString());
             }
         }
 
@@ -158,15 +159,71 @@ namespace Nextzen.Unity
 
                     var mesh = new Mesh();
 
+                    mesh.Clear();
+
                     mesh.SetVertices(meshBucket.Vertices);
                     mesh.SetUVs(0, meshBucket.UVs);
                     mesh.subMeshCount = meshBucket.Submeshes.Count;
                     for (int s = 0; s < meshBucket.Submeshes.Count; s++)
                     {
                         mesh.SetTriangles(meshBucket.Submeshes[s].Indices, s);
-                        
+
                     }
+                    // Automatic Uvs Calculator
+                    // meshBucket.setUvs();
+                      Debug.Log("Total Mesh UVs is (Before) -> " + mesh.uv.Length);
+                    //    Unwrapping.GenerateSecondaryUVSet(mesh);
+
                     mesh.RecalculateNormals();
+                    mesh.RecalculateBounds();
+                    MeshUtility.Optimize(mesh);
+
+                    //------------------------------------------------------------------------------------------------------
+                    //------------------------------------------------------------------------------------------------------
+                    var varMesh = mesh;
+                    var vertices = varMesh.vertices;
+                    var uv = varMesh.uv;
+                    var normals = varMesh.normals;
+                    var szV = vertices.Length;
+                    var newVerts = new Vector3[szV * 2];
+                    var newUv = new Vector2[szV * 2];
+                    var newNorms = new Vector3[szV * 2];
+                    for (var j = 0; j < szV; j++)
+                    {
+                        // duplicate vertices and uvs:
+                        newVerts[j] = newVerts[j + szV] = vertices[j];
+                        newUv[j] = newUv[j + szV] = uv[j];
+                        // copy the original normals...
+                        newNorms[j] = normals[j];
+                        // and revert the new ones
+                        newNorms[j + szV] = -normals[j];
+                    }
+                    var triangles = varMesh.triangles;
+                    var szT = triangles.Length;
+                    var newTris = new int[szT * 2]; // double the triangles
+                    for (var k = 0; k < szT; k += 3)
+                    {
+                        // copy the original triangle
+                        newTris[k] = triangles[k];
+                        newTris[k + 1] = triangles[k + 1];
+                        newTris[k + 2] = triangles[k + 2];
+                        // save the new reversed triangle
+                        int j = k + szT;
+                        newTris[j] = triangles[i] + szV;
+                        newTris[j + 2] = triangles[i + 1] + szV;
+                        newTris[j + 1] = triangles[i + 2] + szV;
+                    }
+                    varMesh.vertices = newVerts;
+                    varMesh.uv = newUv;
+                    varMesh.normals = newNorms;
+                    varMesh.triangles = newTris; // assign triangles last!
+
+                    mesh = varMesh;
+
+                    //------------------------------------------------------------------------------------------------------
+                    //------------------------------------------------------------------------------------------------------
+
+                    Debug.Log("Total Mesh UVs is (After) -> " + mesh.uv.Length);
 
                     // Associate the mesh filter and mesh renderer components with this game object
                     var materials = meshBucket.Submeshes.Select(s => s.Material).ToArray();
@@ -175,11 +232,31 @@ namespace Nextzen.Unity
                     meshRendererComponent.materials = materials;
                     meshFilterComponent.mesh = mesh;
 
+
+                    Mesh m = new Mesh();
+                    m.Clear();
+                    m.vertices = mesh.vertices;
+                    m.triangles = mesh.triangles;
+                    //m.uv = UvCalculator.CalculateUVs(m.vertices, 1);
+                    Debug.Log("Before -> " + m.uv.Length);
+                    Unwrapping.GenerateSecondaryUVSet(m);
+
+                    m.RecalculateNormals();
+                    m.RecalculateBounds();
+                    MeshUtility.Optimize(m);
+
+                    //    meshFilterComponent.mesh.Clear();
+
+                    //    meshFilterComponent.mesh = m;
+
+
+
                     if (gameObjectOptions.GeneratePhysicMeshCollider)
                     {
                         var meshColliderComponent = gameObject.AddComponent<MeshCollider>();
                         meshColliderComponent.material = gameObjectOptions.PhysicMaterial;
                         meshColliderComponent.sharedMesh = mesh;
+                        //        meshColliderComponent.sharedMesh = m;
                     }
                 }
             }

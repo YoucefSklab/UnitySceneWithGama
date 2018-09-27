@@ -67,6 +67,9 @@ namespace Nextzen
         public Matrix4x4 tempTransform;
         public TileAddress tempTileAddress;
 
+        public float elevation;
+
+        public Material buildingMaterial;
 
 
 
@@ -164,10 +167,10 @@ namespace Nextzen
                                 task.Start(mvtTile.FeatureCollections);
 
                                 tasks.Add(task);
-                                Debug.Log("New Task (from else) to add is " + task.Address.ToString());
-                                Debug.Log("Data is " + task.Data.Count);
-                                string result = System.Text.Encoding.UTF8.GetString(response.data);
-                                Debug.Log("---->>>   Response is " + result);
+                                // Debug.Log("New Task (from else) to add is " + task.Address.ToString());
+                                // Debug.Log("Data is " + task.Data.Count);
+                                // string result = System.Text.Encoding.UTF8.GetString(response.data);
+                                // Debug.Log("---->>>   Response is " + result);
                             }
                         });
                     };
@@ -226,7 +229,7 @@ namespace Nextzen
         {
             // Add tasks here! 
             //------------------------------------------------------------------
-            Debug.Log("Calling method - > GenerateSceneGraph ");
+            // Debug.Log("Calling method - > GenerateSceneGraph ");
 
             List<FeatureMesh> meshList = new List<FeatureMesh>();
             FeatureMesh featureMesh = new FeatureMesh("NameGama1", "GamaBlocks", "NameGama3", "Blok1"); meshList.Add(featureMesh);
@@ -266,9 +269,6 @@ namespace Nextzen
             meshList.Add(featureMesh);
 
 
-
-
-
             featureMesh = new FeatureMesh("NameGama11", "GamaRoads", "NameGama13", "Cube3");
             // featureMesh.Mesh = new MeshData();
 
@@ -281,7 +281,7 @@ namespace Nextzen
                         new Vector2(0,10),
                 };
             Triangulator triangulator = new Triangulator(vertices2D);
-            Vertices = triangulator.get3dVerticesList(vertices2D, 2);
+            Vertices = triangulator.get3dVerticesList(2);
             Indices = triangulator.getTriangulesList();
 
             UVs = new List<Vector2>();
@@ -377,6 +377,7 @@ namespace Nextzen
         void Start()
         {
             Debug.Log("This is the map builder Agent");
+            this.elevation = 10f;
             /* 
             ApiKey = "NO9atv-JQf289NztiKv45g";
             UnitsPerMeter = 1.0f;
@@ -387,21 +388,23 @@ namespace Nextzen
             new LngLat(-73.999306, 40.706939),
             16);
             DownloadTilesAsync();
-
-            Debug.Log("This is the map builder Agent");
-            */
+          */
         }
 
-
+        void Awak()
+        {
+            //  this.elevation = 10f;
+        }
 
         public void DrawNewAgents()
         {
-
+            bool isNewAgentCreated = false;
             List<FeatureMesh> meshList = new List<FeatureMesh>();
             foreach (var agent in GamaManager.gamaAgentList)
             {
                 if (!agent.isDrawed)
                 {
+                    isNewAgentCreated = true;
                     agent.isDrawed = true;
 
                     FeatureMesh featureMesh = new FeatureMesh("NameGama1", "GamaRoads", "NameGama13", agent.agentName);
@@ -412,20 +415,55 @@ namespace Nextzen
                     List<MeshData.Submesh> Submeshes = new List<MeshData.Submesh>();
                     MeshData.Submesh submesh = new MeshData.Submesh();
 
-                    Vector2[] vertices2D = agent.agentCoordinate.getVector2Coordinates();
+                    Vector2[] oldVertices2D = agent.agentCoordinate.getVector2Coordinates();
+                    Vector2[] vertices2D;
+                   // if (oldVertices2D.Length > 2)
+                   // {
+                        List<Vector2> vect = new List<Vector2>();
+                        vect = oldVertices2D.ToList();
+                        vect.RemoveAt(vect.Count-1);
+                        vertices2D = vect.ToArray();
+                   // }else{
+                   //     vertices2D = oldVertices2D;
+                   // }
+
+                    //Vector2[] vertices2D = new Vector2[ 2];
 
                     Triangulator triangulator = new Triangulator(vertices2D);
-                    Vertices = triangulator.get3dVerticesList(vertices2D, 2);
+                    triangulator.setAllPoints(triangulator.get2dVertices());
+                    Debug.Log("Number of Vertices Before is : (Agent: " + agent.agentName + ") --> " + vertices2D.Length);
+                    Vertices = triangulator.get3dVerticesList(this.elevation);
+                    Debug.Log("Number of Vertices After is : (Agent: " + agent.agentName + ")  --> " + Vertices.Count);
                     Indices = triangulator.getTriangulesList();
                     UVs = new List<Vector2>();
 
                     Vector3[] VerticesArray = Vertices.ToArray();
 
-                    Vector2[] UvArray =  UvCalculator.CalculateUVs(VerticesArray, 1);
+                    Vector2[] UvArray = UvCalculator.CalculateUVs(VerticesArray, 100);
 
                     UVs = UvArray.ToList();
 
                     submesh.Indices = Indices;
+
+                    // ----------------------------------------
+                    /* 
+                                   Mesh m = new Mesh();
+                                   m.Clear();
+                                   m.vertices = Vertices.ToArray();
+                                   m.triangles = Indices.ToArray();//mesh.triangles;
+                                   Unwrapping.GenerateSecondaryUVSet(m);
+                                   m.RecalculateNormals();
+                                   m.RecalculateBounds();
+                                   MeshUtility.Optimize(m);
+
+                                   Vertices = m.vertices.ToList();
+                                   submesh.Indices = m.triangles.ToList();
+                                   UVs = m.uv.ToList();
+                     */
+
+                    // ----------------------------------------
+                    //submesh.Material = buildingMaterial;
+
                     Submeshes.Add(submesh);
 
                     meshData.addGamaMeshData(Vertices, UVs, Submeshes);
@@ -433,40 +471,37 @@ namespace Nextzen
                     meshList.Add(featureMesh);
 
                     meshList.Add(featureMesh);
-                    
+
                 }
             }
 
-            if (regionMap != null)
-            {
-              //  DestroyImmediate(regionMap); Debug.Log("regionMap is Null");
-            }
 
-            // Merge all feature meshes
-            List<FeatureMesh> features = new List<FeatureMesh>();
-            /* 
-            foreach (var task in tasks)
+
+            if (isNewAgentCreated)
             {
-                if (task.Generation == generation)
+
+                if (regionMap != null)
                 {
-                    features.AddRange(task.Data);
+                    //DestroyImmediate(regionMap); Debug.Log("regionMap is Null");
                 }
+
+                // Merge all feature meshes
+                List<FeatureMesh> features = new List<FeatureMesh>();
+                features.AddRange(meshList);
+                regionMap = GameObject.Find(RegionName);
+
+
+                if (regionMap == null)
+                {
+                    regionMap = new GameObject(RegionName);
+                }
+                regionMap = new GameObject(RegionName);
+                var sceneGraph = new SceneGraph(regionMap, GroupOptions, GameObjectOptions, features);
+                //sceneGraph
+                sceneGraph.Generate();
+
             }
-
-            tasks.Clear();
-            nTasksForArea = 0;
-            */
-
-            features.AddRange(meshList);
-            regionMap = new GameObject(RegionName);
-            var sceneGraph = new SceneGraph(regionMap, GroupOptions, GameObjectOptions, features);
-
-            sceneGraph.Generate();
         }
-
-
-
-
 
 
 

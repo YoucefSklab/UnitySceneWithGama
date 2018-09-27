@@ -110,7 +110,7 @@ namespace ummisco.gama.unity.topics
             rend.material.color = objectColor;
 
 
-            Debug.Log("The color is " + objectColor.ToString());
+           // Debug.Log("The color is " + objectColor.ToString());
 
             objectManager.SendMessage("addObjectToList", newObject);
 

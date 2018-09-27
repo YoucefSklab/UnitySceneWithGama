@@ -22,13 +22,13 @@ public class CubeGenerator : MonoBehaviour {
 
 	void Start () {
 		
-		objectTest = CreateCube ("testCube");
+		//objectTest = CreateCube ("testCube");
 
-		rb = GetComponent<Rigidbody> ();
+		//rb = GetComponent<Rigidbody> ();
 
-		inverseMoveTime = 1f / moveTime;
+		//inverseMoveTime = 1f / moveTime;
 
-		Debug.Log ("The script Type is : "+gameObject.GetComponent ("CubeGenerator").GetType ());
+		//Debug.Log ("The script Type is : "+gameObject.GetComponent ("CubeGenerator").GetType ());
 
 		//mapBuilder = new MapBuilder();
 

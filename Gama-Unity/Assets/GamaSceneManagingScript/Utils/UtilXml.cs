@@ -243,7 +243,7 @@ namespace ummisco.gama.unity.utils
 
                 foreach (XmlNode n in listNode)
                 {
-                    Debug.Log("The name is " + n.Name);
+                   // Debug.Log("The name is " + n.Name);
                     if (n.Name == "value")
                     {
                         value = float.Parse(n.InnerText);
@@ -347,12 +347,12 @@ namespace ummisco.gama.unity.utils
                         case "valuesMapReducer":
                             getValuesMapReducerAttributes(gamaAgent, item);
                             getEntriesAttributes(gamaAgent, item);
-                            Debug.Log("The agent color is is " + gamaAgent.color.ToString());
-                            Debug.Log("The agent nature " + gamaAgent.nature);
-                            Debug.Log("The agent rotation " + gamaAgent.rotation);
-                            Debug.Log("The agent type " + gamaAgent.type);
-                            Debug.Log("The agent speed " + gamaAgent.speed);
-                            Debug.Log("The agent hight " + gamaAgent.hight);
+                            //Debug.Log("The agent color is is " + gamaAgent.color.ToString());
+                            //Debug.Log("The agent nature " + gamaAgent.nature);
+                            //Debug.Log("The agent rotation " + gamaAgent.rotation);
+                            //Debug.Log("The agent type " + gamaAgent.type);
+                            //Debug.Log("The agent speed " + gamaAgent.speed);
+                            //Debug.Log("The agent hight " + gamaAgent.hight);
 
                             break;
 

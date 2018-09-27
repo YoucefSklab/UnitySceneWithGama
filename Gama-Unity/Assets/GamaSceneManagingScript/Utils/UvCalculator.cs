@@ -11,16 +11,16 @@ namespace ummisco.gama.unity.utils
         {
             var uvs = new Vector2[v.Length];
 
-            for (int i = 0; i < uvs.Length; i ++)
+            for (int i = 0; i < uvs.Length; i++)
             {
                 int i0 = i;
                 int i1 = i + 1;
                 int i2 = i + 2;
 
                 Vector3 v0 = v[i0];
-           
-                Vector3 side1 = new Vector3(0,0,0) - v0;
-                Vector3 side2 = new Vector3(0,0,0) - v0;
+
+                Vector3 side1 = new Vector3(0, 0, 0) - v0;
+                Vector3 side2 = new Vector3(0, 0, 0) - v0;
                 var direction = Vector3.Cross(side1, side2);
                 var facing = FacingDirection(direction);
                 switch (facing)
@@ -40,15 +40,66 @@ namespace ummisco.gama.unity.utils
         }
 
 
-          public static Vector2[] CalculateUVs3(Vector3[] v/*vertices*/, float scale)
+        public static Vector2[] CalculateUVsUp(Vector3[] v/*vertices*/, float scale)
         {
             var uvs = new Vector2[v.Length];
-
-            for (int i = 0; i < uvs.Length; i += 3)
+            for (int i = 0; i < uvs.Length; i++)
             {
                 int i0 = i;
                 int i1 = i + 1;
                 int i2 = i + 2;
+                Vector3 v0 = v[i0];
+                uvs[i0] = ScaledUV(v0.x, v0.z, scale);
+            }
+            return uvs;
+        }
+
+        public static Vector2[] CalculateUVsRight(Vector3[] v/*vertices*/, float scale)
+        {
+            var uvs = new Vector2[v.Length];
+            for (int i = 0; i < uvs.Length; i++)
+            {
+                int i0 = i;
+                int i1 = i + 1;
+                int i2 = i + 2;
+                Vector3 v0 = v[i0];
+                uvs[i0] = ScaledUV(v0.y, v0.z, scale);
+            }
+            return uvs;
+        }
+
+
+        public static Vector2[] CalculateUVsForward(Vector3[] v/*vertices*/, float scale)
+        {
+            var uvs = new Vector2[v.Length];
+            for (int i = 0; i < uvs.Length; i++)
+            {
+                int i0 = i;
+                int i1 = i + 1;
+                int i2 = i + 2;
+                Vector3 v0 = v[i0];
+                uvs[i0] = ScaledUV(v0.x, v0.y, scale);
+            }
+            return uvs;
+        }
+
+
+
+        public static Vector2[] CalculateUVs3(Vector3[] v/*vertices*/, float scale)
+        {
+            var uvs = new Vector2[v.Length];
+            Debug.Log("v.Length= " + v.Length);
+            for (int i = 0; i < uvs.Length; i += 3)
+            {
+                Debug.Log("i= " + i);
+                int i0 = i;
+                int i1 = i + 1;
+                int i2 = i + 2;
+
+                if (i2 == uvs.Length) { i2 = 0; }
+                if (i1 == uvs.Length) { i1 = 0; }
+                if (i2 == uvs.Length + 1) { i2 = 1; }
+
 
                 Vector3 v0 = v[i0];
                 Vector3 v1 = v[i1];
