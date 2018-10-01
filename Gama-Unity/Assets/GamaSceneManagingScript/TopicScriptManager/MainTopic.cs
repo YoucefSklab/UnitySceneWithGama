@@ -55,27 +55,8 @@ namespace ummisco.gama.unity.topics
         {
 
             GameObject objectManager = getGameObjectByName(MqttSetting.GAMA_MANAGER_OBJECT_NAME, UnityEngine.Object.FindObjectsOfType<GameObject>());
-
             //Debug.Log("The content is: " + topicMessage.contents.ToString());
-
             Agent gamaAgent = UtilXml.getAgent((XmlNode[])topicMessage.contents);
-
-
-            XmlNode[] content = (XmlNode[])topicMessage.contents;
-
-            for (int i = 1; i < content.Length; i++)
-            {
-                XmlElement elt = (XmlElement)content.GetValue(i);
-                XmlNodeList list = elt.ChildNodes;
-                object atr = "";
-                object vl = "";
-                foreach (XmlElement item in list)
-                {
-                    //    Debug.Log("This is an element name:--  "+item.Name+ " --  Its xml code is :  ->  "+item.InnerXml);
-                }
-            }
-
-            //     objectManager.SendMessage("addObjectToList", newObject);
             GamaManager.gamaAgentList.Add(gamaAgent);
 
         }

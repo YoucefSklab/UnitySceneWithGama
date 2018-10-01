@@ -181,9 +181,7 @@ namespace ummisco.gama.unity.utils
 
         public List<Vector3> get3dVerticesList(float elevation)
         {
-            Debug.Log("--> elevation to apply is: " + elevation);
             Vector3[] vertices = new Vector3[m_points.Count * 2];
-
             for (int i = 0; i < m_points.Count; i++)
             {
                 vertices[i].x = m_points[i].x;
@@ -195,8 +193,6 @@ namespace ummisco.gama.unity.utils
             }
             return vertices.OfType<Vector3>().ToList();
         }
-
-
 
 
         public int[] getTriangules()
@@ -244,7 +240,7 @@ namespace ummisco.gama.unity.utils
 
         public List<int> getTriangulesList()
         {
-           return get3DTriangulesFrom2D().OfType<int>().ToList();
+            return get3DTriangulesFrom2D().OfType<int>().ToList();
         }
 
 
@@ -270,8 +266,7 @@ namespace ummisco.gama.unity.utils
         public int[] checkClockWise(int[] tr, Vector3[] vert)
         {
 
-            Debug.Log("Triangles Length is : " + tr.Length);
-            Debug.Log("Vertices Length is : " + vert.Length);
+
             for (int i = 0; i < tr.Length; i += 3)
             {
 
@@ -280,26 +275,16 @@ namespace ummisco.gama.unity.utils
                 Vector2 p3 = new Vector2(vert[tr[i + 2]].x, vert[tr[i + 2]].y);
                 if (IsTriangleOrientedClockwise(p1, p2, p3))
                 {
-                    Debug.Log("Yes it is ClockWise ->- {" + tr[i + 0] + "},{" + tr[i + 1] + "},{" + tr[i + 2] + "}");
+                    // Debug.Log("Yes it is ClockWise ->- {" + tr[i + 0] + "},{" + tr[i + 1] + "},{" + tr[i + 2] + "}");
                 }
                 else
                 {
-                    Debug.Log("No, it is not ->- {" + tr[i + 0] + "},{" + tr[i + 1] + "},{" + tr[i + 2] + "}");
                     int n = tr[i + 1];
                     tr[i + 1] = tr[i + 2];
                     tr[i + 2] = n;
                     p1 = new Vector2(vert[tr[i + 0]].x, vert[tr[i + 0]].y);
                     p2 = new Vector2(vert[tr[i + 1]].x, vert[tr[i + 1]].y);
                     p3 = new Vector2(vert[tr[i + 2]].x, vert[tr[i + 2]].y);
-
-                    if (IsTriangleOrientedClockwise(p1, p2, p3))
-                    {
-                        Debug.Log("This time is ClockWise ->- {" + tr[i + 0] + "},{" + tr[i + 1] + "},{" + tr[i + 2] + "}");
-                    }
-                    else
-                    {
-                        Debug.Log("Sorry, still not ClockWise ->- {" + tr[i + 0] + "},{" + tr[i + 1] + "},{" + tr[i + 2] + "}");
-                    }
                 }
             }
             return tr;
@@ -334,13 +319,11 @@ namespace ummisco.gama.unity.utils
                 if (1 == 1)
                     if (!IsTriangleOrientedClockwise(m_points[triangles[i]], m_points[triangles[i + 1]], m_points[triangles[i + 2]]))
                     {
-                        Debug.Log("Front Triangle not  Clockwise > ");
                         triangles[i + 0] = tris[i + 0];
                         triangles[i + 1] = tris[i + 2];
                         triangles[i + 2] = tris[i + 1];
                         if (!IsTriangleOrientedClockwise(m_points[triangles[i]], m_points[triangles[i + 1]], m_points[triangles[i + 2]]))
                         {
-                            Debug.Log("Front Triangle also not  Clockwise > ");
                             triangles[i + 0] = tris[i + 1];
                             triangles[i + 1] = tris[i + 2];
                             triangles[i + 2] = tris[i + 0];
@@ -365,13 +348,13 @@ namespace ummisco.gama.unity.utils
                 if (1 == 1)
                     if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + i + 0]], all_points[triangles[count_tris + i + 1]], all_points[triangles[count_tris + i + 2]]))
                     {
-                        Debug.Log("Back Triangle also not  Clockwise > ");
+                        //Debug.Log("Back Triangle not  Clockwise > ");
                         triangles[count_tris + i + 0] = tris[i + 0] + m_points.Count;
                         triangles[count_tris + i + 1] = tris[i + 2] + m_points.Count;
                         triangles[count_tris + i + 2] = tris[i + 1] + m_points.Count;
                         if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + i + 0]], all_points[triangles[count_tris + i + 1]], all_points[triangles[count_tris + i + 2]]))
                         {
-                            Debug.Log("Back Triangle also not  Clockwise > ");
+                            //    Debug.Log("Back Triangle again not  Clockwise > ");
                             triangles[count_tris + i + 0] = tris[i + 0] + m_points.Count;
                             triangles[count_tris + i + 1] = tris[i + 2] + m_points.Count;
                             triangles[count_tris + i + 2] = tris[i + 1] + m_points.Count;
@@ -395,13 +378,10 @@ namespace ummisco.gama.unity.utils
                 if (1 == 1)
                     if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + 0]], all_points[triangles[count_tris + 1]], all_points[triangles[count_tris + 2]]))
                     {
-                        Debug.Log("Other Triangle also not  Clockwise > ");
                         triangles[count_tris + 0] = n;
                         triangles[count_tris + 1] = i + m_points.Count;
                         triangles[count_tris + 2] = i;
                     }
-
-
 
                 /* 
                 //---
@@ -416,7 +396,6 @@ namespace ummisco.gama.unity.utils
                 if (1 == 1)
                     if (!IsTriangleOrientedClockwise(all_points[triangles[count_tris + 3]], all_points[triangles[count_tris + 4]], all_points[triangles[count_tris + 5]]))
                     {
-                        Debug.Log("Other Triangle also not  Clockwise > ");
                         triangles[count_tris + 3] = i + m_points.Count;
                         triangles[count_tris + 4] = n + m_points.Count;
                         triangles[count_tris + 5] = n;

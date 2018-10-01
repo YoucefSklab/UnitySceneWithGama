@@ -28,6 +28,8 @@ namespace ummisco.gama.unity.GamaAgent
 
         public Vector2[] getVector2Coordinates()
         {
+            Debug.Log("Total Points is -> "+Points.Count);
+            if(Points.Count == 0) {return null;}
             Vector2[] coord = new Vector2[Points.Count];
             for (int i = 0; i < Points.Count; i++)
             {

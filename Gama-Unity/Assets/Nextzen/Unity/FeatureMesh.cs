@@ -7,6 +7,7 @@ namespace Nextzen.Unity
         private string collection;
         private string layer;
 
+       
         private MeshData mesh;
 
         public FeatureMesh(string tile, string collection, string layer, string identifier)
@@ -19,6 +20,7 @@ namespace Nextzen.Unity
             this.mesh = new MeshData();
         }
 
+       
         public string GetName(SceneGroupType groupType)
         {
             string name;

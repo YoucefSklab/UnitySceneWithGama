@@ -128,10 +128,7 @@ public class GamaManager : MonoBehaviour
         client.Subscribe(new string[] { MqttSetting.CREATE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
         client.Subscribe(new string[] { MqttSetting.DESTROY_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
         client.Subscribe(new string[] { MqttSetting.NOTIFICATION_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
-
-        NotificationRegistry.getCallingMethod();
-
- 
+       
     }
 
 
@@ -156,12 +153,10 @@ public class GamaManager : MonoBehaviour
             {
                 case MqttSetting.MAIN_TOPIC:
                     //------------------------------------------------------------------------------
-                    //Debug.Log("-> Topic to deal with is : " + MqttSetting.MAIN_TOPIC);
+                    Debug.Log("-> Topic to deal with is : " + MqttSetting.MAIN_TOPIC);
                     //Debug.Log("-> The message is : " + e.Message);
 
                     topicGameObject = gameObject;
-
-
                     GamaMessage gamaMessage = (GamaMessage)msgDes.deserialization(receivedMsg, new GamaMessage());
                     targetGameObject = getGameObjectByName(gamaMessage.receivers);
 
@@ -172,10 +167,8 @@ public class GamaManager : MonoBehaviour
                     }
 
                     obj = new object[] { gamaMessage, targetGameObject };
-
+                    //GamaManager obje = (GamaManager) FindObjectOfType(typeof(GamaManager));
                     getGameObjectByName(MqttSetting.MAIN_TOPIC_MANAGER).GetComponent(MqttSetting.MAIN_TOPIC_SCRIPT).SendMessage("ProcessTopic", obj);
-
-
 
                     //------------------------------------------------------------------------------
                     break;

@@ -243,7 +243,7 @@ namespace ummisco.gama.unity.utils
 
                 foreach (XmlNode n in listNode)
                 {
-                   // Debug.Log("The name is " + n.Name);
+                    // Debug.Log("The name is " + n.Name);
                     if (n.Name == "value")
                     {
                         value = float.Parse(n.InnerText);
@@ -307,12 +307,56 @@ namespace ummisco.gama.unity.utils
             }
             gamaAgent.color = new GamaColor(value, falpha, name);
         }
+
+        public static string getAgentGeometry(XmlElement elt)
+        {
+
+            string geo = elt.Attributes["class"].Value;
+            if (geo != null)
+            {
+                return geo.Substring((geo.LastIndexOf(".") + 1), (geo.Length - (geo.LastIndexOf(".") + 1)));
+                /* 
+                if (elt.Attributes["class"].Value.Equals("com.vividsolutions.jts.geom.Polygon"))
+                {
+                    return "Polygon";
+                }
+                if (elt.Attributes["class"].Value.Equals("com.vividsolutions.jts.geom.LineString"))
+                {
+                    return "LineString";
+                }
+                */
+            }
+            else
+            {
+                return "Sphere";
+            }
+
+        }
         public static Agent getAgent(XmlNode[] content)
         {
+
             Agent gamaAgent = new Agent();
 
+            gamaAgent.geometry = getAgentGeometry((XmlElement)content.GetValue(1));
+            Debug.Log("The agent geometry " + gamaAgent.geometry);
+
+            if (gamaAgent.geometry.Equals("Polygon"))
+            {
+                getAgentBuildingInfo(gamaAgent, content);
+            }
+            if (gamaAgent.geometry.Equals("LineString"))
+            {
+                getAgentLineStringInfo(gamaAgent, content);
+            }
+            return gamaAgent;
+        }
+
+
+        public static void getAgentBuildingInfo(Agent gamaAgent, XmlNode[] content)
+        {
             for (int i = 1; i < content.Length; i++)
             {
+
                 XmlElement elt = (XmlElement)content.GetValue(i);
                 XmlNodeList list = elt.ChildNodes;
 
@@ -363,13 +407,95 @@ namespace ummisco.gama.unity.utils
 
                 }
             }
+        }
 
 
-            return gamaAgent;
+        public static void getAgentLineStringInfo(Agent gamaAgent, XmlNode[] content)
+        {
+            for (int i = 1; i < content.Length; i++)
+            {
+
+                XmlElement elt = (XmlElement)content.GetValue(i);
+                XmlNodeList list = elt.ChildNodes;
+
+                foreach (XmlElement item in list)
+                {
+                    switch (item.Name)
+                    {
+                        case "factory":
+
+                            break;
+
+                        case "SRID":
+
+                            break;
+                        case "points":
+                            Debug.Log("The agent coordinates are to compute");
+                            gamaAgent.agentCoordinate = getCoordinateSequence(item.GetElementsByTagName("msi.gama.metamodel.shape.GamaPoint"));
+                            Debug.Log("The agent coordinates ares " + gamaAgent.agentCoordinate.ToString());
+                            break;
+                        case "holes":
+
+                            break;
+                        case "agentReference":
+                            gamaAgent.agentName = getAgentName(item);
+                            Debug.Log("The agent name is " + gamaAgent.agentName);
+                            break;
+                        case "keysType":
+
+                            break;
+                        case "dataType":
+
+                            break;
+                        case "valuesMapReducer":
+                            getValuesMapReducerAttributes(gamaAgent, item);
+                            getEntriesAttributes(gamaAgent, item);
+                            //Debug.Log("The agent color is is " + gamaAgent.color.ToString());
+                            //Debug.Log("The agent nature " + gamaAgent.nature);
+                            //Debug.Log("The agent rotation " + gamaAgent.rotation);
+                            //Debug.Log("The agent type " + gamaAgent.type);
+                            //Debug.Log("The agent speed " + gamaAgent.speed);
+                            //Debug.Log("The agent hight " + gamaAgent.hight);
+
+                            break;
+
+                        default:
+
+                            break;
+                    }
+
+                }
+            }
         }
 
 
 
+
+        public class AgentComponents
+        {
+            public object geometry { set; get; }
+
+            public object agent { set; get; }
+
+            public object attributes { set; get; }
+
+
+            public AgentComponents()
+            {
+
+            }
+
+            public AgentComponents(object geometry, object agent, object attributes)
+            {
+                this.geometry = geometry;
+                this.agent = agent;
+                this.attributes = attributes;
+            }
+
+        }
+
+
     }
+
 }
 

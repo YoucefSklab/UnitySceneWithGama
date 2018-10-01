@@ -69,7 +69,7 @@ namespace Nextzen
 
         public float elevation;
 
-        public Material buildingMaterial;
+        public static Material buildingMaterial;
 
 
 
@@ -414,26 +414,38 @@ namespace Nextzen
                     MeshData meshData = featureMesh.Mesh;
                     List<MeshData.Submesh> Submeshes = new List<MeshData.Submesh>();
                     MeshData.Submesh submesh = new MeshData.Submesh();
-
-                    Vector2[] oldVertices2D = agent.agentCoordinate.getVector2Coordinates();
-                    Vector2[] vertices2D;
-                   // if (oldVertices2D.Length > 2)
-                   // {
+                   
+                    Vector2[] vertices2D = agent.agentCoordinate.getVector2Coordinates();
+                    
+                    if(agent.geometry.Equals("Polygon"))
+                    {
                         List<Vector2> vect = new List<Vector2>();
-                        vect = oldVertices2D.ToList();
+                        vect = vertices2D.ToList();
                         vect.RemoveAt(vect.Count-1);
                         vertices2D = vect.ToArray();
-                   // }else{
-                   //     vertices2D = oldVertices2D;
-                   // }
+                    }
+                    if(agent.geometry.Equals("LineString"))
+                    {
+                        List<Vector2> vect = new List<Vector2>();
+                        vect = vertices2D.ToList();
+                       // List<Vector2> vect2 = new List<Vector2>();
+                       // foreach(var v in vect){
+                       //         Vector2 v2 = new Vector2(v.x + 1, v.y + 1);
+                       //         vect2.Add(v2);
+                       // }
+                       // vect.AddRange(vect2);
+                        vertices2D = vect.ToArray();
+                    }else{
+                        Debug.Log("------> "+agent.geometry);
+                    }
 
                     //Vector2[] vertices2D = new Vector2[ 2];
 
                     Triangulator triangulator = new Triangulator(vertices2D);
                     triangulator.setAllPoints(triangulator.get2dVertices());
-                    Debug.Log("Number of Vertices Before is : (Agent: " + agent.agentName + ") --> " + vertices2D.Length);
-                    Vertices = triangulator.get3dVerticesList(this.elevation);
-                    Debug.Log("Number of Vertices After is : (Agent: " + agent.agentName + ")  --> " + Vertices.Count);
+                    float elevation = this.elevation;
+                    if(agent.geometry.Equals("LineString")) elevation = 0.0f;
+                    Vertices = triangulator.get3dVerticesList(elevation);
                     Indices = triangulator.getTriangulesList();
                     UVs = new List<Vector2>();
 
@@ -444,29 +456,13 @@ namespace Nextzen
                     UVs = UvArray.ToList();
 
                     submesh.Indices = Indices;
-
-                    // ----------------------------------------
-                    /* 
-                                   Mesh m = new Mesh();
-                                   m.Clear();
-                                   m.vertices = Vertices.ToArray();
-                                   m.triangles = Indices.ToArray();//mesh.triangles;
-                                   Unwrapping.GenerateSecondaryUVSet(m);
-                                   m.RecalculateNormals();
-                                   m.RecalculateBounds();
-                                   MeshUtility.Optimize(m);
-
-                                   Vertices = m.vertices.ToList();
-                                   submesh.Indices = m.triangles.ToList();
-                                   UVs = m.uv.ToList();
-                     */
-
-                    // ----------------------------------------
-                    //submesh.Material = buildingMaterial;
+                  
+                    submesh.Material = buildingMaterial;
 
                     Submeshes.Add(submesh);
 
-                    meshData.addGamaMeshData(Vertices, UVs, Submeshes);
+                    meshData.addGamaMeshData(Vertices, UVs, Submeshes, agent.geometry);
+                    
                     featureMesh.Mesh = meshData;
                     meshList.Add(featureMesh);
 

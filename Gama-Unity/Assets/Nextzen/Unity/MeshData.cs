@@ -18,12 +18,15 @@ namespace Nextzen.Unity
             public List<Submesh> Submeshes;
             public List<Vector3> Vertices;
             public List<Vector2> UVs;
+            public string meshGeometry;
 
             public MeshBucket()
             {
                 Vertices = new List<Vector3>();
                 UVs = new List<Vector2>();
                 Submeshes = new List<Submesh>();
+                meshGeometry = "";
+                
             }
 
             public void setUvs()
@@ -36,6 +39,8 @@ namespace Nextzen.Unity
         }
 
         public List<MeshBucket> Meshes;
+
+        
 
         private static readonly int MaxVertexCount = 65535;
 
@@ -196,12 +201,23 @@ namespace Nextzen.Unity
         }
 
         //-----------------------------------------------
-        public void addGamaMeshData(List<Vector3> vertices, List<Vector2> uVs, List<Submesh> Submeshes)
+        public void addGamaMeshData(List<Vector3> vertices, List<Vector2> uVs, List<Submesh> Submeshes, string meshGeometry)
         {
             MeshBucket meshBucket = new MeshBucket();
             meshBucket.Vertices = vertices;
             meshBucket.UVs = uVs;
             meshBucket.Submeshes = Submeshes;
+            meshBucket.meshGeometry = meshGeometry;
+
+            this.Meshes.Add(meshBucket);
+        }
+       public void addGamaMeshData(List<Vector3> vertices, List<Vector2> uVs, List<Submesh> Submeshes)
+        {
+            MeshBucket meshBucket = new MeshBucket();
+            meshBucket.Vertices = vertices;
+            meshBucket.UVs = uVs;
+            meshBucket.Submeshes = Submeshes;
+            meshBucket.meshGeometry = " ";
 
             this.Meshes.Add(meshBucket);
         }

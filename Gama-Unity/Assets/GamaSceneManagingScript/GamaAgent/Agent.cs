@@ -21,6 +21,7 @@ namespace ummisco.gama.unity.GamaAgent
         public string species { set; get; }
         public int index { set; get; }
         public string nature { get; set; }
+        public string geometry{ get; set;}
         public string type { get; set; }
         public int hight { get; set; }
 

@@ -88,10 +88,9 @@ namespace ummisco.gama.unity.utils
         public static Vector2[] CalculateUVs3(Vector3[] v/*vertices*/, float scale)
         {
             var uvs = new Vector2[v.Length];
-            Debug.Log("v.Length= " + v.Length);
             for (int i = 0; i < uvs.Length; i += 3)
             {
-                Debug.Log("i= " + i);
+                
                 int i0 = i;
                 int i1 = i + 1;
                 int i2 = i + 2;
@@ -99,7 +98,6 @@ namespace ummisco.gama.unity.utils
                 if (i2 == uvs.Length) { i2 = 0; }
                 if (i1 == uvs.Length) { i1 = 0; }
                 if (i2 == uvs.Length + 1) { i2 = 1; }
-
 
                 Vector3 v0 = v[i0];
                 Vector3 v1 = v[i1];
