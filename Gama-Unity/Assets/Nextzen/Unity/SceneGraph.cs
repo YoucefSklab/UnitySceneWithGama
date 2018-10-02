@@ -76,8 +76,9 @@ namespace Nextzen.Unity
             else
             {
                 MeshData data = new MeshData();
-                data.Merge(featureMesh.Mesh);
+                data.Merge(featureMesh.Mesh, true);
                 gameObjectMeshData.Add(gameObject, data);
+
 
                 Debug.Log("Game Object Created: " + gameObject.name);
                 Debug.Log("         Its Vertices: " + data.MeshDataVerticesToString());
@@ -95,6 +96,7 @@ namespace Nextzen.Unity
                 foreach (var featureMesh in features)
                 {
                     MergeMeshData(regionMap, featureMesh);
+
                 }
             }
             else
@@ -160,63 +162,18 @@ namespace Nextzen.Unity
                     var mesh = new Mesh();
 
                     mesh.Clear();
-                    meshBucket.meshGeometry = "LineString";
+                    //meshBucket.meshGeometry = "LineString";
                     //-----------------------------------
                     Debug.Log("Geometry ++------> " + meshBucket.meshGeometry);
-                   
+                    Debug.Log("game Object Name >    " + gameObject.name);
+
                     if (meshBucket.meshGeometry.Equals("LineString"))
                     {
-                        Debug.Log("game Object Name >    " + gameObject.name);
-                         Debug.Log("Geometry ++------> --->>>>>>    " + meshBucket.meshGeometry);
-                        //--- --
                         gameObject.AddComponent<LineRenderer>();
                         LineRenderer line = (LineRenderer)gameObject.GetComponent(typeof(LineRenderer));
-
                         line.SetVertexCount(meshBucket.Vertices.Count);
                         line.SetPositions(meshBucket.Vertices.ToArray());
-
-
-                        line.startWidth = 4;
-                        Vector3 left, right; // A position to the left of the current line
-                        for (var j = 0; j < line.positionCount - 1; j++)
-                        {
-                            gameObject.transform.position = line.GetPosition(j);
-                            gameObject.transform.LookAt(line.GetPosition(j + 1));
-                            //right = gameObject.transform.position + transform.right * line.startWidth / 2;
-                            //left = gameObject.transform.position - transform.right * line.startWidth / 2;
-                            right = gameObject.transform.position + gameObject.transform.right * line.startWidth / 2;
-                            left = gameObject.transform.position - gameObject.transform.right * line.startWidth / 2;
-                            meshBucket.Vertices.Add(left);
-                            meshBucket.Vertices.Add(right);
-                        }
-                        gameObject.transform.position = line.GetPosition(line.positionCount - 1);
-                        gameObject.transform.LookAt(line.GetPosition(line.positionCount - 2));
-                        right = gameObject.transform.position + gameObject.transform.right * line.startWidth / 2;
-                        left = gameObject.transform.position - gameObject.transform.right * line.startWidth / 2;
-                        meshBucket.Vertices.Add(left);
-                        meshBucket.Vertices.Add(right);
-
-                       // mesh = DrawLineMesh(meshBucket.Vertices);
-
-                        
-                        // Associate the mesh filter and mesh renderer components with this game object
-
-                        var materials = meshBucket.Submeshes.Select(s => s.Material).ToArray();
-                        var meshFilterComponent = gameObject.AddComponent<MeshFilter>();
-                        var meshRendererComponent = gameObject.AddComponent<MeshRenderer>();
-
-                        meshRendererComponent.materials = materials;
-                       // meshFilterComponent.mesh = mesh;
-
-
-
-                        if (gameObjectOptions.GeneratePhysicMeshCollider)
-                        {
-                            var meshColliderComponent = gameObject.AddComponent<MeshCollider>();
-                            meshColliderComponent.material = gameObjectOptions.PhysicMaterial;
-                        //    meshColliderComponent.sharedMesh = mesh;
-                        }
-
+                        line.SetVertexCount(meshBucket.Vertices.Count / 2);
                     }
                     else if (meshBucket.meshGeometry.Equals("Polygon"))
                     {
@@ -246,7 +203,7 @@ namespace Nextzen.Unity
                         meshRendererComponent.materials = materials;
                         meshFilterComponent.mesh = mesh;
 
-                       
+
 
                         if (gameObjectOptions.GeneratePhysicMeshCollider)
                         {

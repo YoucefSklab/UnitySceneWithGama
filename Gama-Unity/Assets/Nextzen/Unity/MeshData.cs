@@ -26,7 +26,12 @@ namespace Nextzen.Unity
                 UVs = new List<Vector2>();
                 Submeshes = new List<Submesh>();
                 meshGeometry = "";
-                
+
+            }
+
+            public void setMeshGeometry(string meshGeometry)
+            {
+                this.meshGeometry = meshGeometry;
             }
 
             public void setUvs()
@@ -40,7 +45,7 @@ namespace Nextzen.Unity
 
         public List<MeshBucket> Meshes;
 
-        
+
 
         private static readonly int MaxVertexCount = 65535;
 
@@ -149,6 +154,100 @@ namespace Nextzen.Unity
             }
         }
 
+        public void Merge(MeshData other, bool withMesh)
+        {
+            foreach (var bucket in other.Meshes)
+            {
+                foreach (var submesh in bucket.Submeshes)
+                {
+                    if (submesh.Indices.Count == 0)
+                    {
+                        continue;
+                    }
+
+                    int minIndex = int.MaxValue;
+                    int maxIndex = int.MinValue;
+
+                    foreach (var index in submesh.Indices)
+                    {
+                        minIndex = Math.Min(minIndex, index);
+                        maxIndex = Math.Max(maxIndex, index);
+                    }
+
+                    int nIndices = maxIndex - minIndex + 1;
+                    var uvs = bucket.UVs.GetRange(minIndex, nIndices);
+                    var vertices = bucket.Vertices.GetRange(minIndex, nIndices);
+                    var indices = submesh.Indices as IEnumerable<int>;
+
+                    if (minIndex > 0)
+                    {
+                        indices = indices.Select(i => i - minIndex);
+                    }
+                    if (withMesh)
+                    {
+                        AddElements(vertices, uvs, indices, submesh.Material, bucket.meshGeometry);
+                    }else{
+                        AddElements(vertices, uvs, indices, submesh.Material);
+                    }
+
+
+                }
+            }
+        }
+        public void AddElements(IEnumerable<Vector3> vertices, IEnumerable<Vector2> uvs, IEnumerable<int> indices, Material material, string meshGeometry)
+        {
+            var vertexList = new List<Vector3>(vertices);
+            int vertexCount = vertexList.Count;
+
+            MeshBucket bucket = null;
+
+            // Check whether the last available bucket is valid for use given the maximum vertex count
+            if (Meshes.Count > 0)
+            {
+                var last = Meshes[Meshes.Count - 1];
+                if (last.Vertices.Count + vertexCount < MaxVertexCount)
+                {
+                    bucket = last;
+                }
+            }
+
+            // No bucket were found, instantiate a new one
+            if (bucket == null)
+            {
+                bucket = new MeshBucket();
+                Meshes.Add(bucket);
+            }
+
+            bucket.meshGeometry = meshGeometry;
+            int offset = bucket.Vertices.Count;
+            bucket.Vertices.AddRange(vertexList);
+            bucket.UVs.AddRange(uvs);
+
+            // Find a submesh with this material, or create a new one.
+            Submesh submesh = null;
+            foreach (var s in bucket.Submeshes)
+            {
+                if (s.Material == material)
+                {
+                    submesh = s;
+                    break;
+                }
+            }
+
+            if (submesh == null)
+            {
+                submesh = new Submesh { Indices = new List<int>(), Material = material };
+                bucket.Submeshes.Add(submesh);
+            }
+
+            foreach (var index in indices)
+            {
+                submesh.Indices.Add(index + offset);
+            }
+        }
+
+
+
         public void AddElements(IEnumerable<Vector3> vertices, IEnumerable<Vector2> uvs, IEnumerable<int> indices, Material material)
         {
             var vertexList = new List<Vector3>(vertices);
@@ -172,6 +271,7 @@ namespace Nextzen.Unity
                 bucket = new MeshBucket();
                 Meshes.Add(bucket);
             }
+
 
             int offset = bucket.Vertices.Count;
             bucket.Vertices.AddRange(vertexList);
@@ -203,15 +303,17 @@ namespace Nextzen.Unity
         //-----------------------------------------------
         public void addGamaMeshData(List<Vector3> vertices, List<Vector2> uVs, List<Submesh> Submeshes, string meshGeometry)
         {
+
             MeshBucket meshBucket = new MeshBucket();
             meshBucket.Vertices = vertices;
             meshBucket.UVs = uVs;
             meshBucket.Submeshes = Submeshes;
             meshBucket.meshGeometry = meshGeometry;
-
+            Debug.Log("-----------------------------------========================++++++++++++++++++++++++>>>>>>>>>>>> " + meshBucket.meshGeometry);
             this.Meshes.Add(meshBucket);
         }
-       public void addGamaMeshData(List<Vector3> vertices, List<Vector2> uVs, List<Submesh> Submeshes)
+
+        public void addGamaMeshData(List<Vector3> vertices, List<Vector2> uVs, List<Submesh> Submeshes)
         {
             MeshBucket meshBucket = new MeshBucket();
             meshBucket.Vertices = vertices;

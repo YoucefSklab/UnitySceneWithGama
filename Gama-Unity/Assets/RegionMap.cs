@@ -7,9 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using ummisco.gama.unity.utils;
-using UnityEditor;
 using UnityEngine;
-
 
 namespace Nextzen
 {
@@ -225,6 +223,9 @@ namespace Nextzen
             return nTasksReady == nTasksForArea;
         }
 
+
+
+
         public void GenerateSceneGraph()
         {
             // Add tasks here! 
@@ -325,6 +326,7 @@ namespace Nextzen
             sceneGraph.Generate();
         }
 
+
         public bool IsValid()
         {
             bool hasStyle = Style != null;
@@ -407,44 +409,29 @@ namespace Nextzen
                     isNewAgentCreated = true;
                     agent.isDrawed = true;
 
-                    FeatureMesh featureMesh = new FeatureMesh("NameGama1", "GamaRoads", "NameGama13", agent.agentName);
+                    FeatureMesh featureMesh = new FeatureMesh("NameGama1", agent.geometry, "NameGama13", agent.agentName);
                     List<Vector3> Vertices = new List<Vector3>();
                     List<Vector2> UVs = new List<Vector2>();
                     List<int> Indices = new List<int>();
                     MeshData meshData = featureMesh.Mesh;
                     List<MeshData.Submesh> Submeshes = new List<MeshData.Submesh>();
                     MeshData.Submesh submesh = new MeshData.Submesh();
-                   
-                    Vector2[] vertices2D = agent.agentCoordinate.getVector2Coordinates();
-                    
-                    if(agent.geometry.Equals("Polygon"))
-                    {
-                        List<Vector2> vect = new List<Vector2>();
-                        vect = vertices2D.ToList();
-                        vect.RemoveAt(vect.Count-1);
-                        vertices2D = vect.ToArray();
-                    }
-                    if(agent.geometry.Equals("LineString"))
-                    {
-                        List<Vector2> vect = new List<Vector2>();
-                        vect = vertices2D.ToList();
-                       // List<Vector2> vect2 = new List<Vector2>();
-                       // foreach(var v in vect){
-                       //         Vector2 v2 = new Vector2(v.x + 1, v.y + 1);
-                       //         vect2.Add(v2);
-                       // }
-                       // vect.AddRange(vect2);
-                        vertices2D = vect.ToArray();
-                    }else{
-                        Debug.Log("------> "+agent.geometry);
-                    }
 
-                    //Vector2[] vertices2D = new Vector2[ 2];
+                    Vector2[] vertices2D = agent.agentCoordinate.getVector2Coordinates();
+
+                    List<Vector2> vect = new List<Vector2>();
+                    vect = vertices2D.ToList();
+                    if (agent.geometry.Equals("Polygon"))
+                    {
+                        vect.RemoveAt(vect.Count - 1);
+                    }
+                    vertices2D = vect.ToArray();
+
 
                     Triangulator triangulator = new Triangulator(vertices2D);
                     triangulator.setAllPoints(triangulator.get2dVertices());
                     float elevation = this.elevation;
-                    if(agent.geometry.Equals("LineString")) elevation = 0.0f;
+                    if (agent.geometry.Equals("LineString")) elevation = 0.0f;
                     Vertices = triangulator.get3dVerticesList(elevation);
                     Indices = triangulator.getTriangulesList();
                     UVs = new List<Vector2>();
@@ -456,17 +443,19 @@ namespace Nextzen
                     UVs = UvArray.ToList();
 
                     submesh.Indices = Indices;
-                  
+
                     submesh.Material = buildingMaterial;
 
                     Submeshes.Add(submesh);
 
+                    Debug.Log("addGamaMeshData ------> " + agent.geometry + " Agent name -> " + agent.agentName);
+
                     meshData.addGamaMeshData(Vertices, UVs, Submeshes, agent.geometry);
-                    
+
+
                     featureMesh.Mesh = meshData;
                     meshList.Add(featureMesh);
 
-                    meshList.Add(featureMesh);
 
                 }
             }
