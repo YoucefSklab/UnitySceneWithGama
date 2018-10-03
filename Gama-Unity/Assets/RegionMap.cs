@@ -379,7 +379,7 @@ namespace Nextzen
         void Start()
         {
             Debug.Log("This is the map builder Agent");
-            this.elevation = 10f;
+            this.elevation = 50f;
             /* 
             ApiKey = "NO9atv-JQf289NztiKv45g";
             UnitsPerMeter = 1.0f;
@@ -431,16 +431,26 @@ namespace Nextzen
                     Triangulator triangulator = new Triangulator(vertices2D);
                     triangulator.setAllPoints(triangulator.get2dVertices());
                     float elevation = this.elevation;
-                    if (agent.geometry.Equals("LineString")) elevation = 0.0f;
+                    if (agent.geometry.Equals("LineString")) 
+                    {
+                        elevation = 0.0f;
+                    }
                     Vertices = triangulator.get3dVerticesList(elevation);
                     Indices = triangulator.getTriangulesList();
-                    UVs = new List<Vector2>();
-
                     Vector3[] VerticesArray = Vertices.ToArray();
-
                     Vector2[] UvArray = UvCalculator.CalculateUVs(VerticesArray, 100);
-
+                    UVs = new List<Vector2>();
                     UVs = UvArray.ToList();
+                    /* 
+                    if (agent.geometry.Equals("Point"))
+                    { 
+                        Vertices = agent.agentCoordinate.getVector3Coordinates().ToList();
+                        Indices = new List<int>();
+                        Indices.Add(1);Indices.Add(1);Indices.Add(1);
+                        UVs = new List<Vector2>();
+                    }
+                   */
+                   
 
                     submesh.Indices = Indices;
 
@@ -450,7 +460,7 @@ namespace Nextzen
 
                     Debug.Log("addGamaMeshData ------> " + agent.geometry + " Agent name -> " + agent.agentName);
 
-                    meshData.addGamaMeshData(Vertices, UVs, Submeshes, agent.geometry);
+                    meshData.addGamaMeshData(Vertices, UVs, Submeshes, agent);
 
 
                     featureMesh.Mesh = meshData;

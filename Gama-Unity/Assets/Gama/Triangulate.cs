@@ -28,7 +28,7 @@ public class Triangulate : MonoBehaviour
         Vector2[] vertices2D156 = new Vector2[] { new Vector2(264, 689), new Vector2(317, 699), new Vector2(315, 713), new Vector2(297, 709), new Vector2(295, 719), new Vector2(261, 713), new Vector2(261, 703), new Vector2(264, 689) };
         Vector2[] vertices2D162 = new Vector2[] { new Vector2(543, 711), new Vector2(542, 699), new Vector2(563, 698), new Vector2(564, 710), new Vector2(543, 711) };
         vertices2D162 = new Vector2[] { new Vector2(543, 711), new Vector2(542, 699), new Vector2(563, 698), new Vector2(564, 710) };
-        Vector2[] verticesLineString = new Vector2[] { new Vector2(342, 586), new Vector2(345, 581), new Vector2(348, 579), new Vector2(351, 579), new Vector2(355, 579), new Vector2(357, 579), new Vector2(360, 579),  new Vector2(362, 579), new Vector2(365, 579), new Vector2(370, 579), new Vector2(375, 579), new Vector2(380, 579)};
+        Vector2[] verticesLineString = new Vector2[] { new Vector2(342, 586), new Vector2(345, 581), new Vector2(348, 579), new Vector2(351, 579), new Vector2(355, 579), new Vector2(357, 579), new Vector2(360, 579), new Vector2(362, 579), new Vector2(365, 579), new Vector2(370, 579), new Vector2(375, 579), new Vector2(380, 579) };
 
         triangulator = new Triangulator(vertices2D);
         GameObject poly;
@@ -74,6 +74,9 @@ public class Triangulate : MonoBehaviour
         poly.GetComponent<MeshFilter>().mesh = CreateMesh(10);
         poly.GetComponent<Renderer>().material = myNewMaterial;
         */
+
+        //Material mat = new Material(Shader.Find("UVGrid"));
+
         vertices2D = vertices2D162;
         triangulator.setPoints(vertices2D);
         poly = new GameObject("Poly_162");
@@ -82,6 +85,14 @@ public class Triangulate : MonoBehaviour
         poly.GetComponent<MeshFilter>().mesh.Clear();
         poly.GetComponent<MeshFilter>().mesh = CreateMesh(10);
         poly.GetComponent<Renderer>().material = myNewMaterial;
+        poly.GetComponent<Renderer>().material = (Material)Resources.Load("UVGrid", typeof(Material));
+
+        Material mat=  Utils.getMaterialByName("UVGrid");
+        if(mat != null){
+           poly.GetComponent<Renderer>().material = mat; 
+        }
+
+       
 
         /* 
         vertices2D = verticesLineString;
@@ -181,7 +192,7 @@ public class Triangulate : MonoBehaviour
         int position = 6;
         for (int i = 0; i < (triangles.Length / 6); i++)
         {
-             Debug.Log("Triangles are: " + i);
+            Debug.Log("Triangles are: " + i);
             triangles[i * position] = 2 * i;
             triangles[i * position + 3] = 2 * i;
 

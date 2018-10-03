@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ummisco.gama.unity.utils;
 using UnityEditor;
 using UnityEngine;
 
@@ -78,7 +79,6 @@ namespace Nextzen.Unity
                 MeshData data = new MeshData();
                 data.Merge(featureMesh.Mesh, true);
                 gameObjectMeshData.Add(gameObject, data);
-
 
                 Debug.Log("Game Object Created: " + gameObject.name);
                 Debug.Log("         Its Vertices: " + data.MeshDataVerticesToString());
@@ -164,18 +164,51 @@ namespace Nextzen.Unity
                     mesh.Clear();
                     //meshBucket.meshGeometry = "LineString";
                     //-----------------------------------
-                    Debug.Log("Geometry ++------> " + meshBucket.meshGeometry);
+                    Debug.Log("Geometry ++------> " + meshBucket.gamaAgent.geometry);
                     Debug.Log("game Object Name >    " + gameObject.name);
 
-                    if (meshBucket.meshGeometry.Equals("LineString"))
+                    if (meshBucket.gamaAgent.geometry.Equals("LineString"))
                     {
                         gameObject.AddComponent<LineRenderer>();
                         LineRenderer line = (LineRenderer)gameObject.GetComponent(typeof(LineRenderer));
-                        line.SetVertexCount(meshBucket.Vertices.Count);
+                        line.positionCount = meshBucket.Vertices.Count;
                         line.SetPositions(meshBucket.Vertices.ToArray());
-                        line.SetVertexCount(meshBucket.Vertices.Count / 2);
+                        line.positionCount = meshBucket.Vertices.Count / 2;
+                        Material mat = Utils.getMaterialByName("Red");
+                        if (mat != null)
+                        {
+                            line.material = mat;
+                        }
+
+                        line.material = new Material(Shader.Find("Particles/Additive"));
+                        Color c1 = Color.red;
+                        Color c2 = new Color(1, 1, 1, 0);
+                        line.startColor = c1;
+                        line.endColor = c1;
+                        line.startWidth = 5.0f;
+                        line.endWidth = 5.0f;
+
+
+
+
+
+
+
                     }
-                    else if (meshBucket.meshGeometry.Equals("Polygon"))
+                    else if (meshBucket.gamaAgent.geometry.Equals("Point"))
+                    {
+                        Transform tr = gameObject.transform.parent;
+                        string name = gameObject.name;
+                        gameObject.name = gameObject.name + "Old";
+
+                        gameObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                        gameObject.name = name;
+                        gameObject.transform.parent = tr;
+                        gameObject.transform.position = meshBucket.Vertices[0];
+                        gameObject.transform.localScale = new Vector3(4, 4, 4);
+                        //gameObject.AddComponent<LineRenderer>();
+                    }
+                    else if (meshBucket.gamaAgent.geometry.Equals("Polygon"))
                     {
                         mesh.SetVertices(meshBucket.Vertices);
                         mesh.SetUVs(0, meshBucket.UVs);
@@ -205,12 +238,24 @@ namespace Nextzen.Unity
 
 
 
+
                         if (gameObjectOptions.GeneratePhysicMeshCollider)
                         {
                             var meshColliderComponent = gameObject.AddComponent<MeshCollider>();
                             meshColliderComponent.material = gameObjectOptions.PhysicMaterial;
                             meshColliderComponent.sharedMesh = mesh;
                         }
+
+                        Renderer rend = gameObject.GetComponent<Renderer>();
+                        //Set the main Color of the Material to green
+                        rend.material.shader = Shader.Find("_Color");
+                        rend.material.SetColor("_Color", Color.green);
+
+                        //Find the Specular shader and change its Color to red
+                        rend.material.shader = Shader.Find("Specular");
+                        rend.material.SetColor("_SpecColor", Color.red);
+
+
                     }
 
 
@@ -218,6 +263,10 @@ namespace Nextzen.Unity
             }
         }
 
+        private void Destroy(GameObject gameObject)
+        {
+            throw new NotImplementedException();
+        }
 
         private Mesh DrawLineMesh(List<Vector3> points)
         {

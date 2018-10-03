@@ -39,6 +39,20 @@ namespace ummisco.gama.unity.GamaAgent
             return coord;
         }
 
+        public Vector3[] getVector3Coordinates()
+        {
+            
+            if(Points.Count == 0) {return null;}
+            Vector3[] coord = new Vector3[Points.Count];
+            for (int i = 0; i < Points.Count; i++)
+            {
+                Vector3 vect = new Vector3(Points[i].X, Points[i].Y, Points[i].Z);
+                coord[i] = vect;
+            }
+            return coord;
+        }
+
+
 
     }
 }

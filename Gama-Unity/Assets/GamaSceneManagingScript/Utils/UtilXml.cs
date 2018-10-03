@@ -348,6 +348,10 @@ namespace ummisco.gama.unity.utils
             {
                 getAgentLineStringInfo(gamaAgent, content);
             }
+            if (gamaAgent.geometry.Equals("Point"))
+            {
+                getAgentPointInfo(gamaAgent, content);
+            }
             return gamaAgent;
         }
 
@@ -373,14 +377,14 @@ namespace ummisco.gama.unity.utils
                             break;
                         case "shell":
                             gamaAgent.agentCoordinate = getCoordinateSequence(item.GetElementsByTagName("msi.gama.metamodel.shape.GamaPoint"));
-                            Debug.Log("The agent coordinates ares " + gamaAgent.agentCoordinate.ToString());
+                            //Debug.Log("The agent coordinates ares " + gamaAgent.agentCoordinate.ToString());
                             break;
                         case "holes":
 
                             break;
                         case "agentReference":
                             gamaAgent.agentName = getAgentName(item);
-                            Debug.Log("The agent name is " + gamaAgent.agentName);
+                            //Debug.Log("The agent name is " + gamaAgent.agentName);
                             break;
                         case "keysType":
 
@@ -430,16 +434,79 @@ namespace ummisco.gama.unity.utils
 
                             break;
                         case "points":
-                            Debug.Log("The agent coordinates are to compute");
+                            //Debug.Log("The agent coordinates are to compute");
                             gamaAgent.agentCoordinate = getCoordinateSequence(item.GetElementsByTagName("msi.gama.metamodel.shape.GamaPoint"));
-                            Debug.Log("The agent coordinates ares " + gamaAgent.agentCoordinate.ToString());
+                            //Debug.Log("The agent coordinates ares " + gamaAgent.agentCoordinate.ToString());
                             break;
                         case "holes":
 
                             break;
                         case "agentReference":
                             gamaAgent.agentName = getAgentName(item);
-                            Debug.Log("The agent name is " + gamaAgent.agentName);
+                            //Debug.Log("The agent name is " + gamaAgent.agentName);
+                            break;
+                        case "keysType":
+
+                            break;
+                        case "dataType":
+
+                            break;
+                        case "valuesMapReducer":
+                            getValuesMapReducerAttributes(gamaAgent, item);
+                            getEntriesAttributes(gamaAgent, item);
+                            //Debug.Log("The agent color is is " + gamaAgent.color.ToString());
+                            //Debug.Log("The agent nature " + gamaAgent.nature);
+                            //Debug.Log("The agent rotation " + gamaAgent.rotation);
+                            //Debug.Log("The agent type " + gamaAgent.type);
+                            //Debug.Log("The agent speed " + gamaAgent.speed);
+                            //Debug.Log("The agent hight " + gamaAgent.hight);
+
+                            break;
+
+                        default:
+
+                            break;
+                    }
+
+                }
+            }
+        }
+
+
+
+        public static void getAgentPointInfo(Agent gamaAgent, XmlNode[] content)
+        {
+            //Debug.Log("The case of Point agent");
+            for (int i = 1; i < content.Length; i++)
+            {
+
+                XmlElement elt = (XmlElement)content.GetValue(i);
+                XmlNodeList list = elt.ChildNodes;
+
+                foreach (XmlElement item in list)
+                {
+                   // Debug.Log("--- item "+item.Name);
+                    switch (item.Name)
+                    {
+                        case "factory":
+
+                            break;
+
+                        case "SRID":
+
+                            break;
+                        case "coordinates":
+                            //Debug.Log("The agent coordinates are to compute");
+                            //gamaAgent.agentCoordinate = getCoordinateSequence(item.GetElementsByTagName("msi.gama.metamodel.shape.GamaPoint"));
+                            gamaAgent.agentCoordinate = getCoordinateSequence(item.ChildNodes);
+                            //Debug.Log("The agent coordinates ares " + gamaAgent.agentCoordinate.ToString());
+                            break;
+                        case "holes":
+
+                            break;
+                        case "agentReference":
+                            gamaAgent.agentName = getAgentName(item);
+                            //Debug.Log("The agent name is " + gamaAgent.agentName);
                             break;
                         case "keysType":
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ummisco.gama.unity.GamaAgent;
 using UnityEngine;
 
 namespace Nextzen.Unity
@@ -18,22 +19,31 @@ namespace Nextzen.Unity
             public List<Submesh> Submeshes;
             public List<Vector3> Vertices;
             public List<Vector2> UVs;
-            public string meshGeometry;
+            public Agent gamaAgent;
 
             public MeshBucket()
             {
                 Vertices = new List<Vector3>();
                 UVs = new List<Vector2>();
                 Submeshes = new List<Submesh>();
-                meshGeometry = "";
+                gamaAgent = null;
 
             }
 
-            public void setMeshGeometry(string meshGeometry)
+            public MeshBucket(Agent gamaAgent)
             {
-                this.meshGeometry = meshGeometry;
+                Vertices = new List<Vector3>();
+                UVs = new List<Vector2>();
+                Submeshes = new List<Submesh>();
+                this.gamaAgent = gamaAgent; 
             }
 
+           
+
+            public void setGamaAgent(Agent gamaAgent)
+            {
+                this.gamaAgent = gamaAgent;
+            }
             public void setUvs()
             {
                 for (int i = 0; i < Vertices.Count; i++)
@@ -154,7 +164,7 @@ namespace Nextzen.Unity
             }
         }
 
-        public void Merge(MeshData other, bool withMesh)
+        public void Merge(MeshData other, bool withGamaAgent)
         {
             foreach (var bucket in other.Meshes)
             {
@@ -183,10 +193,12 @@ namespace Nextzen.Unity
                     {
                         indices = indices.Select(i => i - minIndex);
                     }
-                    if (withMesh)
+                    if (withGamaAgent)
                     {
-                        AddElements(vertices, uvs, indices, submesh.Material, bucket.meshGeometry);
-                    }else{
+                        AddElements(vertices, uvs, indices, submesh.Material, bucket.gamaAgent);
+                    }
+                    else
+                    {
                         AddElements(vertices, uvs, indices, submesh.Material);
                     }
 
@@ -194,7 +206,7 @@ namespace Nextzen.Unity
                 }
             }
         }
-        public void AddElements(IEnumerable<Vector3> vertices, IEnumerable<Vector2> uvs, IEnumerable<int> indices, Material material, string meshGeometry)
+        public void AddElements(IEnumerable<Vector3> vertices, IEnumerable<Vector2> uvs, IEnumerable<int> indices, Material material, Agent gamaAgent)
         {
             var vertexList = new List<Vector3>(vertices);
             int vertexCount = vertexList.Count;
@@ -218,7 +230,7 @@ namespace Nextzen.Unity
                 Meshes.Add(bucket);
             }
 
-            bucket.meshGeometry = meshGeometry;
+            bucket.gamaAgent = gamaAgent;
             int offset = bucket.Vertices.Count;
             bucket.Vertices.AddRange(vertexList);
             bucket.UVs.AddRange(uvs);
@@ -301,15 +313,15 @@ namespace Nextzen.Unity
         }
 
         //-----------------------------------------------
-        public void addGamaMeshData(List<Vector3> vertices, List<Vector2> uVs, List<Submesh> Submeshes, string meshGeometry)
+        public void addGamaMeshData(List<Vector3> vertices, List<Vector2> uVs, List<Submesh> Submeshes, Agent gamaAgent)
         {
 
             MeshBucket meshBucket = new MeshBucket();
             meshBucket.Vertices = vertices;
             meshBucket.UVs = uVs;
             meshBucket.Submeshes = Submeshes;
-            meshBucket.meshGeometry = meshGeometry;
-            Debug.Log("-----------------------------------========================++++++++++++++++++++++++>>>>>>>>>>>> " + meshBucket.meshGeometry);
+            meshBucket.gamaAgent = gamaAgent;
+            Debug.Log("-----------------------------------========================++++++++++++++++++++++++>>>>>>>>>>>> " + meshBucket.gamaAgent.geometry);
             this.Meshes.Add(meshBucket);
         }
 
@@ -319,7 +331,7 @@ namespace Nextzen.Unity
             meshBucket.Vertices = vertices;
             meshBucket.UVs = uVs;
             meshBucket.Submeshes = Submeshes;
-            meshBucket.meshGeometry = " ";
+            meshBucket.gamaAgent = null;
 
             this.Meshes.Add(meshBucket);
         }

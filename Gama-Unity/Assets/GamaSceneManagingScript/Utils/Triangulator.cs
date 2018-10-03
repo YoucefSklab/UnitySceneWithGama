@@ -146,7 +146,7 @@ namespace ummisco.gama.unity.utils
             {
                 vertices[i].x = m_points[i].x;
                 vertices[i].y = m_points[i].y;
-                vertices[i].z = -elevation; // front vertex
+                vertices[i].z =  - elevation; // front vertex
                 vertices[i + m_points.Count].x = m_points[i].x;
                 vertices[i + m_points.Count].y = m_points[i].y;
                 vertices[i + m_points.Count].z = elevation;  // back vertex   
@@ -186,10 +186,10 @@ namespace ummisco.gama.unity.utils
             {
                 vertices[i].x = m_points[i].x;
                 vertices[i].y = m_points[i].y;
-                vertices[i].z = -elevation; // front vertex
+                vertices[i].z = - elevation; // front vertex
                 vertices[i + m_points.Count].x = m_points[i].x;
                 vertices[i + m_points.Count].y = m_points[i].y;
-                vertices[i + m_points.Count].z = elevation;  // back vertex    
+                vertices[i + m_points.Count].z = 0; //elevation;  // back vertex    
             }
             return vertices.OfType<Vector3>().ToList();
         }

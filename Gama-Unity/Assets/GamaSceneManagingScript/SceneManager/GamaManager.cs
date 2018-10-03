@@ -51,12 +51,15 @@ public class GamaManager : MonoBehaviour
 
     public static List<Agent> gamaAgentList = new List<Agent>();
 
-    public Material planeMaterial;
+    public  Material planeMaterial;
+    public  Material polygonMaterial;
+    public  Material lineMaterial;
 
     public GameObject setTopicManager, getTotpicManager, moveTopicManager, notificationTopicManager;
 
 
     List<MqttMsgPublishEventArgs> msgList = new List<MqttMsgPublishEventArgs>();
+
 
 
     void Awake()
@@ -78,14 +81,14 @@ public class GamaManager : MonoBehaviour
 
         gamaManager = gameObject;
 
-/* 
+        /* 
 
-        // Create the plane game Object
-        plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        plane.transform.localScale = new Vector3(20, 1, 20);
-        plane.GetComponent<Renderer>().material = planeMaterial;
+                // Create the plane game Object
+                plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+                plane.transform.localScale = new Vector3(20, 1, 20);
+                plane.GetComponent<Renderer>().material = planeMaterial;
 
-*/
+        */
 
         // Create the Topic's manager GameObjects
         new GameObject(MqttSetting.COLOR_TOPIC_MANAGER).AddComponent<ColorTopic>();
@@ -128,7 +131,7 @@ public class GamaManager : MonoBehaviour
         client.Subscribe(new string[] { MqttSetting.CREATE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
         client.Subscribe(new string[] { MqttSetting.DESTROY_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
         client.Subscribe(new string[] { MqttSetting.NOTIFICATION_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
-       
+
     }
 
 
@@ -283,8 +286,8 @@ public class GamaManager : MonoBehaviour
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.SET_TOPIC);
 
                     SetTopicMessage setTopicMessage = (SetTopicMessage)msgDes.deserialization(receivedMsg, new SetTopicMessage());
-                   // Debug.Log("-> Target game object name: " + setTopicMessage.objectName);
-                   // Debug.Log("-> Message: " + receivedMsg);
+                    // Debug.Log("-> Target game object name: " + setTopicMessage.objectName);
+                    // Debug.Log("-> Message: " + receivedMsg);
                     targetGameObject = getGameObjectByName(setTopicMessage.objectName);
 
                     if (targetGameObject == null)
@@ -323,7 +326,7 @@ public class GamaManager : MonoBehaviour
                 case MqttSetting.CREATE_TOPIC:
                     //------------------------------------------------------------------------------
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.CREATE_TOPIC);
-                   // Debug.Log("-> Message: " + receivedMsg);
+                    // Debug.Log("-> Message: " + receivedMsg);
                     CreateTopicMessage createTopicMessage = (CreateTopicMessage)msgDes.deserialization(receivedMsg, new CreateTopicMessage());
                     obj = new object[] { createTopicMessage };
 
@@ -378,12 +381,14 @@ public class GamaManager : MonoBehaviour
         GameObject mapBuilder = getGameObjectByName("MapBuilder");
         //regionMap = (RegionMap) FindObjectOfType(typeof(RegionMap));
         //GameObject mapBuilder  = (GameObject) FindObjectOfType(typeof(MapBuilder));
-       
+
         if (mapBuilder != null)
         {
             mapBuilder.GetComponent<RegionMap>().SendMessage("DrawNewAgents");
-			
-        }else{
+
+        }
+        else
+        {
             Debug.Log("No such Object. Sorry");
         }
 
