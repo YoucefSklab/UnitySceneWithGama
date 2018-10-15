@@ -19,7 +19,7 @@ public class GamaBuilder : MonoBehaviour {
 
 		regionMap.ApiKey =  "NO9atv-JQf289NztiKv45g";
         regionMap.UnitsPerMeter = 1.0f;
-        regionMap.RegionName = "GamaMap";
+        //regionMap.RegionName = "GamaMap";
         regionMap.Area = new TileArea(
             new LngLat(-74.009463, 40.711446),
             new LngLat(-73.999306, 40.706939),

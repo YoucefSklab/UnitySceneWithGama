@@ -51,9 +51,9 @@ public class GamaManager : MonoBehaviour
 
     public static List<Agent> gamaAgentList = new List<Agent>();
 
-    public  Material planeMaterial;
-    public  Material polygonMaterial;
-    public  Material lineMaterial;
+    public Material planeMaterial;
+    public Material polygonMaterial;
+    public Material lineMaterial;
 
     public GameObject setTopicManager, getTotpicManager, moveTopicManager, notificationTopicManager;
 
@@ -221,8 +221,12 @@ public class GamaManager : MonoBehaviour
                         Debug.LogError(" Sorry, requested gameObject is null (" + positionTopicMessage.objectName + "). Please check you code! ");
                         break;
                     }
+                    else
+                    {
+                        getGameObjectByName(MqttSetting.POSITION_TOPIC_MANAGER).GetComponent(MqttSetting.POSITION_TOPIC_SCRIPT).SendMessage("ProcessTopic", obj);
 
-                    getGameObjectByName(MqttSetting.POSITION_TOPIC_MANAGER).GetComponent(MqttSetting.POSITION_TOPIC_SCRIPT).SendMessage("ProcessTopic", obj);
+                    }
+
                     //------------------------------------------------------------------------------
                     break;
                 case MqttSetting.MOVE_TOPIC:

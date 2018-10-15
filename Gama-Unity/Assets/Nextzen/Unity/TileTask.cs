@@ -92,6 +92,10 @@ public class TileTask
 
                     // Resulting data for this feature.
                     FeatureMesh featureMesh = new FeatureMesh(address.ToString(), collection.Name, styleLayer.Name, featureName);
+                    Debug.Log("^^^^^^^^^^^^^^^^^^--> 1 Tile:  "+address.ToString());
+                    Debug.Log("^^^^^^^^^^^^^^^^^^--> 2 Collection: "+collection.Name);
+                    Debug.Log("^^^^^^^^^^^^^^^^^^--> 3 Layer: "+ styleLayer.Name);
+                    Debug.Log("^^^^^^^^^^^^^^^^^^--> 4 Identifier "+featureName);
 
                     IGeometryHandler handler = null;
 

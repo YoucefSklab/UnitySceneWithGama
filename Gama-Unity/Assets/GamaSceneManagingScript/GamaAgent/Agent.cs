@@ -8,6 +8,7 @@ namespace ummisco.gama.unity.GamaAgent
 {
     public class Agent
     {
+        private string _geometry;
 
         public string agentName { set; get; }
         public GamaCoordinateSequence agentCoordinate { set; get; }
@@ -21,9 +22,10 @@ namespace ummisco.gama.unity.GamaAgent
         public string species { set; get; }
         public int index { set; get; }
         public string nature { get; set; }
-        public string geometry{ get; set;}
+        public string geometry { get; set; }
+
         public string type { get; set; }
-        public int hight { get; set; }
+        public float height { get; set; }
 
         public bool isDrawed { get; set; }
 
@@ -32,12 +34,53 @@ namespace ummisco.gama.unity.GamaAgent
         {
             this.agentName = agentName;
             this.isDrawed = false;
+            this.height = 0.0f;
         }
 
         public Agent()
         {
             this.isDrawed = false;
+            this.height = 0.0f;
         }
+
+        public string getCollection()
+        {
+            switch (geometry)
+            {
+                case "Polygon":
+                    return "buildings";
+                case "LineString":
+                    return "rouds";
+                case "Points":
+                    return "objects";
+                case "Water":
+                    return "water";
+                case "Landuse":
+                    return "landuse";
+                default:
+                    return "earth";
+            }
+        }
+
+         public string getLayer()
+        {
+            switch (geometry)
+            {
+                case "Polygon":
+                    return "Buildings";
+                case "LineString":
+                    return "Rouds";
+                case "Points":
+                    return "Objects";
+                case "Water":
+                    return "Water";
+                case "Landuse":
+                    return "Landuse";
+                default:
+                    return "Earth";
+            }
+        }
+
 
 
 

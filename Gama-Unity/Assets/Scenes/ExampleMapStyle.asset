@@ -165,4 +165,32 @@ MonoBehaviour:
         Width: 8
         MiterLimit: 0
         Enabled: 1
+  - Name: Objects
+    FeatureCollection: 0
+    Combiner: 0
+    Matchers:
+    - MatcherKind: 1
+      PropertyKey: 
+      PropertyValue: 
+      RegexPattern: 
+      MinRange: 0
+      MaxRange: 0
+      MinRangeEnabled: 0
+      MaxRangeEnabled: 0
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        UVMode: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Enabled: 0
+      PolylineBuilder:
+        Material: {fileID: 2100000, guid: 9eeb90ab0342c4e018009446c34c50b6, type: 2}
+        Extrusion: 1
+        MinHeight: 0
+        MaxHeight: 0
+        Width: 0
+        MiterLimit: 0
+        Enabled: 1
   liveUpdateEnabled: 0

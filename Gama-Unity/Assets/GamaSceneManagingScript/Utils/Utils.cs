@@ -28,6 +28,22 @@ namespace ummisco.gama.unity.utils
             return null;
         }
 
+        public static Color getColorFromGamaColor(GamaColor color)
+        {
+            Color newColor = new Color();
+
+            var bigint = (int) color.value;
+            var r = (bigint >> 16) & 255;
+            var g = (bigint >> 8) & 255;
+            var b = bigint & 255;
+
+            newColor.r = r;
+            newColor.b = b;
+            newColor.g = g;
+
+            return newColor;
+        }
+
 
     }
 

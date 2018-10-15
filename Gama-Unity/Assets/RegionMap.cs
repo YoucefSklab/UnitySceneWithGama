@@ -38,7 +38,7 @@ namespace Nextzen
 
         public float UnitsPerMeter = 1.0f;
 
-        public string RegionName = "";
+        public string RegionName = null;
 
         public SceneGroupType GroupOptions;
 
@@ -228,18 +228,13 @@ namespace Nextzen
 
         public void GenerateSceneGraph()
         {
-            // Add tasks here! 
-            //------------------------------------------------------------------
-            // Debug.Log("Calling method - > GenerateSceneGraph ");
-
+            /* 
             List<FeatureMesh> meshList = new List<FeatureMesh>();
+
             FeatureMesh featureMesh = new FeatureMesh("NameGama1", "GamaBlocks", "NameGama3", "Blok1"); meshList.Add(featureMesh);
             featureMesh = new FeatureMesh("NameGama1", "GamaBlocks", "GamaBlocks", "Block2"); meshList.Add(featureMesh);
             featureMesh = new FeatureMesh("NameGama1", "GamaBlocks", "Na6", "Block3"); meshList.Add(featureMesh);
             featureMesh = new FeatureMesh("NameGama1", "GamaRoads", "NameGama9", "Road1"); meshList.Add(featureMesh);
-
-
-
 
             featureMesh = new FeatureMesh("NameGama11", "GamaRoads", "NameGama13", "Road2");
             // featureMesh.Mesh = new MeshData();
@@ -250,17 +245,13 @@ namespace Nextzen
             List<Vector2> UVs = new List<Vector2>();
             List<int> Indices = new List<int>();
 
-            List<MeshData.Submesh> Submeshes = new List<MeshData.Submesh>();
+             List<MeshData.Submesh> Submeshes = new List<MeshData.Submesh>();
             MeshData.Submesh submesh = new MeshData.Submesh();
 
 
             //Material Material = new Material(contents: "UVGrid");
             submesh.Indices = Indices;
             Submeshes.Add(submesh);
-
-
-
-
 
             meshData.addGamaMeshData(Vertices, UVs, Submeshes);
             featureMesh.Mesh = meshData;
@@ -300,6 +291,8 @@ namespace Nextzen
             featureMesh.Mesh = meshData;
             meshList.Add(featureMesh);
 
+            // ---------------------------------------------------------------------------------
+            */
 
             if (regionMap != null)
             {
@@ -319,7 +312,7 @@ namespace Nextzen
             tasks.Clear();
             nTasksForArea = 0;
 
-            features.AddRange(meshList);
+            //features.AddRange(meshList);
             regionMap = new GameObject(RegionName);
             var sceneGraph = new SceneGraph(regionMap, GroupOptions, GameObjectOptions, features);
 
@@ -400,6 +393,9 @@ namespace Nextzen
 
         public void DrawNewAgents()
         {
+
+            RegionName = "GamaMap";
+
             bool isNewAgentCreated = false;
             List<FeatureMesh> meshList = new List<FeatureMesh>();
             foreach (var agent in GamaManager.gamaAgentList)
@@ -409,7 +405,9 @@ namespace Nextzen
                     isNewAgentCreated = true;
                     agent.isDrawed = true;
 
-                    FeatureMesh featureMesh = new FeatureMesh("NameGama1", agent.geometry, "NameGama13", agent.agentName);
+                    //FeatureMesh featureMesh = new FeatureMesh("NameGama1", agent.geometry, "NameGama13", agent.agentName);
+                    
+                    FeatureMesh featureMesh = new FeatureMesh(agent.agentName, agent.getCollection(), agent.getLayer(), agent.agentName);
                     List<Vector3> Vertices = new List<Vector3>();
                     List<Vector2> UVs = new List<Vector2>();
                     List<int> Indices = new List<int>();
@@ -418,29 +416,33 @@ namespace Nextzen
                     MeshData.Submesh submesh = new MeshData.Submesh();
 
                     Vector2[] vertices2D = agent.agentCoordinate.getVector2Coordinates();
-
+                    /* 
+                    // To delete. This is dealt in the UtilXml Class
                     List<Vector2> vect = new List<Vector2>();
                     vect = vertices2D.ToList();
                     if (agent.geometry.Equals("Polygon"))
                     {
-                        vect.RemoveAt(vect.Count - 1);
+                      //  vect.RemoveAt(vect.Count - 1);
                     }
                     vertices2D = vect.ToArray();
-
+                    */
 
                     Triangulator triangulator = new Triangulator(vertices2D);
                     triangulator.setAllPoints(triangulator.get2dVertices());
                     float elevation = this.elevation;
-                    if (agent.geometry.Equals("LineString")) 
+                    if (agent.geometry.Equals("LineString"))
                     {
                         elevation = 0.0f;
                     }
-                    Vertices = triangulator.get3dVerticesList(elevation);
+                    //Vertices = triangulator.get3dVerticesList(elevation);
+                    Vertices = triangulator.get3dVerticesList(agent.height);
+                    Debug.Log("-------------->>>>  " + agent.agentName + " hight is ---------------> " + agent.height);
                     Indices = triangulator.getTriangulesList();
                     Vector3[] VerticesArray = Vertices.ToArray();
                     Vector2[] UvArray = UvCalculator.CalculateUVs(VerticesArray, 100);
                     UVs = new List<Vector2>();
                     UVs = UvArray.ToList();
+                    
                     /* 
                     if (agent.geometry.Equals("Point"))
                     { 
@@ -450,7 +452,7 @@ namespace Nextzen
                         UVs = new List<Vector2>();
                     }
                    */
-                   
+
 
                     submesh.Indices = Indices;
 
@@ -490,10 +492,11 @@ namespace Nextzen
                 {
                     regionMap = new GameObject(RegionName);
                 }
-                regionMap = new GameObject(RegionName);
+                Debug.Log("The rgion Name is : " + RegionName);
+                //regionMap = new GameObject(RegionName);
                 var sceneGraph = new SceneGraph(regionMap, GroupOptions, GameObjectOptions, features);
                 //sceneGraph
-                sceneGraph.Generate();
+                sceneGraph.DrawFromGama();
 
             }
         }

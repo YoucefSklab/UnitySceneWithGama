@@ -292,8 +292,22 @@ namespace ummisco.gama.unity.utils
                         case "speed":
                             gamaAgent.speed = float.Parse(listNode.Item(nbr).InnerText);
                             break;
-                        case "hight":
-                            gamaAgent.hight = Int32.Parse(listNode.Item(nbr).InnerText);
+                        case "height":
+                            gamaAgent.height = float.Parse(listNode.Item(nbr).InnerText);
+                            break;
+                        case "color":
+                            GamaColor color = new  GamaColor();
+                            XmlNode no = listNode.Item(nbr); Debug.Log("--> "+no.Name);
+                            XmlNode nodeValue = listNode.Item(nbr).ChildNodes[0]; Debug.Log("--> "+nodeValue.Name);
+                            XmlNode nodeAlpha = listNode.Item(nbr).ChildNodes[1]; Debug.Log("--> "+nodeAlpha.Name);
+
+                           Debug.Log("--> "+nodeAlpha.Value);
+                           Debug.Log("--> "+nodeAlpha.InnerText);
+                           Debug.Log("--> "+nodeAlpha.InnerXml);
+                          
+                            color.value = float.Parse(nodeValue.InnerText);
+                            color.falpha= float.Parse(nodeAlpha.InnerText);
+                            gamaAgent.color = color;
                             break;
                         default:
 
@@ -305,7 +319,7 @@ namespace ummisco.gama.unity.utils
 
                 }
             }
-            gamaAgent.color = new GamaColor(value, falpha, name);
+          //  gamaAgent.color = new GamaColor(value, falpha, name);
         }
 
         public static string getAgentGeometry(XmlElement elt)
@@ -343,6 +357,9 @@ namespace ummisco.gama.unity.utils
             if (gamaAgent.geometry.Equals("Polygon"))
             {
                 getAgentBuildingInfo(gamaAgent, content);
+                if(gamaAgent.agentCoordinate.Points.Count > 0) {
+                    gamaAgent.agentCoordinate.Points.RemoveAt(gamaAgent.agentCoordinate.Points.Count - 1);
+                }
             }
             if (gamaAgent.geometry.Equals("LineString"))
             {
@@ -395,12 +412,12 @@ namespace ummisco.gama.unity.utils
                         case "valuesMapReducer":
                             getValuesMapReducerAttributes(gamaAgent, item);
                             getEntriesAttributes(gamaAgent, item);
-                            //Debug.Log("The agent color is is " + gamaAgent.color.ToString());
+                            Debug.Log("The agent color is is " + gamaAgent.color.ToString());
                             //Debug.Log("The agent nature " + gamaAgent.nature);
                             //Debug.Log("The agent rotation " + gamaAgent.rotation);
                             //Debug.Log("The agent type " + gamaAgent.type);
                             //Debug.Log("The agent speed " + gamaAgent.speed);
-                            //Debug.Log("The agent hight " + gamaAgent.hight);
+                            Debug.Log("The agent height " + gamaAgent.height);
 
                             break;
 
@@ -459,7 +476,7 @@ namespace ummisco.gama.unity.utils
                             //Debug.Log("The agent rotation " + gamaAgent.rotation);
                             //Debug.Log("The agent type " + gamaAgent.type);
                             //Debug.Log("The agent speed " + gamaAgent.speed);
-                            //Debug.Log("The agent hight " + gamaAgent.hight);
+                            //Debug.Log("The agent hight " + gamaAgent.height);
 
                             break;
 
@@ -517,12 +534,12 @@ namespace ummisco.gama.unity.utils
                         case "valuesMapReducer":
                             getValuesMapReducerAttributes(gamaAgent, item);
                             getEntriesAttributes(gamaAgent, item);
-                            //Debug.Log("The agent color is is " + gamaAgent.color.ToString());
+                            Debug.Log("The agent color is is " + gamaAgent.color.ToString());
                             //Debug.Log("The agent nature " + gamaAgent.nature);
                             //Debug.Log("The agent rotation " + gamaAgent.rotation);
                             //Debug.Log("The agent type " + gamaAgent.type);
                             //Debug.Log("The agent speed " + gamaAgent.speed);
-                            //Debug.Log("The agent hight " + gamaAgent.hight);
+                            //Debug.Log("The agent hight " + gamaAgent.height);
 
                             break;
 

@@ -160,6 +160,115 @@ namespace Nextzen.Unity
                     gameObject.isStatic = gameObjectOptions.IsStatic;
 
                     var mesh = new Mesh();
+                    mesh.Clear();
+                    mesh.SetVertices(meshBucket.Vertices);
+                    mesh.SetUVs(0, meshBucket.UVs);
+                    mesh.subMeshCount = meshBucket.Submeshes.Count;
+                    for (int s = 0; s < meshBucket.Submeshes.Count; s++)
+                    {
+                        mesh.SetTriangles(meshBucket.Submeshes[s].Indices, s);
+                    }
+
+                    //Unwrapping.GenerateSecondaryUVSet(mesh);
+
+                    mesh.RecalculateNormals();
+                    mesh.RecalculateBounds();
+                    //MeshUtility.Optimize(mesh);
+
+                    // Associate the mesh filter and mesh renderer components with this game object
+
+                    var materials = meshBucket.Submeshes.Select(s => s.Material).ToArray();
+                    var meshFilterComponent = gameObject.AddComponent<MeshFilter>();
+                    var meshRendererComponent = gameObject.AddComponent<MeshRenderer>();
+
+                    meshRendererComponent.materials = materials;
+                    meshFilterComponent.mesh = mesh;
+
+                    if (gameObjectOptions.GeneratePhysicMeshCollider)
+                    {
+                        var meshColliderComponent = gameObject.AddComponent<MeshCollider>();
+                        meshColliderComponent.material = gameObjectOptions.PhysicMaterial;
+                        meshColliderComponent.sharedMesh = mesh;
+                    }
+
+
+                }
+            }
+        }
+
+        public void DrawFromGama()
+        {
+            // 1. Generate the game object hierarchy in the scene graph
+            if (groupOptions == SceneGroupType.Nothing)
+            {
+                // Merge every game object created to the 'root' element being the map region
+                foreach (var featureMesh in features)
+                {
+                    MergeMeshData(regionMap, featureMesh);
+
+                }
+            }
+            else
+            {
+                GameObject currentGroup;
+
+                // Generate all game object with the appropriate hiarchy
+                foreach (var featureMesh in features)
+                {
+                    currentGroup = regionMap;
+
+                    foreach (SceneGroupType group in Enum.GetValues(typeof(SceneGroupType)))
+                    {
+                        // Exclude 'nothing' and 'everything' group
+                        if (group == SceneGroupType.Nothing || group == SceneGroupType.Everything)
+                        {
+                            continue;
+                        }
+
+                        if (groupOptions.Includes(group))
+                        {
+                            // Use currentGroup as the parentGroup for the current generation
+                            var parentGroup = currentGroup;
+                            var newGroup = AddGameObjectGroup(group, parentGroup, featureMesh);
+
+                            // Top down of the hierarchy, merge the game objects
+                            if (group == leafGroup)
+                            {
+                                MergeMeshData(newGroup, featureMesh);
+                            }
+
+                            currentGroup = newGroup;
+                        }
+                    }
+                }
+            }
+
+            // 2. Initialize game objects and associate their components (physics, rendering)
+            foreach (var pair in gameObjectMeshData)
+            {
+                var meshData = pair.Value;
+                var root = pair.Key;
+
+                // Create one game object per mesh object 'bucket', each bucket is ensured to
+                // have less that 65535 vertices (valid under Unity mesh max vertex count).
+                for (int i = 0; i < meshData.Meshes.Count; ++i)
+                {
+                    var meshBucket = meshData.Meshes[i];
+                    GameObject gameObject;
+
+                    if (meshData.Meshes.Count > 1)
+                    {
+                        gameObject = new GameObject(root.name + "_Part" + i);
+                        gameObject.transform.parent = root.transform;
+                    }
+                    else
+                    {
+                        gameObject = root.gameObject;
+                    }
+
+                    gameObject.isStatic = gameObjectOptions.IsStatic;
+
+                    var mesh = new Mesh();
 
                     mesh.Clear();
                     //meshBucket.meshGeometry = "LineString";
@@ -207,6 +316,10 @@ namespace Nextzen.Unity
                         gameObject.transform.position = meshBucket.Vertices[0];
                         gameObject.transform.localScale = new Vector3(4, 4, 4);
                         //gameObject.AddComponent<LineRenderer>();
+                        Color col = Utils.getColorFromGamaColor(meshBucket.gamaAgent.color);
+                        
+                         Renderer rend = gameObject.GetComponent<Renderer>();
+                         //rend.material.color = col;
                     }
                     else if (meshBucket.gamaAgent.geometry.Equals("Polygon"))
                     {
@@ -229,9 +342,19 @@ namespace Nextzen.Unity
 
                         // Associate the mesh filter and mesh renderer components with this game object
 
+
+
                         var materials = meshBucket.Submeshes.Select(s => s.Material).ToArray();
                         var meshFilterComponent = gameObject.AddComponent<MeshFilter>();
                         var meshRendererComponent = gameObject.AddComponent<MeshRenderer>();
+
+
+                        if(meshFilterComponent == null){
+                            meshFilterComponent = gameObject.GetComponent<MeshFilter>();
+                        }
+                        if(meshRendererComponent == null) {
+                            meshRendererComponent = gameObject.GetComponent<MeshRenderer>();
+                        }
 
                         meshRendererComponent.materials = materials;
                         meshFilterComponent.mesh = mesh;
@@ -245,8 +368,10 @@ namespace Nextzen.Unity
                             meshColliderComponent.material = gameObjectOptions.PhysicMaterial;
                             meshColliderComponent.sharedMesh = mesh;
                         }
-
+ 
+                        
                         Renderer rend = gameObject.GetComponent<Renderer>();
+                        
                         //Set the main Color of the Material to green
                         rend.material.shader = Shader.Find("_Color");
                         rend.material.SetColor("_Color", Color.green);
@@ -254,8 +379,14 @@ namespace Nextzen.Unity
                         //Find the Specular shader and change its Color to red
                         rend.material.shader = Shader.Find("Specular");
                         rend.material.SetColor("_SpecColor", Color.red);
+                        
 
+                        Material material = new Material(Shader.Find("Standard"));
+                        material.color = Color.blue;
 
+                        // assign the material to the renderer
+                        gameObject.GetComponent<Renderer>().material = material;
+                        
                     }
 
 
