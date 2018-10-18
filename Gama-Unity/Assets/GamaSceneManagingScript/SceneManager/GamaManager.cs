@@ -413,7 +413,7 @@ public class GamaManager : MonoBehaviour
 
     void OnGUI()
     {
-        if (GUI.Button(new Rect(20, 40, 180, 20), "Send Mqtt message"))
+        if (GUI.Button(new Rect(20, 40, 180, 20), "Send Mqtt message!"))
         {
             client.Publish("Gama", System.Text.Encoding.UTF8.GetBytes("Sending from Unity3D!!! Good"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
             Debug.Log("Message sent! test");
@@ -421,6 +421,8 @@ public class GamaManager : MonoBehaviour
             gama.getAllSceneGameObject();
 
         }
+
+        GUI.Button(new Rect(40, 40, 180, 20), "Test Button");
     }
 
 
