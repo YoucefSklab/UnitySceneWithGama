@@ -103,10 +103,6 @@ public class GamaManager : MonoBehaviour
         new GameObject(MqttSetting.PROPERTY_TOPIC_MANAGER).AddComponent<PropertyTopic>();
         new GameObject(MqttSetting.MAIN_TOPIC_MANAGER).AddComponent<MainTopic>();
 
-
-
-
-
     }
 
 
@@ -130,6 +126,7 @@ public class GamaManager : MonoBehaviour
         client.Subscribe(new string[] { MqttSetting.CREATE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
         client.Subscribe(new string[] { MqttSetting.DESTROY_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
         client.Subscribe(new string[] { MqttSetting.NOTIFICATION_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+        
 
     }
 

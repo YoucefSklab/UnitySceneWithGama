@@ -52,17 +52,16 @@ public class LitosimManager : MonoBehaviour
         Destroy(GameObject.Find("Panel-Action-1"));
         Debug.Log("The position is : " + GameObject.Find("Panel-Message-1").transform.position);
         Destroy(GameObject.Find("Panel-Message-1"));
-  
+
         initialMessagePosition = new Vector3(-836.3f, -136.2f, 0.0f);
         lastMessagePosition = initialMessagePosition;
-
 
         valider.active = false;
 
         GameObject panelParent = GameObject.Find("Panel-Messages");
         //GameObject panelParent = GameObject.Find("Panel-Messages");
-        
-        for (int i = 0; i <4; i++)
+
+        for (int i = 0; i < 4; i++)
         {
             createMessagePaneChild(i, panelParent, "Ceci est le message N : " + i);
         }
@@ -70,7 +69,7 @@ public class LitosimManager : MonoBehaviour
 
     void Awak()
     {
-      
+
 
     }
 
@@ -80,7 +79,7 @@ public class LitosimManager : MonoBehaviour
         if (GameObject.Find("Panel-Message-0-0"))
         {
             Debug.Log("--+-> " + GameObject.Find("Panel-Message-0-0").transform.position);
-         //   GameObject.Find("Panel-Message-0-0").transform.position = initialMessagePosition;
+            //   GameObject.Find("Panel-Message-0-0").transform.position = initialMessagePosition;
         }
 
         Vector3 mouse = Input.mousePosition;
@@ -116,8 +115,7 @@ public class LitosimManager : MonoBehaviour
         {
             Vector3 position = Input.mousePosition;
             position.z = -21;
-
-            addIfObject(position);
+            sendGamaMessage(position);
         }
 
 
@@ -144,148 +142,142 @@ public class LitosimManager : MonoBehaviour
 
     }
 
-    public void addIfObject(Vector3 position)
+    public void sendGamaMessage(Vector3 position)
     {
-
-        if (actionToDo == 1)
+        string message = "";
+        switch (actionToDo)
         {
-            addCube(position, Color.red);
+            case 1:
+                message = MsgSerialization.serialization(new LittosimMessage("Unity", "GamaMainAgent", 1, position.x, position.y, DateTime.Now.ToString()));
+                publishMessage(message);
+                break;
+            case 2:
+                message = MsgSerialization.serialization(new LittosimMessage("Unity", "GamaMainAgent", 2, position.x, position.y, DateTime.Now.ToString()));
+                publishMessage(message);
+                break;
+            case 3:
+                message = MsgSerialization.serialization(new LittosimMessage("Unity", "GamaMainAgent", 3, position.x, position.y, DateTime.Now.ToString()));
+                publishMessage(message);
+                break;
+            case 4:
+                message = MsgSerialization.serialization(new LittosimMessage("Unity", "GamaMainAgent", 4, position.x, position.y, DateTime.Now.ToString()));
+                publishMessage(message);
+                break;
+            case 5:
+                message = MsgSerialization.serialization(new LittosimMessage("Unity", "GamaMainAgent", 5, position.x, position.y, DateTime.Now.ToString()));
+                publishMessage(message);
+                break;
         }
-        if (actionToDo == 2)
-        {
-            addSphere(position, Color.green);
-        }
-        if (actionToDo == 3)
-        {
-            addCapsule(position, Color.blue);
-        }
-        if (actionToDo == 4)
-        {
-            addCylinder(position, Color.magenta);
-        }
-        if (actionToDo == 5)
-        {
-            addCube2(position, Color.yellow);
-        }
-
         actionToDo = 0;
+        gameNbr++;
     }
 
 
-    public void addCube(Vector3 position, Color color)
+
+    public void addCube(Vector3 position, Color color, int type, string name, string texte, int delay, int montant)
     {
         GameObject game = GameObject.CreatePrimitive(PrimitiveType.Cube);
         game.transform.position = position;
         game.transform.localScale = new Vector3(40, 40, 40);
         Renderer rend = game.GetComponent<Renderer>();
         rend.material.color = color;
-
-        // contents cnt = new contents("Cube", 1, position.x, position.y);
-        string message = MsgSerialization.serialization(new LittosimMessage("Unity", "GamaMainAgent", "Cube", 1, position.x, position.y, DateTime.Now.ToString()));
-        publishMessage(message);
-        gameNbr++;
-
-        addObjectOnPanel(1, "Changer en zones constructibles", 1, -100);
+        addObjectOnPanel(type, name, texte, delay, montant);
     }
 
-     public void addCube2(Vector3 position, Color color)
-    {
-        GameObject game = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        game.transform.position = position;
-        game.transform.localScale = new Vector3(40, 40, 40);
-        Renderer rend = game.GetComponent<Renderer>();
-        rend.material.color = color;
-
-        // contents cnt = new contents("Cube", 1, position.x, position.y);
-        string message = MsgSerialization.serialization(new LittosimMessage("Unity", "GamaMainAgent", "Cube", 1, position.x, position.y, DateTime.Now.ToString()));
-        publishMessage(message);
-        gameNbr++;
-
-        addObjectOnPanel(5, "Changer en zones constructibles", 5, -500);
-    }
-
-    public void addSphere(Vector3 position, Color color)
+    public void addSphere(Vector3 position, Color color, int type, string name, string texte, int delay, int montant)
     {
         GameObject game = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         game.transform.position = position;
         game.transform.localScale = new Vector3(40, 40, 40);
         Renderer rend = game.GetComponent<Renderer>();
         rend.material.color = color;
-
-        string message = MsgSerialization.serialization(new LittosimMessage("Unity", "GamaMainAgent", "Sphere", 2, position.x, position.y, DateTime.Now.ToString()));
-        publishMessage(message);
-        gameNbr++;
-
-        addObjectOnPanel(2, "Changer en zones naturelles", 2, -200);
+        addObjectOnPanel(type, name, texte, delay, montant);
     }
 
-    public void addCapsule(Vector3 position, Color color)
+    public void addCapsule(Vector3 position, Color color, int type, string name, string texte, int delay, int montant)
     {
         GameObject game = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         game.transform.position = position;
         game.transform.localScale = new Vector3(40, 40, 40);
         Renderer rend = game.GetComponent<Renderer>();
         rend.material.color = color;
-
-        string message = MsgSerialization.serialization(new LittosimMessage("Unity", "GamaMainAgent", "Capsule", 3, position.x, position.y, DateTime.Now.ToString()));
-        publishMessage(message);
-        gameNbr++;
-
-        addObjectOnPanel(3, "Changer en zones 3", 3, -300);
+        addObjectOnPanel(type, name, texte, delay, montant);
     }
 
-    public void addCylinder(Vector3 position, Color color)
+    public void addCylinder(Vector3 position, Color color, int type, string name, string texte, int delay, int montant)
     {
         GameObject game = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         game.transform.position = position;
         game.transform.localScale = new Vector3(40, 40, 40);
         Renderer rend = game.GetComponent<Renderer>();
         rend.material.color = color;
+        addObjectOnPanel(type, name, texte, delay, montant);
 
-        string message = MsgSerialization.serialization(new LittosimMessage("Unity", "GamaMainAgent", "Cylinder", 4, position.x, position.y, DateTime.Now.ToString()));
-        publishMessage(message);
-        gameNbr++;
+    }
 
-        addObjectOnPanel(4, "Changer en zones 4", 4, -400);
-
+    public void addCube2(Vector3 position, Color color, int type, string name, string texte, int delay, int montant)
+    {
+        GameObject game = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        game.transform.position = position;
+        game.transform.localScale = new Vector3(40, 40, 40);
+        Renderer rend = game.GetComponent<Renderer>();
+        rend.material.color = color;
+        addObjectOnPanel(type, name, texte, delay, montant);
     }
 
 
 
 
 
-	public void gamaAddElement (object args)
-	{
-		object[] obj = (object[])args;
-        int type = Int32.Parse ((string)obj [0]);
-        string name = (string)obj [1];
-        string texte = (string)obj [2];
-        int delay = Int32.Parse ((string)obj [3]);
-        int montant = Int32.Parse ((string)obj [4]);
-        float x = float.Parse((string)obj [5]);
-        float y = float.Parse((string)obj [6]);
-        float z = float.Parse((string)obj [7]);
+    public void gamaAddElement(object args)
+    {
+        object[] obj = (object[])args;
+        int type = Int32.Parse((string)obj[0]);
+        string name = (string)obj[1];
+        string texte = (string)obj[2];
+        int delay = Int32.Parse((string)obj[3]);
+        int montant = Int32.Parse((string)obj[4]);
+        float x = float.Parse((string)obj[5]);
+        float y = float.Parse((string)obj[6]);
+        float z = float.Parse((string)obj[7]);
 
-        Vector3 position = new Vector3(x,y,z);
+        Vector3 position = new Vector3(x, y, z);
 
-        switch (type){
+        switch (type)
+        {
             case 1:
-
-            break;
+                addCube(position, Color.red, type, name, texte, delay, montant);
+                break;
             case 2:
-
-            break;
+                addSphere(position, Color.red, type, name, texte, delay, montant);
+                break;
             case 3:
-
-            break;
+                addCapsule(position, Color.red, type, name, texte, delay, montant);
+                break;
             case 4:
-
-            break;
+                addCylinder(position, Color.red, type, name, texte, delay, montant);
+                break;
             case 5:
-
-            break;
+                addCube2(position, Color.red, type, name, texte, delay, montant);
+                break;
         }
-	}
+
+        elementCounter++;
+    }
+
+
+
+    public void gamaAddValidElement(object args)
+    {
+        object[] obj = (object[])args;
+        int type = Int32.Parse((string)obj[0]);
+        string name = (string)obj[1];
+        string texte = (string)obj[2];
+        int delay = Int32.Parse((string)obj[3]);
+
+        GameObject panelParent = GameObject.Find("Content-Panel-Recap-Actions");
+        createRecapActionPaneChild(type, name, panelParent, texte, delay);
+    }
 
 
 
@@ -295,50 +287,34 @@ public class LitosimManager : MonoBehaviour
         Debug.Log("-> " + message);
     }
 
-    public void addObjectOnPanel(int type, string message, int nbr, int montant)
+    public void addObjectOnPanel(int type, string name, string texte, int delay, int montant)
     {
         GameObject ActionsPanelParent = GameObject.Find("Content-Panel-Actions");
-        GameObject ActionPanelChild = null;
         valider.active = true;
-
+        
         switch (type)
         {
             case 1:
-                createActionPaneChild(type, ActionPanelChild, ActionsPanelParent, "Changer en zones urbaines", "1", "-100");
+                createActionPaneChild(type, name, ActionsPanelParent, texte, delay.ToString(), montant.ToString());
                 break;
             case 2:
-                createActionPaneChild(type, ActionPanelChild, ActionsPanelParent, "Urbaine intense", "2", "-200");
+                createActionPaneChild(type, name, ActionsPanelParent, texte, delay.ToString(), montant.ToString());
                 break;
             case 3:
-                createActionPaneChild(type, ActionPanelChild, ActionsPanelParent, "Digue", "3", "-300");
+                createActionPaneChild(type, name, ActionsPanelParent, texte, delay.ToString(), montant.ToString());
                 break;
             case 4:
-                createActionPaneChild(type, ActionPanelChild, ActionsPanelParent, "Change en zones agricoles", "4", "-400");
+                createActionPaneChild(type, name, ActionsPanelParent, texte, delay.ToString(), montant.ToString());
                 break;
             case 5:
-                createActionPaneChild(type, ActionPanelChild, ActionsPanelParent, "Changer en zones naturelles", "5", "-500");
+                createActionPaneChild(type, name, ActionsPanelParent, texte, delay.ToString(), montant.ToString());
                 break;
         }
 
-        int value = 100 * type;
-        setBudgetInitialValue(Convert.ToString(value));
-        setBudgetRestantValue(Convert.ToString(value));
+       
 
     }
-
-    public void setBudgetInitialValue(string value)
-    {
-        GameObject BudgetInitial = GameObject.Find("BudgetInitialValue");
-        BudgetInitial.GetComponent<Text>().text = value;
-
-    }
-
-    public void setBudgetRestantValue(string value)
-    {
-        GameObject BudgetRestant = GameObject.Find("BudgetRestantValue");
-        BudgetRestant.GetComponent<Text>().text = value;
-    }
-
+   
     public Vector3 getAtActionPanelPosition()
     {
         if (actionsList.Count > 0)
@@ -382,10 +358,11 @@ public class LitosimManager : MonoBehaviour
         }
     }
 
-    public void createActionPaneChild(int type, GameObject panelChild, GameObject panelParent, string texte, string delay, string montant)
+    public void createActionPaneChild(int type, string name, GameObject panelParent, string texte, string delay, string montant)
     {
-        panelChild = Instantiate(ActionPrefab);
-        panelChild.name = "Panel-Action-" + type + "-" + actionCounter;
+
+        GameObject panelChild = Instantiate(ActionPrefab);
+        panelChild.name = name;
         panelChild.transform.position = getAtActionPanelPosition();
         panelChild.transform.SetParent(panelParent.transform);
         actionsList.Add(panelChild);
@@ -393,7 +370,8 @@ public class LitosimManager : MonoBehaviour
         panelChild.transform.Find("Texte_nombre").GetComponent<Text>().text = (delay);
         panelChild.transform.Find("Texte_montant").GetComponent<Text>().text = (montant);
 
-        updateValderPosition();
+        updateValiderPosition();
+
         if (actionsList.Count >= 10)
         {
             RectTransform rt = panelParent.GetComponent<RectTransform>();
@@ -402,7 +380,7 @@ public class LitosimManager : MonoBehaviour
         actionCounter++;
     }
 
-    public void updateValderPosition()
+    public void updateValiderPosition()
     {
         Vector3 newPosition = actionsList[actionsList.Count - 1].transform.position;
         Vector3 position = valider.transform.position;
@@ -412,30 +390,32 @@ public class LitosimManager : MonoBehaviour
 
     public void validateActionList()
     {
-        GameObject ActionsPanelParent = GameObject.Find("Content-Panel-Recap-Actions");
-        foreach (var ActionPanelChild in actionsList)
+        string message = MsgSerialization.serialization(new LittosimMessage("Unity", "GamaMainAgent", 100, 0, 0, DateTime.Now.ToString()));
+        publishMessage(message);
+    }
+
+    public void destroyElement(string name)
+    {
+        if (GameObject.Find(name))
         {
-            string texte = ActionPanelChild.transform.Find("Texte_type").GetComponent<Text>().text;
-            string delay = ActionPanelChild.transform.Find("Texte_nombre").GetComponent<Text>().text;
-            createRecapActionPaneChild(1, ActionsPanelParent, texte, delay);
-        }
-        while (actionsList.Count > 0)
-        {
-            GameObject ActionPanelChild = actionsList[0];
-            actionsList.Remove(ActionPanelChild);
-            Destroy(ActionPanelChild);
-            valider.active = false;
+            GameObject obj = GameObject.Find(name);
+            actionsList.Remove(obj);
+            Destroy(obj);
+            if (actionsList.Count == 0)
+            {
+                valider.active = false;
+            }
         }
     }
 
-    public void createRecapActionPaneChild(int type, GameObject panelParent, string texte, string delay)
+    public void createRecapActionPaneChild(int type, string name, GameObject panelParent, string texte, int delay)
     {
         GameObject panelChild = Instantiate(RecapActionPrefab);
-        panelChild.name = "Panel-Recap-Action-" + type + "-" + recapActionCounter;
+        panelChild.name = name;
         panelChild.transform.position = getAtRecapActionPanelPosition();
         panelChild.transform.SetParent(panelParent.transform);
         panelChild.transform.Find("Texte_type").GetComponent<Text>().text = (texte);
-        panelChild.transform.Find("Texte_nombre").GetComponent<Text>().text = (delay);
+        panelChild.transform.Find("Texte_nombre").GetComponent<Text>().text = (delay.ToString());
         recapActionsList.Add(panelChild);
 
         if (recapActionsList.Count >= 5)
@@ -454,13 +434,28 @@ public class LitosimManager : MonoBehaviour
         panelChild.transform.SetParent(panelParent.transform);
         panelChild.transform.Find("Texte_type").GetComponent<Text>().text = (texte);
         messagesList.Add(panelChild);
-     
+
         if (messagesList.Count >= 5)
         {
             RectTransform rt = panelParent.GetComponent<RectTransform>();
             rt.sizeDelta = new Vector2(rt.sizeDelta.x, (rt.sizeDelta.y + ((messagesList.Count - 5) * 85f)));
         }
         messageCounter++;
+    }
+
+
+    public void setInitialBudget(object args)
+    {
+        object[] obj = (object[])args;
+        string value = (string)obj[0];
+        GameObject.Find("BudgetInitialValue").GetComponent<Text>().text = value;
+    }
+
+    public void setRemainingBudget(object args)
+    {
+        object[] obj = (object[])args;
+        string value = (string)obj[0];
+        GameObject.Find("BudgetRestantValue").GetComponent<Text>().text = value;
     }
 
 
