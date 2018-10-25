@@ -381,7 +381,8 @@ public class GamaManager : MonoBehaviour
         }
 
         checkForNotifications();
-        GameObject mapBuilder = getGameObjectByName("MapBuilder");
+        GameObject mapBuilder = GameObject.Find("MapBuilder");
+        //GameObject mapBuilder = getGameObjectByName("MapBuilder");
         //regionMap = (RegionMap) FindObjectOfType(typeof(RegionMap));
         //GameObject mapBuilder  = (GameObject) FindObjectOfType(typeof(MapBuilder));
 
@@ -464,12 +465,6 @@ public class GamaManager : MonoBehaviour
     {
 
     }
-
-    public void handleMessage(TopicMessage msg)
-    {
-
-    }
-
 
     // The method to call Game Objects methods
     //----------------------------------------

@@ -86,25 +86,7 @@ public class MapBuilder : UnityEditor.Editor
                 map.GenerateSceneGraph();
             }
         }
-
-
-
         serializedObject.ApplyModifiedProperties();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
