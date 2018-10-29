@@ -6,13 +6,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
-public class LitosimManager : MonoBehaviour
+public class LittosimManager : MonoBehaviour
 {
 
     // Use this for initialization
 
     public int actionToDo = 0;
     public static int gameNbr = 0;
+
+    public string LITTOSSIM_TOPIC = "littosim";
 
     public GameObject ActionPrefab;
     public GameObject RecapActionPrefab;
@@ -57,15 +59,8 @@ public class LitosimManager : MonoBehaviour
         lastMessagePosition = initialMessagePosition;
 
         valider.active = false;
-
-        GameObject panelParent = GameObject.Find("Panel-Messages");
-        //GameObject panelParent = GameObject.Find("Panel-Messages");
-
-        for (int i = 0; i < 4; i++)
-        {
-            createMessagePaneChild(i, panelParent, "Ceci est le message N : " + i);
-        }
     }
+
 
     void Awak()
     {
@@ -86,8 +81,15 @@ public class LitosimManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Pressed primary button.");
-            Debug.Log("---> position: " + mouse);
+            GameObject bj = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
+            if (bj is GameObject)
+                if (bj.tag.Equals("DeleteActionButton"))
+                {
+                    Debug.Log("Goooood");
+                    Debug.Log("Goooood--------->  Selected is : " + bj.name);
+                    sendDeleteAction(bj.transform.parent.name);
+                }
+            // Debug.Log("Goooood--------->  Selected is : "+bj.name);
         }
 
         // Left-half of the screen.
@@ -124,14 +126,23 @@ public class LitosimManager : MonoBehaviour
     void OnGUI()
     {
         Rect bounds = new Rect(58, -843, 1320, 200);
-
         GUI.Label(bounds, "test");
-
         Texture2D texture = new Texture2D(1, 1);
         texture.SetPixel(0, 0, Color.red);
         texture.Apply();
         GUI.skin.box.normal.background = texture;
         GUI.Box(bounds, GUIContent.none);
+
+        // --------
+        if (GUI.Button(new Rect(150, 1, 150, 20), "Send Mqtt message!"))
+        {
+            string message = MsgSerialization.serialization(new LittosimMessage("Unity", "GamaMainAgent", 1, 0, 0, DateTime.Now.ToString()));
+            message ="ceci est un test de message MQTT de unity vers Gama";
+            string topic =  "li";
+            int msgId = GamaManager.client.Publish(topic, System.Text.Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+            Debug.Log("msgId is: "+msgId+ " -> " + message);
+            Debug.Log("Message sent to topic: "+topic);
+        }
 
     }
 
@@ -266,6 +277,39 @@ public class LitosimManager : MonoBehaviour
     }
 
 
+    public void deleteActionFromList(object args)
+    {
+        object[] obj = (object[])args;
+        string name = (string)obj[0];
+
+        if (actionsList.Count > 0)
+        {
+            GameObject gameObj = GameObject.Find(name);
+
+            actionsList.Remove(gameObj);
+
+            foreach (var gameOb in actionsList)
+            {
+                if (gameOb.name.Equals(name))
+                {
+                    actionsList.Remove(gameOb);
+                    break;
+                }
+            }
+
+            Destroy(gameObj);
+            lastPosition = initialPosition;
+            foreach (var gameObject in actionsList)
+            {
+                gameObject.transform.position = lastPosition;
+                lastPosition.y = lastPosition.y - 85f;
+            }
+        }
+        Debug.Log("Here to delete the action from the list the action " + name);
+
+    }
+
+
 
     public void gamaAddValidElement(object args)
     {
@@ -283,15 +327,15 @@ public class LitosimManager : MonoBehaviour
 
     public void publishMessage(string message)
     {
-        GamaManager.client.Publish("littosim", System.Text.Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
-        Debug.Log("-> " + message);
+        int msgId = GamaManager.client.Publish(LITTOSSIM_TOPIC, System.Text.Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+        Debug.Log("msgId is: "+msgId+ " -> " + message);
     }
 
     public void addObjectOnPanel(int type, string name, string texte, int delay, int montant)
     {
         GameObject ActionsPanelParent = GameObject.Find("Content-Panel-Actions");
         valider.active = true;
-        
+
         switch (type)
         {
             case 1:
@@ -311,10 +355,10 @@ public class LitosimManager : MonoBehaviour
                 break;
         }
 
-       
+
 
     }
-   
+
     public Vector3 getAtActionPanelPosition()
     {
         if (actionsList.Count > 0)
@@ -369,6 +413,7 @@ public class LitosimManager : MonoBehaviour
         panelChild.transform.Find("Texte_type").GetComponent<Text>().text = (texte);
         panelChild.transform.Find("Texte_nombre").GetComponent<Text>().text = (delay);
         panelChild.transform.Find("Texte_montant").GetComponent<Text>().text = (montant);
+        panelChild.transform.Find("Close-button").transform.name = "close_" + name;
 
         updateValiderPosition();
 
@@ -391,6 +436,12 @@ public class LitosimManager : MonoBehaviour
     public void validateActionList()
     {
         string message = MsgSerialization.serialization(new LittosimMessage("Unity", "GamaMainAgent", 100, 0, 0, DateTime.Now.ToString()));
+        publishMessage(message);
+    }
+
+    public void sendDeleteAction(string name)
+    {
+        string message = MsgSerialization.serialization(new LittosimMessage("Unity", "GamaMainAgent", 101, name, 0, 0, DateTime.Now.ToString()));
         publishMessage(message);
     }
 
@@ -426,20 +477,34 @@ public class LitosimManager : MonoBehaviour
         recapActionCounter++;
     }
 
-    public void createMessagePaneChild(int type, GameObject panelParent, string texte)
+    public void newInfoMessage(object args)
     {
+        object[] obj = (object[])args;
+        int type = Int32.Parse((string)obj[0]);
+        string name = (string)obj[1];
+        string texte = (string)obj[2];
+
+        GameObject panelParent = GameObject.Find("Panel-Messages");
         GameObject panelChild = Instantiate(MessagePrefab);
-        panelChild.name = "Panel-Message-" + type + "-" + messageCounter;
+        panelChild.name = name;
         panelChild.transform.position = getAtMessagePanelPosition();
         panelChild.transform.SetParent(panelParent.transform);
         panelChild.transform.Find("Texte_type").GetComponent<Text>().text = (texte);
         messagesList.Add(panelChild);
 
-        if (messagesList.Count >= 5)
+        if (messagesList.Count > 5)
         {
-            RectTransform rt = panelParent.GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(rt.sizeDelta.x, (rt.sizeDelta.y + ((messagesList.Count - 5) * 85f)));
+            GameObject gameObj = messagesList[0];
+            messagesList.RemoveAt(0);
+            Destroy(gameObj);
+            lastMessagePosition = initialMessagePosition;
+            foreach (var gameObject in messagesList)
+            {
+                gameObject.transform.position = lastMessagePosition;
+                lastMessagePosition.y = lastMessagePosition.y - 85f;
+            }
         }
+
         messageCounter++;
     }
 
@@ -457,8 +522,5 @@ public class LitosimManager : MonoBehaviour
         string value = (string)obj[0];
         GameObject.Find("BudgetRestantValue").GetComponent<Text>().text = value;
     }
-
-
-
 
 }

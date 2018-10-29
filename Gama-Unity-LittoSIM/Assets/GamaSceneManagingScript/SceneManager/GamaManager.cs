@@ -109,11 +109,13 @@ public class GamaManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        client.Connect(clientId, MqttSetting.DEFAULT_USER, MqttSetting.DEFAULT_PASSWORD);
         // To put only in start bloc
         client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
 
-
-        client.Connect(clientId);
+        
+        //client.Connect(clientId);
+        
         client.Subscribe(new string[] { MqttSetting.MAIN_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
         client.Subscribe(new string[] { MqttSetting.MONO_FREE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
         client.Subscribe(new string[] { MqttSetting.MULTIPLE_FREE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
@@ -126,7 +128,9 @@ public class GamaManager : MonoBehaviour
         client.Subscribe(new string[] { MqttSetting.CREATE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
         client.Subscribe(new string[] { MqttSetting.DESTROY_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
         client.Subscribe(new string[] { MqttSetting.NOTIFICATION_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
-        
+
+        client.Subscribe(new string[] {"littosim"}, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+
 
     }
 
@@ -140,7 +144,8 @@ public class GamaManager : MonoBehaviour
             MqttMsgPublishEventArgs e = msgList[0];
             if (!MqttSetting.getTopicsInList().Contains(e.Topic))
             {
-                Debug.Log("-> The Topic '" + e.Topic + "' doesn't exist in the defined list. Please check!");
+                Debug.Log("-> The Topic '" + e.Topic + "' doesn't exist in the defined list. Please check! (the message will be deleted!)");
+                msgList.Remove(e);
                 return;
             }
 
@@ -156,7 +161,7 @@ public class GamaManager : MonoBehaviour
                     //Debug.Log("-> The message is : " + e.Message);
 
                     topicGameObject = gameObject;
-                    GamaMessage gamaMessage = (GamaMessage) MsgSerialization.deserialization(receivedMsg, new GamaMessage());
+                    GamaMessage gamaMessage = (GamaMessage)MsgSerialization.deserialization(receivedMsg, new GamaMessage());
                     targetGameObject = getGameObjectByName(gamaMessage.receivers);
 
                     if (targetGameObject == null)
@@ -402,7 +407,7 @@ public class GamaManager : MonoBehaviour
     {
         msgList.Add(e);
         receivedMsg = System.Text.Encoding.UTF8.GetString(e.Message);
-        //Debug.Log (">  New Message received on topic : " + e.Topic);
+        Debug.Log (">  New Message received on topic : " + e.Topic);
         //Debug.Log (">  msgList count : " + msgList.Count);
     }
 
@@ -410,19 +415,10 @@ public class GamaManager : MonoBehaviour
 
     void OnGUI()
     {
-        if (GUI.Button(new Rect(20, 1, 180, 20), "Send Mqtt message!"))
+        if (GUI.Button(new Rect(20, 1, 100, 20), "Quitter!"))
         {
-            client.Publish("Gama", System.Text.Encoding.UTF8.GetBytes("Sending from Unity3D!!! Good"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
-            Debug.Log("Message sent! test");
-
-            gama.getAllSceneGameObject();
-
-
+            Application.Quit();
         }
-
-        
-
-        
     }
 
 

@@ -3,6 +3,13 @@
 using UnityEditor;
 using UnityEngine;
 
+// For Android Build
+public class MapBuilder 
+{
+
+}
+/* 
+
 [CustomEditor(typeof(RegionMap))]
 public class MapBuilder : UnityEditor.Editor
 {
@@ -90,3 +97,5 @@ public class MapBuilder : UnityEditor.Editor
     }
 
 }
+
+*/

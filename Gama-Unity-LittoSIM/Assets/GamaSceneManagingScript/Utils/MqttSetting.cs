@@ -7,8 +7,14 @@ namespace ummisco.gama.unity.utils
 	public class MqttSetting
 	{
 		// Server parameters
-		public static string SERVER_URL = "localhost";
-		public static int SERVER_PORT = 1883;
+		//public static string SERVER_URL = "localhost";
+		//public static int SERVER_PORT = 1883;
+
+		public static string SERVER_URL = "195.221.248.15";
+		public static int SERVER_PORT = 1935;
+		public static string DEFAULT_USER = "gama_demo";
+		public static string DEFAULT_PASSWORD = "gama_demo";
+
 
 		//public static string SERVER_URL = "iot.eclipse.org";
 		//public static int SERVER_PORT = 1935;

@@ -260,10 +260,12 @@ public class Triangulate : MonoBehaviour
 
         m.vertices = verticies;
         m.triangles = triangles;
-        Unwrapping.GenerateSecondaryUVSet(m);
+        // For Andruid Build
+        //Unwrapping.GenerateSecondaryUVSet(m);
         m.RecalculateNormals();
         m.RecalculateBounds();
-        MeshUtility.Optimize(m);
+        // For Andruid Build
+        //MeshUtility.Optimize(m);
         Debug.Log("Triangles are: " + triangles.ToString());
         return m;
     }
@@ -289,11 +291,13 @@ public class Triangulate : MonoBehaviour
         triangulator.setAllPoints(triangulator.get2dVertices());
         m.triangles = triangulator.get3DTriangulesFrom2D();
 
-        Unwrapping.GenerateSecondaryUVSet(m);
+        // For Andruid Build
+        //Unwrapping.GenerateSecondaryUVSet(m);
 
         m.RecalculateNormals();
         m.RecalculateBounds();
-        MeshUtility.Optimize(m);
+        // For Andruid Build
+        //MeshUtility.Optimize(m);
 
         //Debug.Log("After -> " + m.uv.Length);
 
