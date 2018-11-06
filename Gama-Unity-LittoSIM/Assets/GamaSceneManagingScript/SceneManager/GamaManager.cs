@@ -109,9 +109,11 @@ public class GamaManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        client.Connect(clientId, MqttSetting.DEFAULT_USER, MqttSetting.DEFAULT_PASSWORD);
+        
         // To put only in start bloc
         client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
+
+        client.Connect(clientId, MqttSetting.DEFAULT_USER, MqttSetting.DEFAULT_PASSWORD);
 
         
         //client.Connect(clientId);

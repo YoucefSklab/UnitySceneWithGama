@@ -112,15 +112,13 @@ public class LittosimManager : MonoBehaviour
         var position2 = panel.GetComponent<RectTransform>().rect;
 
         bounds = new Rect(position2.x, position2.y, position2.width, position2.height);
+        
+    }
 
-        if (Input.GetMouseButtonDown(0) && bounds.Contains(Input.mousePosition))
-        {
-            Vector3 position = Input.mousePosition;
-            position.z = -21;
-            sendGamaMessage(position);
-        }
-
-
+    public void createNewElement(){
+        Vector3 position = Input.mousePosition;
+        position.z = -21;
+        sendGamaMessage(position);
     }
 
     void OnGUI()
@@ -139,7 +137,8 @@ public class LittosimManager : MonoBehaviour
             string message = MsgSerialization.serialization(new LittosimMessage("Unity", "GamaMainAgent", 1, 0, 0, DateTime.Now.ToString()));
             message ="ceci est un test de message MQTT de unity vers Gama";
             string topic =  "li";
-            int msgId = GamaManager.client.Publish(topic, System.Text.Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+            //int msgId = GamaManager.client.Publish(topic, System.Text.Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+            int msgId = GamaManager.client.Publish(topic, System.Text.Encoding.UTF8.GetBytes(message));
             Debug.Log("msgId is: "+msgId+ " -> " + message);
             Debug.Log("Message sent to topic: "+topic);
         }
@@ -327,7 +326,8 @@ public class LittosimManager : MonoBehaviour
 
     public void publishMessage(string message)
     {
-        int msgId = GamaManager.client.Publish(LITTOSSIM_TOPIC, System.Text.Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+        //int msgId = GamaManager.client.Publish(LITTOSSIM_TOPIC, System.Text.Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+        int msgId = GamaManager.client.Publish(LITTOSSIM_TOPIC, System.Text.Encoding.UTF8.GetBytes(message));
         Debug.Log("msgId is: "+msgId+ " -> " + message);
     }
 
