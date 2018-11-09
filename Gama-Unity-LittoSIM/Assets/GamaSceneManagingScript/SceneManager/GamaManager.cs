@@ -425,7 +425,7 @@ public class GamaManager : MonoBehaviour
         msgList.Add(e);
         receivedMsg = System.Text.Encoding.UTF8.GetString(e.Message);
         Debug.Log(">  New Message received on topic : " + e.Topic);
-        //Debug.Log (">  msgList count : " + msgList.Count);
+        Debug.Log (">  content is :" + e.Message);
     }
 
 

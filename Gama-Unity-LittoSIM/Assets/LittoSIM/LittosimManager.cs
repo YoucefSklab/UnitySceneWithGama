@@ -46,6 +46,8 @@ public class LittosimManager : MonoBehaviour
     public float lineHeight = 80f;
     public float zCoordinate = 60;
 
+    public Canvas uiCanvas;
+
     void Start()
     {
         //lastPosition 
@@ -65,7 +67,7 @@ public class LittosimManager : MonoBehaviour
         lastMessagePosition = initialMessagePosition;
 
         Destroy(GameObject.Find("Panel-Action-1"));
-        //Destroy(GameObject.Find("Panel-Message-1"));
+        Destroy(GameObject.Find("Panel-Message-1"));
         Destroy(GameObject.Find("Panel-Recap-Action-1"));
 
         deactivateValider();
@@ -129,99 +131,84 @@ public class LittosimManager : MonoBehaviour
     {
         Vector3 position = Input.mousePosition;
         Debug.Log("Mouse position is : " + position);
-        Vector3 ViewportPosition = GamaManager.MainCamera.GetComponent<Camera>().WorldToViewportPoint(position);
-        Debug.Log("Translated position is : " + ViewportPosition);
-        Debug.Log("Object Position is : " + GameObject.Find("Object").transform.position);
-        Debug.Log("Object Local Position is :" + GameObject.Find("Object").transform.localPosition);
+        position = worldToUISpace(uiCanvas, position);
         position.z = -zCoordinate;
         sendGamaMessage(position);
 
         // to delete
         GameObject game = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        position.z = -zCoordinate;
         game.transform.position = position;
         game.transform.localScale = new Vector3(30, 30, 30);
         Renderer rend = game.GetComponent<Renderer>();
         rend.material.color = Color.red;
+        Debug.Log("Final created position is :" + position);
+
+    }
+
+    public void createNewElementOld()
+    {
+        Vector3 position = Input.mousePosition;
+        Vector3 panelPosition = position;
+        Debug.Log("Mouse position is : " + position);
+        GameObject Object = GameObject.Find("Object");
+        Vector3 objectPosition = Object.transform.position;
+        Vector3 objectLocalPosition = Object.transform.localPosition;
+
+        Debug.Log("Object Position is : " + Object.transform.position);
+        Debug.Log("Object local Position is : " + Object.transform.localPosition);
+        Debug.Log("Object transform local Position is : " + Object.transform.TransformPoint(objectLocalPosition.x, objectLocalPosition.y, objectLocalPosition.z));
+
 
         GameObject Canvas_Actions = GameObject.Find("Canvas-Actions");
-
-        RectTransform rectTransform = GetComponent<RectTransform>();
-
+        //GameObject Canvas_Actions = GameObject.Find("Panel-Map");
         RectTransform Canvas = Canvas_Actions.GetComponent<RectTransform>();
-
-        Vector3 uiOffset = new Vector3((float)Canvas.sizeDelta.x / 2f, (float)Canvas.sizeDelta.y / 2f);
-
-
-
-
-        Vector3 proportionalPosition = new Vector3(ViewportPosition.x * Canvas.sizeDelta.x, ViewportPosition.y * Canvas.sizeDelta.y);
-
-        // Set the position and remove the screen offset
-        game.transform.position = proportionalPosition - uiOffset;
-        ViewportPosition.z = -zCoordinate;
-        game.transform.position = ViewportPosition;
-
-        position.x = position.x - 161;
-        position.y = position.y + 246;
-        position.z = -zCoordinate;
-
-        game.transform.position = position;
-
-        Debug.Log("Final created position is :" + position);
-        /*
-        //---------------
-        Vector3 mousePos; //To store mouse position
-        Transform incrementElement = game.transform; //The UI element I'm instantiating
-        Transform parentObj = Canvas_Actions.transform; //The UI Canvas
-        mousePos = Camera.main.WorldToScreenPoint(Input.mousePosition); //Gets mouse position
-        game.AddComponent<RectTransform>();
-        game.GetComponent<RectTransform>().anchoredPosition = (mousePos); //moves element to mouse position. 
-        
-                                                           //I tried instantiating at mousePos too
-        //NewIncrementElement.SetParent(parentObj); //sets the element to be a child
-                                                  // of the Canvas, this is necessary, right?
-
-
-
-        //-----------------
-        Canvas = GameObject.Find("Panel-Map").GetComponent<RectTransform>();
         Camera cam = GamaManager.MainCamera.GetComponent<Camera>();
-        game.transform.position = WorldToCanvasPosition(Canvas, GamaManager.MainCamera.GetComponent<Camera>(), position);
 
-        Vector3[] corners = new Vector3[4];
-        Canvas.GetWorldCorners(corners);
-        Rect newRect = new Rect(corners[0], corners[2]-corners[0]);
+        Debug.Log("1 Panel cam position is: " + cam.WorldToViewportPoint(position));
+        Debug.Log("2 Panel cam position is: " + cam.WorldToScreenPoint(position));
+        Debug.Log("3 Panel cam position is: " + cam.ScreenToWorldPoint(position));
+        Debug.Log("4 Panel cam position is: " + cam.ScreenToViewportPoint(position));
 
-        Debug.Log("newRect Before : 0 = " + corners[0] + " 1 = " + corners[1] + " 2 = " + corners[2] + " 3 = " + corners[3]);
-        Debug.Log("newRect After : 0 = " + cam.WorldToScreenPoint(corners[0]) + " 1 = " + cam.WorldToScreenPoint(corners[1]) + " 2 = " + cam.WorldToScreenPoint(corners[2]) + " 3 = " + cam.WorldToScreenPoint(corners[3]));
-        
-         game.transform.position  = position - cam.WorldToScreenPoint(corners[0]);
-         */
+        Debug.Log("5 Object cam position is: " + cam.WorldToViewportPoint(objectPosition));
+        Debug.Log("6 Object cam position is: " + cam.WorldToScreenPoint(objectPosition));
+        Debug.Log("7 Object cam position is: " + cam.ScreenToWorldPoint(objectPosition));
+        Debug.Log("8 Object cam position is: " + cam.ScreenToViewportPoint(objectPosition));
+
+        panelPosition = worldToUISpace(uiCanvas, position);
+
+        Debug.Log("WorldToCanvasPosition position is: " + panelPosition);
+
+        Vector3[] localCorners = new Vector3[4];
+        Vector3[] worldCorners = new Vector3[4];
+        Canvas.GetLocalCorners(localCorners);
+        Canvas.GetWorldCorners(worldCorners);
+        Rect newRect = new Rect(localCorners[0], localCorners[2] - localCorners[0]);
+
+        Object.transform.localPosition = localCorners[2];
+
+        Debug.Log("newRect Before : 0 = " + localCorners[0] + " 1 = " + localCorners[1] + " 2 = " + localCorners[2] + " 3 = " + localCorners[3]);
+        Debug.Log("newRect After : 0 = " + cam.WorldToScreenPoint(localCorners[0]) + " 1 = " + cam.WorldToScreenPoint(localCorners[1]) + " 2 = " + cam.WorldToScreenPoint(localCorners[2]) + " 3 = " + cam.WorldToScreenPoint(localCorners[3]));
+
+        Debug.Log("Panel position is: " + panelPosition);
+
+        //game.transform.position  = position - cam.WorldToScreenPoint(corners[0]);
         //Debug.Log("-----> "+newRect.Contains(Input.mousePosition));
+     
     }
 
 
-    public Vector2 WorldToCanvasPosition(RectTransform canvas, Camera camera, Vector3 position)
+    public Vector3 worldToUISpace(Canvas parentCanvas, Vector3 worldPos)
     {
-        //Vector position (percentage from 0 to 1) considering camera size.
-        //For example (0,0) is lower left, middle is (0.5,0.5)
-        Vector2 temp = camera.WorldToViewportPoint(position);
+        //Convert the world for screen point so that it can be used with ScreenPointToLocalPointInRectangle function
+       // Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+        //Vector3 screenPos = Camera.main.ScreenToWorldPoint(worldPos);
+        Vector3 screenPos = worldPos;
+        Vector2 movePos;
 
-        //Calculate position considering our percentage, using our canvas size
-        //So if canvas size is (1100,500), and percentage is (0.5,0.5), current value will be (550,250)
-        temp.x *= canvas.sizeDelta.x;
-        temp.y *= canvas.sizeDelta.y;
-
-        //The result is ready, but, this result is correct if canvas recttransform pivot is 0,0 - left lower corner.
-        //But in reality its middle (0.5,0.5) by default, so we remove the amount considering cavnas rectransform pivot.
-        //We could multiply with constant 0.5, but we will actually read the value, so if custom rect transform is passed(with custom pivot) , 
-        //returned value will still be correct.
-
-        temp.x -= canvas.sizeDelta.x * canvas.pivot.x;
-        temp.y -= canvas.sizeDelta.y * canvas.pivot.y;
-
-        return temp;
+        //Convert the screenpoint to ui rectangle local point
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(parentCanvas.transform as RectTransform, screenPos, parentCanvas.worldCamera, out movePos);
+        //Convert the local point to world point
+        return parentCanvas.transform.TransformPoint(movePos);
     }
 
     void OnGUI()
@@ -579,7 +566,7 @@ public class LittosimManager : MonoBehaviour
         publishMessage(message);
     }
 
-    
+
     public void destroyElement(string name)
     {
         if (GameObject.Find(name))
@@ -597,11 +584,11 @@ public class LittosimManager : MonoBehaviour
     public void createRecapActionPaneChild(int type, string name, GameObject panelParent, string texte, int delay)
     {
         GameObject panelChild = Instantiate(RecapActionPrefab);
-        string ImageNombre = "Image_nombre_"+name;
-        string ImageValid = "Image_valid_"+name;
-        string ImageN = "Image_n_"+name;
-        string TextType = "Texte_type_"+name;
-        
+        string ImageNombre = "Image_nombre_" + name;
+        string ImageValid = "Image_valid_" + name;
+        string ImageN = "Image_n_" + name;
+        string TextType = "Texte_type_" + name;
+
 
         panelChild.name = name;
         panelChild.transform.position = getAtRecapActionPanelPosition();
@@ -618,7 +605,7 @@ public class LittosimManager : MonoBehaviour
         GameObject.Find(ImageNombre).SetActive(false);
         GameObject.Find(ImageValid).SetActive(false);
         GameObject.Find(ImageN).SetActive(false);
-        
+
         //panelChild.transform.Find("Texte_nombre").GetComponent<Text>().text = (delay.ToString());
         recapActionsList.Add(panelChild);
 
@@ -691,10 +678,10 @@ public class LittosimManager : MonoBehaviour
         bool icon3 = Boolean.Parse((string)obj[3]);
 
         GameObject Parent = GameObject.Find(actionName);
-        
-        Parent.transform.Find("Image_valid_"+actionName).gameObject.SetActive(icon1);
-        Parent.transform.Find("Image_nombre_"+actionName).gameObject.SetActive(icon2);
-        Parent.transform.Find("Image_n_"+actionName).gameObject.SetActive(icon3);
+
+        Parent.transform.Find("Image_valid_" + actionName).gameObject.SetActive(icon1);
+        Parent.transform.Find("Image_nombre_" + actionName).gameObject.SetActive(icon2);
+        Parent.transform.Find("Image_n_" + actionName).gameObject.SetActive(icon3);
     }
 
     public void setValidActionText(object args)
@@ -703,15 +690,15 @@ public class LittosimManager : MonoBehaviour
         string actionName = (string)obj[0];
         string value1 = (string)obj[1];
         string value2 = (string)obj[2];
-        
+
         GameObject Parent = GameObject.Find(actionName);
-        
+
         //Parent.transform.Find("Image_valid_"+actionName).GetComponentgameObject.SetActive(icon1);
-        GameObject OB = Parent.transform.Find("Image_nombre_"+actionName).gameObject;
+        GameObject OB = Parent.transform.Find("Image_nombre_" + actionName).gameObject;
         OB.transform.Find("Texte_nombre").GetComponent<Text>().text = value1;
 
-        OB = Parent.transform.Find("Image_n_"+actionName).gameObject;
-        OB.transform.Find("Texte_nombre_i").GetComponent<Text>().text = value2; 
+        OB = Parent.transform.Find("Image_n_" + actionName).gameObject;
+        OB.transform.Find("Texte_nombre_i").GetComponent<Text>().text = value2;
     }
 
 }
