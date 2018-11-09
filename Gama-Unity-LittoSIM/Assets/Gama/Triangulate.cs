@@ -129,7 +129,7 @@ public class Triangulate : MonoBehaviour
 
 
 
-
+        /*
 
         vertices2D = vertices2D162;
         triangulator.setPoints(vertices2D);
@@ -147,7 +147,7 @@ public class Triangulate : MonoBehaviour
             poly.GetComponent<Renderer>().material = mat;
         }
 
-
+         */
 
         /* 
         vertices2D = verticesLineString;
