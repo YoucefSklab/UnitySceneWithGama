@@ -34,7 +34,7 @@ public class GamaManager : MonoBehaviour
     //Static instance of GamaManager which allows it to be accessed by any other script.
 
     public string receivedMsg = "";
-    public string clientId; 
+    public string clientId;
     public static MqttClient client;
     public GamaMethods gama = new GamaMethods();
     public TopicMessage currentMsg;
@@ -117,14 +117,14 @@ public class GamaManager : MonoBehaviour
         //MqttSetting.SERVER_URL = "localhost";
         //MqttSetting.SERVER_PORT = 1883;
         var timestamp = DateTime.Now.ToFileTime();
-        clientId = Guid.NewGuid().ToString()+timestamp;
+        clientId = Guid.NewGuid().ToString() + timestamp;
         client = new MqttClient(MqttSetting.SERVER_URL, MqttSetting.SERVER_PORT, false, null);
 
         client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
 
         client.Connect(clientId, MqttSetting.DEFAULT_USER, MqttSetting.DEFAULT_PASSWORD);
         //client.Connect(clientId);
-        
+
         client.Subscribe(new string[] { MqttSetting.MAIN_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
         client.Subscribe(new string[] { MqttSetting.MONO_FREE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
         client.Subscribe(new string[] { MqttSetting.MULTIPLE_FREE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
@@ -138,7 +138,7 @@ public class GamaManager : MonoBehaviour
         client.Subscribe(new string[] { MqttSetting.DESTROY_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
         client.Subscribe(new string[] { MqttSetting.NOTIFICATION_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
-        client.Subscribe(new string[] { "littosim" }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE});
+        client.Subscribe(new string[] { "littosim" }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
         client.Publish("littosim", System.Text.Encoding.UTF8.GetBytes(client.ClientId));
 
@@ -425,7 +425,7 @@ public class GamaManager : MonoBehaviour
         msgList.Add(e);
         receivedMsg = System.Text.Encoding.UTF8.GetString(e.Message);
         Debug.Log(">  New Message received on topic : " + e.Topic);
-        Debug.Log (">  content is :" + e.Message);
+        Debug.Log(">  content is :" + e.Message);
     }
 
 

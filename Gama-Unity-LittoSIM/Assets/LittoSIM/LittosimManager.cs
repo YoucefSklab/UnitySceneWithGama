@@ -50,8 +50,6 @@ public class LittosimManager : MonoBehaviour
 
     void Start()
     {
-        //lastPosition 
-
 
         initialRecapPosition = new Vector3(2020.0f, -135.3f, 0.0f);
         lastRecapPosition = new Vector3(2020.0f, -135.3f, 0.0f);
@@ -193,14 +191,14 @@ public class LittosimManager : MonoBehaviour
 
         //game.transform.position  = position - cam.WorldToScreenPoint(corners[0]);
         //Debug.Log("-----> "+newRect.Contains(Input.mousePosition));
-     
+
     }
 
 
     public Vector3 worldToUISpace(Canvas parentCanvas, Vector3 worldPos)
     {
         //Convert the world for screen point so that it can be used with ScreenPointToLocalPointInRectangle function
-       // Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+        // Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
         //Vector3 screenPos = Camera.main.ScreenToWorldPoint(worldPos);
         Vector3 screenPos = worldPos;
         Vector2 movePos;
@@ -477,6 +475,22 @@ public class LittosimManager : MonoBehaviour
         }
     }
 
+    public void updateRecapActionPosition()
+    {
+        if (recapActionsList.Count > 0)
+        {
+            lastRecapPosition = initialRecapPosition;
+            foreach (var gameObject in recapActionsList)
+            {
+                gameObject.transform.position = lastRecapPosition;
+                lastRecapPosition.y = lastRecapPosition.y - lineHeight;
+            }
+        }
+
+    }
+
+
+
     public Vector3 getAtMessagePanelPosition()
     {
         if (messagesList.Count > 0)
@@ -615,6 +629,8 @@ public class LittosimManager : MonoBehaviour
             rt.sizeDelta = new Vector2(rt.sizeDelta.x, (rt.sizeDelta.y + ((recapActionsList.Count - 5) * lineHeight)));
         }
         recapActionCounter++;
+
+        updateRecapActionPosition();
     }
 
     public void newInfoMessage(object args)
@@ -676,6 +692,8 @@ public class LittosimManager : MonoBehaviour
         bool icon1 = Boolean.Parse((string)obj[1]);
         bool icon2 = Boolean.Parse((string)obj[2]);
         bool icon3 = Boolean.Parse((string)obj[3]);
+
+        Debug.Log("The action name to set valid icon is : " + actionName);
 
         GameObject Parent = GameObject.Find(actionName);
 
