@@ -129,7 +129,7 @@ public class Triangulate : MonoBehaviour
 
 
 
-
+        /*
 
         vertices2D = vertices2D162;
         triangulator.setPoints(vertices2D);
@@ -147,7 +147,7 @@ public class Triangulate : MonoBehaviour
             poly.GetComponent<Renderer>().material = mat;
         }
 
-
+         */
 
         /* 
         vertices2D = verticesLineString;
@@ -260,11 +260,14 @@ public class Triangulate : MonoBehaviour
 
         m.vertices = verticies;
         m.triangles = triangles;
-        // For Andruid Build
+       
+        // For Android Build
         //Unwrapping.GenerateSecondaryUVSet(m);
+        
         m.RecalculateNormals();
         m.RecalculateBounds();
-        // For Andruid Build
+        
+        // For Android Build
         //MeshUtility.Optimize(m);
         Debug.Log("Triangles are: " + triangles.ToString());
         return m;
@@ -291,12 +294,12 @@ public class Triangulate : MonoBehaviour
         triangulator.setAllPoints(triangulator.get2dVertices());
         m.triangles = triangulator.get3DTriangulesFrom2D();
 
-        // For Andruid Build
+        // For Android Build
         //Unwrapping.GenerateSecondaryUVSet(m);
 
         m.RecalculateNormals();
         m.RecalculateBounds();
-        // For Andruid Build
+        // For Android Build
         //MeshUtility.Optimize(m);
 
         //Debug.Log("After -> " + m.uv.Length);

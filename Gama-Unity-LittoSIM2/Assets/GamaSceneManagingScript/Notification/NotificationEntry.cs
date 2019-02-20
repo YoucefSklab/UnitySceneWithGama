@@ -1,12 +1,8 @@
 ﻿using System;
-using UnityEngine;
-using System.IO;
-using ummisco.gama.unity.messages;
-
 
 namespace ummisco.gama.unity.notification
 {
-	public class NotificationEntry
+    public class NotificationEntry
 	{
 		
 		public string notificationId { get; set; }

@@ -296,7 +296,8 @@ namespace Nextzen.Unity
                         line.endColor = c1;
                         line.startWidth = 5.0f;
                         line.endWidth = 5.0f;
-
+                        
+                       
 
 
 
@@ -339,13 +340,14 @@ namespace Nextzen.Unity
                         // Automatic Uvs Calculator
                         // meshBucket.setUvs();
 
-                        // For Andruid Build
+                        // For Android Build
+                        //Unwrapping.GeneratePerTriangleUV(mesh);
                         //Unwrapping.GenerateSecondaryUVSet(mesh);
 
                         mesh.RecalculateNormals();
                         mesh.RecalculateBounds();
 
-                        // For Andruid Build
+                        // For Android Build
                         //MeshUtility.Optimize(mesh);
 
                         // Associate the mesh filter and mesh renderer components with this game object
@@ -438,13 +440,13 @@ namespace Nextzen.Unity
             m.vertices = verticies;
             m.triangles = triangles;
 
-            // For Andruid Build
+            // For Android Build
             //Unwrapping.GenerateSecondaryUVSet(m);
 
             m.RecalculateNormals();
             m.RecalculateBounds();
 
-            // For Andruid Build
+            // For Android Build
             //MeshUtility.Optimize(m);
             
             Debug.Log("Triangles are: " + triangles.ToString());
