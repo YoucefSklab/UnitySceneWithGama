@@ -8,8 +8,6 @@ namespace ummisco.gama.unity.messages
 	public class MoveTopicMessage : TopicMessage
 	{
 
-
-
 		public object position { set; get; }
 		public float speed { set; get; }
 		public bool smoothMove { set; get; }

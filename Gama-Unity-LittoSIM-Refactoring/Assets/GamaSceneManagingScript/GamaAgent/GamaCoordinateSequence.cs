@@ -28,31 +28,25 @@ namespace ummisco.gama.unity.GamaAgent
 
         public Vector2[] getVector2Coordinates()
         {
-           
-            if(Points.Count == 0) {return null;}
+            if (Points.Count == 0) { return null; }
             Vector2[] coord = new Vector2[Points.Count];
-            for (int i = 0; i < Points.Count; i++)
+            foreach (Point p in Points)
             {
-                Vector2 vect = new Vector2(Points[i].X, Points[i].Y);
-                coord[i] = vect;
+                coord[Points.IndexOf(p)] = new Vector2(p.X, p.Y); ;
             }
             return coord;
         }
 
         public Vector3[] getVector3Coordinates()
         {
-            
-            if(Points.Count == 0) {return null;}
+            if (Points.Count == 0) { return null; }
             Vector3[] coord = new Vector3[Points.Count];
-            for (int i = 0; i < Points.Count; i++)
+            foreach (Point p in Points)
             {
-                Vector3 vect = new Vector3(Points[i].X, Points[i].Y, Points[i].Z);
-                coord[i] = vect;
+                coord[Points.IndexOf(p)] = new Vector3(p.X, p.Y, p.Z);
             }
             return coord;
         }
-
-
 
     }
 }

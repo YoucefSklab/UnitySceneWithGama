@@ -8,7 +8,6 @@ namespace ummisco.gama.unity.messages
 	public class MultipleFreeTopicMessage : TopicMessage
 	{
 
-
 		public object attributes { set; get; }
 
 		public string methodName { set; get; }
@@ -23,7 +22,6 @@ namespace ummisco.gama.unity.messages
 			this.attributes = attributes;
 			this.methodName = methodeName;
 		}
-
 
 	}
 

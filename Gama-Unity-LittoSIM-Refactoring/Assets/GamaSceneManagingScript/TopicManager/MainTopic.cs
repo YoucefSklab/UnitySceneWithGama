@@ -8,7 +8,7 @@ using System.Linq;
 using System;
 using System.Xml;
 using System.Globalization;
-using ummisco.gama.unity.Behaviour;
+using ummisco.gama.unity.AgentBehaviours;
 using System.Xml.Linq;
 using Nextzen.VectorData;
 using ummisco.gama.unity.GamaAgent;
@@ -70,6 +70,8 @@ namespace ummisco.gama.unity.topics
 
         public GameObject getGameObjectByName(string objectName, GameObject[] allObjects)
         {
+            return GameObject.Find(objectName);
+            /*
             foreach (GameObject gameObj in allObjects)
             {
                 if (gameObj.activeInHierarchy)
@@ -81,6 +83,7 @@ namespace ummisco.gama.unity.topics
                 }
             }
             return null;
+            */           
         }
 
 

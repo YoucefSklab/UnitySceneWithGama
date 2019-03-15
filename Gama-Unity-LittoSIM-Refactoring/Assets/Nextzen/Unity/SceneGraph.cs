@@ -341,14 +341,14 @@ namespace Nextzen.Unity
                         // meshBucket.setUvs();
 
                         // For Android Build
-                        //Unwrapping.GeneratePerTriangleUV(mesh);
-                        //Unwrapping.GenerateSecondaryUVSet(mesh);
+                        Unwrapping.GeneratePerTriangleUV(mesh);
+                        Unwrapping.GenerateSecondaryUVSet(mesh);
 
                         mesh.RecalculateNormals();
                         mesh.RecalculateBounds();
 
                         // For Android Build
-                        //MeshUtility.Optimize(mesh);
+                        MeshUtility.Optimize(mesh);
 
                         // Associate the mesh filter and mesh renderer components with this game object
 
@@ -441,13 +441,13 @@ namespace Nextzen.Unity
             m.triangles = triangles;
 
             // For Android Build
-            //Unwrapping.GenerateSecondaryUVSet(m);
+            Unwrapping.GenerateSecondaryUVSet(m);
 
             m.RecalculateNormals();
             m.RecalculateBounds();
 
             // For Android Build
-            //MeshUtility.Optimize(m);
+            MeshUtility.Optimize(m);
             
             Debug.Log("Triangles are: " + triangles.ToString());
             return m;

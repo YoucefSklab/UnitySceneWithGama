@@ -59,6 +59,8 @@ namespace ummisco.gama.unity.topics
 
 		public GameObject getGameObjectByName (string objectName, GameObject[] allObjects)
 		{
+            return GameObject.Find(objectName);
+            /*
 			foreach (GameObject gameObj in allObjects) {
 				if (gameObj.activeInHierarchy) {
 					if (objectName.Equals (gameObj.name)) {
@@ -67,6 +69,7 @@ namespace ummisco.gama.unity.topics
 				}					
 			}
 			return null;
+			*/           
 		}
 
 	}

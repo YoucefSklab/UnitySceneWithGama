@@ -8,8 +8,8 @@ using System.Linq;
 using System;
 using System.Xml;
 using System.Globalization;
-using ummisco.gama.unity.Behaviour;
-
+using ummisco.gama.unity.AgentBehaviours;
+using ummisco.gama.unity.GamaConcepts;
 
 namespace ummisco.gama.unity.topics
 {
@@ -62,22 +62,22 @@ namespace ummisco.gama.unity.topics
 
             switch (topicMessage.type)
             {
-                case "Capsule":
+                case IGamaConcept.CAPSULE:
                     newObject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
                     break;
-                case "Cube":
+                case IGamaConcept.CUBE:
                     newObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     break;
-                case "Cylinder":
+                case IGamaConcept.CYLINDER:
                     newObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                     break;
-                case "Plane":
+                case IGamaConcept.PLANE:
                     newObject = GameObject.CreatePrimitive(PrimitiveType.Plane);
                     break;
-                case "Quad":
+                case IGamaConcept.QUAD:
                     newObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
                     break;
-                case "Sphere":
+                case IGamaConcept.SPHERE:
                     newObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     break;
                 default:
@@ -93,7 +93,6 @@ namespace ummisco.gama.unity.topics
             newObject.name = topicMessage.objectName;
             newObject.AddComponent<AgentBehaviour>();
 
-            Debug.Log(newObject + " is created and AgentBehaviour attached - ---------- ");
             // Set the position to the new GameObject
             //---------------------------------------
             XmlNode[] positionNode = (XmlNode[])topicMessage.position;
@@ -109,11 +108,7 @@ namespace ummisco.gama.unity.topics
             Renderer rend = newObject.GetComponent<Renderer>();
             rend.material.color = objectColor;
 
-
-           // Debug.Log("The color is " + objectColor.ToString());
-
             objectManager.SendMessage("addObjectToList", newObject);
-
 
         }
 
@@ -126,6 +121,10 @@ namespace ummisco.gama.unity.topics
 
         public GameObject getGameObjectByName(string objectName, GameObject[] allObjects)
         {
+
+            return GameObject.Find(objectName);
+
+            /*
             foreach (GameObject gameObj in allObjects)
             {
                 if (gameObj.activeInHierarchy)
@@ -137,6 +136,7 @@ namespace ummisco.gama.unity.topics
                 }
             }
             return null;
+            */
         }
 
     }

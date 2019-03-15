@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Nextzen.VectorData;
+using ummisco.gama.unity.GamaConcepts;
 
 namespace ummisco.gama.unity.GamaAgent
 {
@@ -47,45 +48,39 @@ namespace ummisco.gama.unity.GamaAgent
         {
             switch (geometry)
             {
-                case "Polygon":
+                case IGamaConcept.POLYGON:
                     return "buildings";
-                case "LineString":
+                case IGamaConcept.LINE_STRING:
                     return "rouds";
-                case "Points":
+                case IGamaConcept.POINTS:
                     return "objects";
-                case "Water":
+                case IGamaConcept.WATER:
                     return "water";
-                case "Landuse":
+                case IGamaConcept.LANDUSE:
                     return "landuse";
                 default:
                     return "earth";
             }
         }
 
-         public string getLayer()
+        public string getLayer()
         {
             switch (geometry)
             {
-                case "Polygon":
+                case IGamaConcept.POLYGON:
                     return "Buildings";
-                case "LineString":
+                case IGamaConcept.LINE_STRING:
                     return "Rouds";
-                case "Points":
+                case IGamaConcept.POINTS:
                     return "Objects";
-                case "Water":
+                case IGamaConcept.WATER:
                     return "Water";
-                case "Landuse":
+                case IGamaConcept.LANDUSE:
                     return "Landuse";
                 default:
                     return "Earth";
             }
         }
-
-
-
-
-
-
 
     }
 }

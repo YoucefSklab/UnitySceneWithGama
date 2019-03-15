@@ -323,8 +323,10 @@ namespace ummisco.gama.unity.topics
 
 		public GameObject getGameObjectByName (string objectName)
 		{
-			
-			GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
+
+            return GameObject.Find(objectName);
+            /*
+            GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
 
 			foreach (GameObject gameO in allObjects) {
 				if (gameO.activeInHierarchy) {
@@ -334,6 +336,7 @@ namespace ummisco.gama.unity.topics
 				}					
 			}
 			return null;
+			*/           
 		}
 
 

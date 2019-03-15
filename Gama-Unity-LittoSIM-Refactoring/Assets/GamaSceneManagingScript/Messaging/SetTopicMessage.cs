@@ -8,7 +8,6 @@ namespace ummisco.gama.unity.messages
 	public class SetTopicMessage : TopicMessage
 	{
 
-
 		public object attributes { set; get; }
 
 		public SetTopicMessage()

@@ -83,7 +83,6 @@ public class GamaManager : MonoBehaviour
         MainCamera = GameObject.Find("MainCamera");
 
         /* 
-
                 // Create the plane game Object
                 plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
                 plane.transform.localScale = new Vector3(20, 1, 20);
@@ -138,16 +137,16 @@ public class GamaManager : MonoBehaviour
         client.Subscribe(new string[] { MqttSetting.DESTROY_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
         client.Subscribe(new string[] { MqttSetting.NOTIFICATION_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
-        client.Subscribe(new string[] { "littosim" }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+       // client.Subscribe(new string[] { "littosim" }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
-        client.Publish("littosim", System.Text.Encoding.UTF8.GetBytes(client.ClientId));
+      //  client.Publish("littosim", System.Text.Encoding.UTF8.GetBytes(client.ClientId));
 
     }
 
 
     void FixedUpdate()
     {
-
+       
         if (msgList.Count > 0)
         {
 
@@ -166,7 +165,7 @@ public class GamaManager : MonoBehaviour
             switch (e.Topic)
             {
                 case MqttSetting.MAIN_TOPIC:
-                    //------------------------------------------------------------------------------
+                    
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.MAIN_TOPIC);
                     //Debug.Log("-> The message is : " + e.Message);
 
@@ -184,10 +183,10 @@ public class GamaManager : MonoBehaviour
                     //GamaManager obje = (GamaManager) FindObjectOfType(typeof(GamaManager));
                     GameObject.Find(MqttSetting.MAIN_TOPIC_MANAGER).GetComponent(MqttSetting.MAIN_TOPIC_SCRIPT).SendMessage("ProcessTopic", obj);
 
-                    //------------------------------------------------------------------------------
+                    
                     break;
                 case MqttSetting.MONO_FREE_TOPIC:
-                    //------------------------------------------------------------------------------
+                    
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.MONO_FREE_TOPIC);
                     MonoFreeTopicMessage monoFreeTopicMessage = (MonoFreeTopicMessage)MsgSerialization.deserialization(receivedMsg, new MonoFreeTopicMessage());
                     targetGameObject = GameObject.Find(monoFreeTopicMessage.objectName);
@@ -200,10 +199,10 @@ public class GamaManager : MonoBehaviour
                     }
                     Debug.Log("The message is to " + monoFreeTopicMessage.objectName + " about the methode " + monoFreeTopicMessage.methodName + " and attribute " + monoFreeTopicMessage.attribute);
                     GameObject.Find(MqttSetting.MONO_FREE_TOPIC_MANAGER).GetComponent(MqttSetting.MONO_FREE_TOPIC_SCRIPT).SendMessage("ProcessTopic", obj);
-                    //------------------------------------------------------------------------------
+                    
                     break;
                 case MqttSetting.MULTIPLE_FREE_TOPIC:
-                    //------------------------------------------------------------------------------
+                    
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.MULTIPLE_FREE_TOPIC);
 
                     MultipleFreeTopicMessage multipleFreetopicMessage = (MultipleFreeTopicMessage)MsgSerialization.deserialization(receivedMsg, new MultipleFreeTopicMessage());
@@ -217,10 +216,10 @@ public class GamaManager : MonoBehaviour
                     }
 
                     GameObject.Find(MqttSetting.MULTIPLE_FREE_TOPIC_MANAGER).GetComponent(MqttSetting.MULTIPLE_FREE_TOPIC_SCRIPT).SendMessage("ProcessTopic", obj);
-                    //------------------------------------------------------------------------------
+                    
                     break;
                 case MqttSetting.POSITION_TOPIC:
-                    //------------------------------------------------------------------------------
+                    
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.POSITION_TOPIC);
 
                     PositionTopicMessage positionTopicMessage = (PositionTopicMessage)MsgSerialization.deserialization(receivedMsg, new PositionTopicMessage());
@@ -229,7 +228,7 @@ public class GamaManager : MonoBehaviour
 
                     if (targetGameObject == null)
                     {
-                        Debug.LogError(" Sorry, requested gameObject is null (" + positionTopicMessage.objectName + "). Please check you code! ");
+                        Debug.LogError(" Sorry, requested gameObject is null (" + positionTopicMessage.objectName + "). Please check your code! ");
                         break;
                     }
                     else
@@ -238,10 +237,11 @@ public class GamaManager : MonoBehaviour
 
                     }
 
-                    //------------------------------------------------------------------------------
+                    
                     break;
+
                 case MqttSetting.MOVE_TOPIC:
-                    //------------------------------------------------------------------------------
+                    
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.MOVE_TOPIC);
 
                     MoveTopicMessage moveTopicMessage = (MoveTopicMessage)MsgSerialization.deserialization(receivedMsg, new MoveTopicMessage());
@@ -255,10 +255,11 @@ public class GamaManager : MonoBehaviour
                     }
 
                     GameObject.Find(MqttSetting.MOVE_TOPIC_MANAGER).GetComponent(MqttSetting.MOVE_TOPIC_SCRIPT).SendMessage("ProcessTopic", obj);
-                    //------------------------------------------------------------------------------
+                    
                     break;
+
                 case MqttSetting.COLOR_TOPIC:
-                    //------------------------------------------------------------------------------
+                    
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.COLOR_TOPIC);
 
                     ColorTopicMessage colorTopicMessage = (ColorTopicMessage)MsgSerialization.deserialization(receivedMsg, new ColorTopicMessage());
@@ -273,10 +274,11 @@ public class GamaManager : MonoBehaviour
 
                     GameObject.Find(MqttSetting.COLOR_TOPIC_MANAGER).GetComponent(MqttSetting.COLOR_TOPIC_SCRIPT).SendMessage("ProcessTopic", obj);
 
-                    //------------------------------------------------------------------------------
+                    
                     break;
+
                 case MqttSetting.GET_TOPIC:
-                    //------------------------------------------------------------------------------
+                    
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.GET_TOPIC);
                     string value = null;
 
@@ -294,10 +296,10 @@ public class GamaManager : MonoBehaviour
 
                     GameObject.Find(MqttSetting.GET_TOPIC_MANAGER).GetComponent(MqttSetting.GET_TOPIC_SCRIPT).SendMessage("ProcessTopic", obj);
                     sendReplay(clientId, "GamaAgent", getTopicMessage.attribute, (string)obj[2]);
-                    //------------------------------------------------------------------------------
+                    
                     break;
                 case MqttSetting.SET_TOPIC:
-                    //------------------------------------------------------------------------------
+                    
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.SET_TOPIC);
 
                     SetTopicMessage setTopicMessage = (SetTopicMessage)MsgSerialization.deserialization(receivedMsg, new SetTopicMessage());
@@ -314,10 +316,10 @@ public class GamaManager : MonoBehaviour
                     obj = new object[] { setTopicMessage, targetGameObject };
 
                     GameObject.Find(MqttSetting.SET_TOPIC_MANAGER).GetComponent(MqttSetting.SET_TOPIC_SCRIPT).SendMessage("ProcessTopic", obj);
-                    //------------------------------------------------------------------------------
+                    
                     break;
                 case MqttSetting.PROPERTY_TOPIC:
-                    //------------------------------------------------------------------------------
+                    
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.PROPERTY_TOPIC);
 
                     try
@@ -335,28 +337,30 @@ public class GamaManager : MonoBehaviour
 
                     if (targetGameObject == null)
                     {
-                        Debug.LogError(" Sorry, requested gameObject is null (" + propertyTopicMessage.objectName + "). Please check you code! ");
-                        break;
+                        Debug.Log(" Sorry, requested gameObject is null (" + propertyTopicMessage.objectName + "). Please check you code! ");
+                       // break;
+                    }else
+                    {
+                        obj = new object[] { propertyTopicMessage, targetGameObject };
+                        GameObject.Find(MqttSetting.PROPERTY_TOPIC_MANAGER).GetComponent(MqttSetting.PROPERTY_TOPIC_SCRIPT).SendMessage("ProcessTopic", obj);
+
                     }
 
-                    obj = new object[] { propertyTopicMessage, targetGameObject };
 
-                    GameObject.Find(MqttSetting.PROPERTY_TOPIC_MANAGER).GetComponent(MqttSetting.PROPERTY_TOPIC_SCRIPT).SendMessage("ProcessTopic", obj);
-                    //------------------------------------------------------------------------------
                     break;
 
                 case MqttSetting.CREATE_TOPIC:
-                    //------------------------------------------------------------------------------
+
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.CREATE_TOPIC);
                     // Debug.Log("-> Message: " + receivedMsg);
                     CreateTopicMessage createTopicMessage = (CreateTopicMessage)MsgSerialization.deserialization(receivedMsg, new CreateTopicMessage());
                     obj = new object[] { createTopicMessage };
 
                     GameObject.Find(MqttSetting.CREATE_TOPIC_MANAGER).GetComponent(MqttSetting.CREATE_TOPIC_SCRIPT).SendMessage("ProcessTopic", obj);
-                    //------------------------------------------------------------------------------
+
                     break;
                 case MqttSetting.DESTROY_TOPIC:
-                    //------------------------------------------------------------------------------
+                    
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.DESTROY_TOPIC);
 
                     DestroyTopicMessage destroyTopicMessage = (DestroyTopicMessage)MsgSerialization.deserialization(receivedMsg, new DestroyTopicMessage());
@@ -369,10 +373,10 @@ public class GamaManager : MonoBehaviour
                     }
 
                     GameObject.Find(MqttSetting.DESTROY_TOPIC_MANAGER).GetComponent(MqttSetting.DESTROY_TOPIC_SCRIPT).SendMessage("ProcessTopic", obj);
-                    //------------------------------------------------------------------------------
+                    
                     break;
                 case MqttSetting.NOTIFICATION_TOPIC:
-                    //------------------------------------------------------------------------------
+                    
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.NOTIFICATION_TOPIC);
 
                     NotificationTopicMessage notificationTopicMessage = (NotificationTopicMessage)MsgSerialization.deserialization(receivedMsg, new NotificationTopicMessage());
@@ -387,12 +391,12 @@ public class GamaManager : MonoBehaviour
 
                     GameObject.Find(MqttSetting.NOTIFICATION_TOPIC_MANAGER).GetComponent(MqttSetting.NOTIFICATION_TOPIC_SCRIPT).SendMessage("ProcessTopic", obj);
 
-                    //------------------------------------------------------------------------------
+                    
                     break;
                 default:
-                    //------------------------------------------------------------------------------
+                    
                     Debug.Log("-> Topic to deal with is : " + MqttSetting.DEFAULT_TOPIC);
-                    //------------------------------------------------------------------------------
+                    
                     break;
             }
 
@@ -468,6 +472,7 @@ public class GamaManager : MonoBehaviour
 
     void OnDestroy()
     {
+        Debug.Log("----> GamaManager GameObject Destroyed");
         m_Instance = null;
     }
 
