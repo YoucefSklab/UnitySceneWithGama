@@ -525,16 +525,16 @@ namespace ummisco.gama.unity.littosim
 
         public void deactivateValider()
         {
-            valider.active = false;
-            valider_text.active = false;
-            valider_montant.active = false;
+            valider.SetActive(false);//.active = false;
+            valider_text.SetActive(false);//.active = false;
+            valider_montant.SetActive(false);//.active = false;
         }
 
         public void activateValider()
         {
-            valider.active = true;
-            valider_text.active = true;
-            valider_montant.active = true;
+            valider.SetActive(true);//.active = false;
+            valider_text.SetActive(true);//.active = false;
+            valider_montant.SetActive(true);//.active = false;
         }
 
         public void validateActionList()

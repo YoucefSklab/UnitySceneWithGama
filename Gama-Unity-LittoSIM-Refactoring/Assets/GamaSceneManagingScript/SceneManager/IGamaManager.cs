@@ -41,6 +41,9 @@ namespace ummisco.gama.unity.SceneManager
         public const string DESTROY_TOPIC_SCRIPT = "DestroyTopic";
         public const string MAIN_TOPIC_SCRIPT = "MainTopic";
 
+
+        public const string CSVREADER = "CSVReader";
+
         public IGamaManager()
         {
 

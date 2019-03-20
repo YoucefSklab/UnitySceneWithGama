@@ -100,6 +100,8 @@ namespace ummisco.gama.unity.SceneManager
             new GameObject(IGamaManager.PROPERTY_TOPIC_MANAGER).AddComponent<PropertyTopic>().transform.SetParent(gamaManager.transform);
             new GameObject(IGamaManager.MAIN_TOPIC_MANAGER).AddComponent<MainTopic>().transform.SetParent(gamaManager.transform);
 
+            new GameObject(IGamaManager.CSVREADER).AddComponent<CSVReader>().transform.SetParent(gamaManager.transform);
+
         }
 
 
@@ -117,8 +119,8 @@ namespace ummisco.gama.unity.SceneManager
 
             client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
 
-            client.Connect(clientId, MqttSetting.DEFAULT_USER, MqttSetting.DEFAULT_PASSWORD);
-            //client.Connect(clientId);
+            //client.Connect(clientId, MqttSetting.DEFAULT_USER, MqttSetting.DEFAULT_PASSWORD);
+            client.Connect(clientId);
 
             client.Subscribe(new string[] { MqttSetting.MAIN_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
             client.Subscribe(new string[] { MqttSetting.MONO_FREE_TOPIC }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });

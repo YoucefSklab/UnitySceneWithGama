@@ -1089,7 +1089,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 284944362}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9964471
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1235,33 +1235,33 @@ MonoBehaviour:
       latitude: 40.711446
     max:
       longitude: -73.999306
-      latitude: 40.706938
+      latitude: 40.706939
     zoom: 16
-  UnitsPerMeter: 0.1
-  RegionName: Manhattan
-  GroupOptions: 24
+  UnitsPerMeter: 1
+  RegionName: 
+  GroupOptions: 0
   GameObjectOptions:
     IsStatic: 0
-    GeneratePhysicMeshCollider: 1
+    GeneratePhysicMeshCollider: 0
     PhysicMaterial: {fileID: 0}
-  Style: {fileID: 11400000, guid: 55b6d5ee799474205b5745d930cce11d, type: 2}
+  Style: {fileID: 0}
   tempTransform:
-    e00: 61.149624
+    e00: 0
     e01: 0
     e02: 0
-    e03: 122.29925
+    e03: 0
     e10: 0
-    e11: 61.149624
+    e11: 0
     e12: 0
     e13: 0
     e20: 0
     e21: 0
-    e22: 61.149624
+    e22: 0
     e23: 0
     e30: 0
     e31: 0
     e32: 0
-    e33: 1
+    e33: 0
   elevation: 0
 --- !u!4 &349009245
 Transform:
@@ -1528,15 +1528,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   receivedMsg: 
-  clientId: 2f3d2686-0c14-49b5-8cc0-57a0abe42de2
+  clientId: 
   allObjects: []
   gamaManager: {fileID: 0}
   targetGameObject: {fileID: 0}
   topicGameObject: {fileID: 0}
   plane: {fileID: 0}
-  planeMaterial: {fileID: 2100000, guid: bb0267789bf4345c7916b57b125fc6ca, type: 2}
-  polygonMaterial: {fileID: 2100000, guid: 7f88baed2a0f94bb3a42f7bc45b5fcf8, type: 2}
-  lineMaterial: {fileID: 2100000, guid: 59eea86d9d6ad439697c739214cbd3bf, type: 2}
+  planeMaterial: {fileID: 0}
+  polygonMaterial: {fileID: 0}
+  lineMaterial: {fileID: 0}
   setTopicManager: {fileID: 0}
   getTotpicManager: {fileID: 0}
   moveTopicManager: {fileID: 0}
@@ -1568,7 +1568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97b1468027dbb42a989ba3df0bb5f4ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myNewMaterial: {fileID: 2100000, guid: c4141be0d78aa4ccdb8431b5bab7ddd0, type: 2}
+  myNewMaterial: {fileID: 0}
 --- !u!4 &486782218
 Transform:
   m_ObjectHideFlags: 0
@@ -4369,7 +4369,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000089278044}
+  m_AnchoredPosition: {x: 0, y: 0.013037508}
   m_SizeDelta: {x: 0, y: 1111}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &1355097074
@@ -5749,11 +5749,11 @@ MonoBehaviour:
   recapActionsList: []
   messagesList: []
   initialPosition: {x: 1976.2, y: 1159.5, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  initialRecapPosition: {x: 1551, y: -569.3, z: 0}
-  lastRecapPosition: {x: 1551, y: -569.3, z: 0}
-  initialMessagePosition: {x: 2020, y: -135.3, z: 0}
-  lastMessagePosition: {x: 2020, y: -135.3, z: 0}
+  lastPosition: {x: 1976.2, y: 1159.5, z: 0}
+  initialRecapPosition: {x: 2020, y: -135.3, z: 0}
+  lastRecapPosition: {x: 2020, y: -135.3, z: 0}
+  initialMessagePosition: {x: 0, y: 0, z: 0}
+  lastMessagePosition: {x: 0, y: 0, z: 0}
   elementCounter: 0
   actionCounter: 0
   recapActionCounter: 0
@@ -5761,7 +5761,7 @@ MonoBehaviour:
   valider: {fileID: 2111187891}
   valider_text: {fileID: 1981866018}
   valider_montant: {fileID: 88778568}
-  lineHeight: 75
+  lineHeight: 80
   zCoordinate: 60
   uiCanvas: {fileID: 647947878}
 --- !u!4 &1882931954
@@ -5956,7 +5956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4dd4f92c4c6340fbaefd2d58f0b55b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activePanel: 
+  activePanel: Map_Panel
 --- !u!4 &1935156533
 Transform:
   m_ObjectHideFlags: 0
