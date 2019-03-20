@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using ummisco.gama.unity.messages;
 using ummisco.gama.unity.utils;
+using ummisco.gama.unity.SceneManager;
+using ummisco.gama.unity.GamaConcepts;
 using System.Reflection;
 using System.Linq;
 using System;
@@ -13,7 +15,6 @@ namespace ummisco.gama.unity.topics
 {
     public class PropertyTopic : Topic
     {
-
         public PropertyTopicMessage topicMessage;
 
         public PropertyTopic(PropertyTopicMessage topicMessage, GameObject gameObj) : base(gameObj)
@@ -33,19 +34,16 @@ namespace ummisco.gama.unity.topics
 
         }
 
-
         public void ProcessTopic(object obj)
         {
             setAllProperties(obj);
             sendTopic();
         }
 
-
         // The method to call Game Objects methods
         //----------------------------------------
         public void sendTopic()
         {
-
             Component[] cs = (Component[])targetGameObject.GetComponents(typeof(Component));
             XmlNode[] node = (XmlNode[])topicMessage.value;
             XmlNode n = node[1];
@@ -58,7 +56,6 @@ namespace ummisco.gama.unity.topics
             {
                 foreach (Component c in cs)
                 {
-
                     //Debug.Log("name: " + c.name + " type: " + c.GetType() + " basetype: " + c.GetType().BaseType);
                     PropertyInfo propertyInfo = c.GetType().GetProperty(topicMessage.propertyName);
 
@@ -70,12 +67,11 @@ namespace ummisco.gama.unity.topics
 
                         if (propertyInfo.PropertyType.Equals(typeof(Vector3)))
                         {
-                            Vector3 vect = ConvertType.vector3FromXmlNode(node, MqttSetting.GAMA_POINT);
+                            Vector3 vect = ConvertType.vector3FromXmlNode(node, IGamaConcept.GAMA_POINT_CLASS);
                             propertyInfo.SetValue(obj, (object)vect, null);
                         }
                         else
                         {
-
                             try
                             {
                                 object val = Convert.ChangeType(n.Value, propertyInfo.PropertyType);
@@ -85,9 +81,7 @@ namespace ummisco.gama.unity.topics
                             {
                                 Debug.Log("Error: Please check the property value conversion - " + ex.Message);
                             }
-
                         }
-
                     }
                     else
                     {
@@ -109,12 +103,8 @@ namespace ummisco.gama.unity.topics
                         //Debug.Log("fi name: "+fi.Name+" type: "+fi.PropertyType);
                     }
                     */
-
                 }
             }
-
-
-
         }
 
         public override void setAllProperties(object args)
@@ -123,9 +113,5 @@ namespace ummisco.gama.unity.topics
             this.topicMessage = (PropertyTopicMessage)obj[0];
             this.targetGameObject = (GameObject)obj[1];
         }
-
-
-
     }
-
 }

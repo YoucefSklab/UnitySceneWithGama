@@ -5,22 +5,19 @@ using ummisco.gama.unity.messages;
 using UnityEngine;
 using UnityEngine.UI;
 using uPLibrary.Networking.M2Mqtt.Messages;
+using ummisco.gama.unity.SceneManager;
 
 namespace ummisco.gama.unity.littosim
 {
     public class LittosimManager : MonoBehaviour
     {
-
         // Use this for initialization
-
         public int actionToDo = 0;
         public static int gameNbr = 0;
-
 
         public GameObject ActionPanelPrefab;
         public GameObject ActionRecapPanelPrefab;
         public GameObject MessagePanelPrefab;
-
 
         public List<GameObject> actionsList = new List<GameObject>();
         public List<GameObject> recapActionsList = new List<GameObject>();
@@ -48,19 +45,22 @@ namespace ummisco.gama.unity.littosim
         public float zCoordinate = 60;
 
         public Canvas uiCanvas;
+        private GameObject uiManager;
+
 
         void Start()
         {
-
             initialRecapPosition = new Vector3(2020.0f, -135.3f, 0.0f);
             lastRecapPosition = new Vector3(2020.0f, -135.3f, 0.0f);
 
+            uiManager = GameObject.Find(IUILittoSim.UI_MANAGER_GAMEOBJECT); 
+           
+           
 
             // initialPosition = GameObject.Find("IUILittoSim.ACTION_PANEL_PREFAB").transform.position;
             // lastPosition = initialPosition;
 
             Debug.Log("The hight of " + IUILittoSim.MESSAGE_PANEL_PREFAB + " is : " + GameObject.Find(IUILittoSim.MESSAGE_PANEL_PREFAB).GetComponent<RectTransform>().rect.height);
-
 
             initialMessagePosition = new Vector3(-836.3f, -136.2f, 0.0f);
             lastMessagePosition = initialMessagePosition;
@@ -72,14 +72,12 @@ namespace ummisco.gama.unity.littosim
             deactivateValider();
         }
 
-
         void Awak()
         {
 
-
         }
 
-        void Update()
+        void FixedUpdate()
         {
             /*
             if (GameObject.Find(IUILittoSim.MESSAGES_PANEL))
@@ -88,6 +86,8 @@ namespace ummisco.gama.unity.littosim
                 //   GameObject.Find(IUILittoSim.MESSAGE_PANEL).transform.position = initialMessagePosition;
             }
             */
+
+            Debug.Log("The active panel is " + uiManager.GetComponent<UIManager>().getActivePanel());
 
             Vector3 mouse = Input.mousePosition;
 
@@ -108,22 +108,14 @@ namespace ummisco.gama.unity.littosim
             //Rect bounds = new Rect(0, 0, Screen.width / 2, Screen.height);
 
             /*
-              Rect bounds = new Rect(58, 843, 1320, 200);
-
-
-
+             Rect bounds = new Rect(58, 843, 1320, 200);
              bounds = new Rect(58, 43, 1320, 200);
-
              bounds = new Rect(268, 113, 1020, 200);
-
+                         
              GameObject panel = GameObject.Find("Panel-Map");
-
-
-
              var firstPlayerHand = GameObject.Find("First Player Hand");
              var position1 = panel.transform.position;
              var position2 = panel.GetComponent<RectTransform>().rect;
-
              bounds = new Rect(position2.x, position2.y, position2.width, position2.height);
              */
         }
@@ -132,16 +124,18 @@ namespace ummisco.gama.unity.littosim
         {
             Vector3 position = Input.mousePosition;
             Debug.Log("Mouse position is : " + position);
-            position = worldToUISpace(uiCanvas, position);
+            position = uiManager.GetComponent<UIManager>().worldToUISpace(uiCanvas, position);
             position.z = -zCoordinate;
             sendGamaMessage(position);
 
             // to delete
+            /*
             GameObject game = GameObject.CreatePrimitive(PrimitiveType.Cube);
             game.transform.position = position;
             game.transform.localScale = new Vector3(30, 30, 30);
             Renderer rend = game.GetComponent<Renderer>();
             rend.material.color = Color.red;
+            */
             Debug.Log("Final created position is :" + position);
 
         }
@@ -175,7 +169,7 @@ namespace ummisco.gama.unity.littosim
             Debug.Log("7 Object cam position is: " + cam.ScreenToWorldPoint(objectPosition));
             Debug.Log("8 Object cam position is: " + cam.ScreenToViewportPoint(objectPosition));
 
-            panelPosition = worldToUISpace(uiCanvas, position);
+            panelPosition = uiManager.GetComponent<UIManager>().worldToUISpace(uiCanvas, position);
 
             Debug.Log("WorldToCanvasPosition position is: " + panelPosition);
 
@@ -195,21 +189,6 @@ namespace ummisco.gama.unity.littosim
             //game.transform.position  = position - cam.WorldToScreenPoint(corners[0]);
             //Debug.Log("-----> "+newRect.Contains(Input.mousePosition));
 
-        }
-
-
-        public Vector3 worldToUISpace(Canvas parentCanvas, Vector3 worldPos)
-        {
-            //Convert the world for screen point so that it can be used with ScreenPointToLocalPointInRectangle function
-            // Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
-            //Vector3 screenPos = Camera.main.ScreenToWorldPoint(worldPos);
-            Vector3 screenPos = worldPos;
-            Vector2 movePos;
-
-            //Convert the screenpoint to ui rectangle local point
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(parentCanvas.transform as RectTransform, screenPos, parentCanvas.worldCamera, out movePos);
-            //Convert the local point to world point
-            return parentCanvas.transform.TransformPoint(movePos);
         }
 
         void OnGUI()
@@ -233,19 +212,15 @@ namespace ummisco.gama.unity.littosim
                 Debug.Log("msgId is: " + msgId + " -> " + message);
                 Debug.Log("Message sent to topic: " + topic);
             }
-
         }
 
         public void onAddButtonClicked(int actionId)
         {
-
             actionToDo = actionId;
-
         }
 
         public void sendGamaMessage(Vector3 position)
         {
-
             switch (actionToDo)
             {
                 case ILittoSimConcept.ACTION_URBANISE:
@@ -268,66 +243,66 @@ namespace ummisco.gama.unity.littosim
             gameNbr++;
         }
 
-
         public string getSerializedMessage(int idAction, Vector3 position)
         {
             return MsgSerialization.serialization(new LittosimMessage(ILittoSimConcept.GAMA_TOPIC, ILittoSimConcept.GAMA_AGENT, idAction, position.x, position.y, DateTime.Now.ToString()));
         }
 
-        public void addCube(Vector3 position, Color color, int type, string name, string texte, int delay, int montant)
+        public void addCube(Vector3 position, Color color, int type, string name, string texte, int delay, int montant, GameObject parentObject)
         {
-            GameObject game = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            game.transform.position = position;
-            game.transform.localScale = new Vector3(40, 40, 40);
-            Renderer rend = game.GetComponent<Renderer>();
+            GameObject createdObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            createdObject.transform.position = position;
+            createdObject.transform.localScale = new Vector3(40, 40, 40);
+            Renderer rend = createdObject.GetComponent<Renderer>();
             rend.material.color = color;
+            createdObject.transform.SetParent(parentObject.transform);
             addObjectOnPanel(type, name, texte, delay, montant);
         }
 
-        public void addSphere(Vector3 position, Color color, int type, string name, string texte, int delay, int montant)
+        public void addSphere(Vector3 position, Color color, int type, string name, string texte, int delay, int montant, GameObject parentObject)
         {
-            GameObject game = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            game.transform.position = position;
-            game.transform.localScale = new Vector3(40, 40, 40);
-            Renderer rend = game.GetComponent<Renderer>();
+            GameObject createdObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            createdObject.transform.position = position;
+            createdObject.transform.localScale = new Vector3(40, 40, 40);
+            Renderer rend = createdObject.GetComponent<Renderer>();
             rend.material.color = color;
+            createdObject.transform.SetParent(parentObject.transform);
             addObjectOnPanel(type, name, texte, delay, montant);
         }
 
-        public void addCapsule(Vector3 position, Color color, int type, string name, string texte, int delay, int montant)
+        public void addCapsule(Vector3 position, Color color, int type, string name, string texte, int delay, int montant, GameObject parentObject)
         {
-            GameObject game = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            game.transform.position = position;
-            game.transform.localScale = new Vector3(40, 40, 40);
-            Renderer rend = game.GetComponent<Renderer>();
+            GameObject createdObject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            createdObject.transform.position = position;
+            createdObject.transform.localScale = new Vector3(40, 40, 40);
+            Renderer rend = createdObject.GetComponent<Renderer>();
             rend.material.color = color;
+            createdObject.transform.SetParent(parentObject.transform);
             addObjectOnPanel(type, name, texte, delay, montant);
         }
 
-        public void addCylinder(Vector3 position, Color color, int type, string name, string texte, int delay, int montant)
+        public void addCylinder(Vector3 position, Color color, int type, string name, string texte, int delay, int montant, GameObject parentObject)
         {
-            GameObject game = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            game.transform.position = position;
-            game.transform.localScale = new Vector3(40, 40, 40);
-            Renderer rend = game.GetComponent<Renderer>();
+            GameObject createdObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            createdObject.transform.position = position;
+            createdObject.transform.localScale = new Vector3(40, 40, 40);
+            Renderer rend = createdObject.GetComponent<Renderer>();
             rend.material.color = color;
+            createdObject.transform.SetParent(parentObject.transform);
             addObjectOnPanel(type, name, texte, delay, montant);
 
         }
 
-        public void addCube2(Vector3 position, Color color, int type, string name, string texte, int delay, int montant)
+        public void addCube2(Vector3 position, Color color, int type, string name, string texte, int delay, int montant, GameObject parentObject)
         {
-            GameObject game = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            game.transform.position = position;
-            game.transform.localScale = new Vector3(40, 40, 40);
-            Renderer rend = game.GetComponent<Renderer>();
+            GameObject createdObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            createdObject.transform.position = position;
+            createdObject.transform.localScale = new Vector3(40, 40, 40);
+            Renderer rend = createdObject.GetComponent<Renderer>();
             rend.material.color = color;
+            createdObject.transform.SetParent(parentObject.transform);
             addObjectOnPanel(type, name, texte, delay, montant);
         }
-
-
-
-
 
         public void gamaAddElement(object args)
         {
@@ -342,29 +317,33 @@ namespace ummisco.gama.unity.littosim
             float z = float.Parse((string)obj[7]);
 
             Vector3 position = new Vector3(x, y, z);
-
+            GameObject parentObject = GameObject.Find(uiManager.GetComponent<UIManager>().activePanel);
             switch (type)
             {
                 case 1:
-                    addCube(position, Color.red, type, name, texte, delay, montant);
+
+                    addCube(position, Color.red, type, name, texte, delay, montant, parentObject);
                     break;
                 case 2:
-                    addSphere(position, Color.red, type, name, texte, delay, montant);
+                    //addSphere(position, Color.red, type, name, texte, delay, montant, parentObject);
+                    addCube(position, Color.blue, type, name, texte, delay, montant, parentObject);
                     break;
                 case 3:
-                    addCapsule(position, Color.red, type, name, texte, delay, montant);
+                    //addCapsule(position, Color.red, type, name, texte, delay, montant, parentObject);
+                    addCube(position, Color.green, type, name, texte, delay, montant, parentObject);
                     break;
                 case 4:
-                    addCylinder(position, Color.red, type, name, texte, delay, montant);
+                    //addCylinder(position, Color.red, type, name, texte, delay, montant, parentObject);
+                    addCube(position, Color.yellow, type, name, texte, delay, montant, parentObject);
                     break;
                 case 5:
-                    addCube2(position, Color.red, type, name, texte, delay, montant);
+                    //addCube2(position, Color.red, type, name, texte, delay, montant, parentObject);
+                    addCube(position, Color.white, type, name, texte, delay, montant, parentObject);
                     break;
             }
 
             elementCounter++;
         }
-
 
         public void deleteActionFromList(object args)
         {
@@ -398,8 +377,6 @@ namespace ummisco.gama.unity.littosim
             updateValiderPosition();
         }
 
-
-
         public void gamaAddValidElement(object args)
         {
             object[] obj = (object[])args;
@@ -411,8 +388,6 @@ namespace ummisco.gama.unity.littosim
             GameObject panelParent = GameObject.Find(IUILittoSim.ACTION_LIST_RECAP_PANEL);
             createRecapActionPaneChild(type, name, panelParent, texte, delay);
         }
-
-
 
         public void publishMessage(string message)
         {
@@ -445,9 +420,6 @@ namespace ummisco.gama.unity.littosim
                     createActionPaneChild(type, name, ActionsPanelParent, texte, delay.ToString(), montant.ToString());
                     break;
             }
-
-
-
         }
 
         public Vector3 getAtActionPanelPosition()
@@ -489,10 +461,7 @@ namespace ummisco.gama.unity.littosim
                     lastRecapPosition.y = lastRecapPosition.y - lineHeight;
                 }
             }
-
         }
-
-
 
         public Vector3 getAtMessagePanelPosition()
         {
@@ -519,10 +488,8 @@ namespace ummisco.gama.unity.littosim
             panelChild.transform.Find(IUILittoSim.ACTION_TITLE).GetComponent<Text>().text = (texte);
 
             panelChild.transform.Find(IUILittoSim.ACTION_CYCLE).transform.Find(IUILittoSim.ACTION_CYCLE_VALUE).GetComponent<Text>().text = (delay);
-            // panelChild.transform.Find("Texte_nombre").GetComponent<Text>().text = (delay);
             panelChild.transform.Find(IUILittoSim.ACTION_BUDGET).GetComponent<Text>().text = (montant);
-            panelChild.transform.Find(IUILittoSim.ACTION_VALIDER_BUTTON).transform.name = geObjectComposedName(IUILittoSim.ACTION_VALIDER_BUTTON, name);
-
+           
             updateValiderPosition();
 
             if (actionsList.Count >= 10)
@@ -554,7 +521,6 @@ namespace ummisco.gama.unity.littosim
             {
                 deactivateValider();
             }
-
         }
 
         public void deactivateValider()
@@ -582,7 +548,6 @@ namespace ummisco.gama.unity.littosim
             string message = MsgSerialization.serialization(new LittosimMessage(ILittoSimConcept.GAMA_TOPIC, "GamaMainAgent", 101, name, 0, 0, DateTime.Now.ToString()));
             publishMessage(message);
         }
-
 
         public void destroyElement(string name)
         {
@@ -629,7 +594,6 @@ namespace ummisco.gama.unity.littosim
                 rt.sizeDelta = new Vector2(rt.sizeDelta.x, (rt.sizeDelta.y + ((recapActionsList.Count - 5) * lineHeight)));
             }
             recapActionCounter++;
-
             updateRecapActionPosition();
         }
 
@@ -664,7 +628,6 @@ namespace ummisco.gama.unity.littosim
             messageCounter++;
         }
 
-
         public void setInitialBudget(object args)
         {
             object[] obj = (object[])args;
@@ -693,8 +656,7 @@ namespace ummisco.gama.unity.littosim
             bool icon2 = Boolean.Parse((string)obj[2]);
             bool icon3 = Boolean.Parse((string)obj[3]);
 
-            Debug.Log("The action name to set valid icon is : --->  " + geObjectComposedName(IUILittoSim.ACTION_RECAP_VALIDE_ICON , actionName));
-
+            Debug.Log("The action name to set valid icon is : --->  " + geObjectComposedName(IUILittoSim.ACTION_RECAP_VALIDE_ICON, actionName));
             GameObject Parent = GameObject.Find(actionName);
 
             Parent.transform.Find(geObjectComposedName(IUILittoSim.ACTION_RECAP_VALIDE_ICON, actionName)).gameObject.SetActive(icon1);

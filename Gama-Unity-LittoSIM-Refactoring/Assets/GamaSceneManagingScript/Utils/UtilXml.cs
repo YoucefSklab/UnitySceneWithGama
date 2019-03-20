@@ -10,6 +10,7 @@ using System.Xml.Schema;
 using Nextzen.VectorData;
 using ummisco.gama.unity.GamaAgent;
 using System.Linq;
+using ummisco.gama.unity.GamaConcepts;
 
 namespace ummisco.gama.unity.utils
 {
@@ -30,15 +31,15 @@ namespace ummisco.gama.unity.utils
                     itExist = true;
                 }
 
-                if (n.Name == "x")
+                if (n.Name == IGamaConcept.X)
                 {
                     X = float.Parse(n.InnerText); // convert the strings to float and apply to the Y variable.
                 }
-                if (n.Name == "y")
+                if (n.Name == IGamaConcept.Y)
                 {
                     Y = float.Parse(n.InnerText); // convert the strings to float and apply to the Y variable.
                 }
-                if (n.Name == "z")
+                if (n.Name == IGamaConcept.Z)
                 {
                     Z = float.Parse(n.InnerText); // convert the strings to float and apply to the Y variable.
                 }
@@ -55,33 +56,28 @@ namespace ummisco.gama.unity.utils
             }
         }
 
-
         public static Vector3 vector3FromXmlNode(XmlNodeList node)
         {
             float X = 0;
             float Y = 0;
             float Z = 0;
 
-
             foreach (XmlNode n in node)
             {
-                if (n.Name == "x")
+                if (n.Name == IGamaConcept.X)
                 {
                     X = float.Parse(n.InnerText); // convert the strings to float and apply to the Y variable.
                 }
-                if (n.Name == "y")
+                if (n.Name == IGamaConcept.Y)
                 {
                     Y = float.Parse(n.InnerText); // convert the strings to float and apply to the Y variable.
                 }
-                if (n.Name == "z")
+                if (n.Name == IGamaConcept.Z)
                 {
                     Z = float.Parse(n.InnerText); // convert the strings to float and apply to the Y variable.
                 }
-
             }
-
             return new Vector3(0, 0, 0);
-
         }
 
         public static Point pointFromXmlElement(XmlNodeList listPoints)
@@ -90,28 +86,23 @@ namespace ummisco.gama.unity.utils
             float Y = 0;
             float Z = 0;
 
-
             foreach (XmlElement corItem in listPoints)
             {
-                if (corItem.Name == "x")
+                if (corItem.Name == IGamaConcept.X)
                 {
                     X = float.Parse(corItem.InnerText); // convert the strings to float and apply to the Y variable.
                 }
-                if (corItem.Name == "y")
+                if (corItem.Name == IGamaConcept.Y)
                 {
                     Y = float.Parse(corItem.InnerText); // convert the strings to float and apply to the Y variable.
                 }
-                if (corItem.Name == "z")
+                if (corItem.Name == IGamaConcept.Z)
                 {
                     Z = float.Parse(corItem.InnerText); // convert the strings to float and apply to the Y variable.
                 }
-
             }
-
             return new Point(X, Y, Z);
         }
-
-
 
         public static object valueFromXmlNode(XmlNode[] node, string fieldName)
         {
@@ -120,28 +111,24 @@ namespace ummisco.gama.unity.utils
             float Z = 0;
             Boolean itExist = false;
 
-
             foreach (XmlNode n in node)
             {
-
                 if (n.Value == fieldName)
                 {
                     itExist = true;
                 }
-
-                if (n.Name == "x")
+                if (n.Name == IGamaConcept.X)
                 {
                     X = float.Parse(n.InnerText); // convert the strings to float and apply to the Y variable.
                 }
-                if (n.Name == "y")
+                if (n.Name == IGamaConcept.Y)
                 {
                     Y = float.Parse(n.InnerText); // convert the strings to float and apply to the Y variable.
                 }
-                if (n.Name == "z")
+                if (n.Name == IGamaConcept.Z)
                 {
                     Z = float.Parse(n.InnerText); // convert the strings to float and apply to the Y variable.
                 }
-
             }
 
             if (itExist)
@@ -153,7 +140,6 @@ namespace ummisco.gama.unity.utils
                 return new Vector3(0, 0, 0);
             }
         }
-
 
         public static Color rgbColorFromXmlNode(XmlNode[] node, string fieldName)
         {
@@ -168,19 +154,18 @@ namespace ummisco.gama.unity.utils
                 {
                     itExist = true;
                 }
-                if (n.Name == "red")
+                if (n.Name == IGamaConcept.RED)
                 {
                     red = Int32.Parse(n.InnerText);
                 }
-                if (n.Name == "green")
+                if (n.Name == IGamaConcept.GREEN)
                 {
                     green = Int32.Parse(n.InnerText);
                 }
-                if (n.Name == "blue")
+                if (n.Name == IGamaConcept.BLUE)
                 {
                     blue = Int32.Parse(n.InnerText);
                 }
-
             }
 
             if (itExist)
@@ -193,7 +178,6 @@ namespace ummisco.gama.unity.utils
             }
         }
 
-
         public static GamaCoordinateSequence getCoordinateSequence(XmlNodeList list)
         {
             List<Point> listPoints = new List<Point>();
@@ -203,25 +187,23 @@ namespace ummisco.gama.unity.utils
                 XmlNodeList points = item.ChildNodes;
                 Point coordinates = ConvertType.pointFromXmlElement(points);
                 listPoints.Add(coordinates);
-
             }
             GamaCoordinateSequence coordinateSequence = new GamaCoordinateSequence(listPoints);
             return coordinateSequence;
         }
 
-
         public static string getAgentName(XmlElement item)
         {
             string agentName = "";
 
-            XmlNodeList xmlPoints = item.GetElementsByTagName("species");
+            XmlNodeList xmlPoints = item.GetElementsByTagName(IGamaConcept.ITEM_SPECIES);
 
             foreach (XmlElement elt in xmlPoints)
             {
                 agentName += elt.InnerText;
             }
 
-            xmlPoints = item.GetElementsByTagName("index");
+            xmlPoints = item.GetElementsByTagName(IGamaConcept.ITEM_INDEX);
 
             foreach (XmlElement elt in xmlPoints)
             {
@@ -236,7 +218,7 @@ namespace ummisco.gama.unity.utils
             float value = 0;
             float falpha = 0;
             string name = "";
-            XmlNodeList xml = item.GetElementsByTagName("msi.gama.util.GamaColor_-NamedGamaColor");
+            XmlNodeList xml = item.GetElementsByTagName(IGamaConcept.GAMA_NAMED_COLOR_CLASS);
             foreach (XmlNode node in xml)
             {
                 XmlNodeList listNode = node.ChildNodes;
@@ -244,15 +226,15 @@ namespace ummisco.gama.unity.utils
                 foreach (XmlNode n in listNode)
                 {
                     // Debug.Log("The name is " + n.Name);
-                    if (n.Name == "value")
+                    if (n.Name == IGamaConcept.ITEM_VALUE)
                     {
                         value = float.Parse(n.InnerText);
                     }
-                    if (n.Name == "falpha")
+                    if (n.Name == IGamaConcept.ITEM_FALPHA)
                     {
                         falpha = float.Parse(n.InnerText);
                     }
-                    if (n.Name == "name")
+                    if (n.Name == IGamaConcept.ITEM_NAME)
                     {
                         name = n.InnerText;
                     }
@@ -266,7 +248,7 @@ namespace ummisco.gama.unity.utils
             float value = 0;
             float falpha = 0;
             string name = "";
-            XmlNodeList xml = item.GetElementsByTagName("entry");
+            XmlNodeList xml = item.GetElementsByTagName(IGamaConcept.ITEM_ENTRY);
             foreach (XmlNode node in xml)
             {
                 XmlNodeList listNode = node.ChildNodes;
@@ -277,25 +259,25 @@ namespace ummisco.gama.unity.utils
                     nbr++;
                     switch (n.InnerText)
                     {
-                        case "NATURE":
+                        case IGamaConcept.ITEM_NATURE:
                             gamaAgent.nature = listNode.Item(nbr).InnerText;
                             break;
-                        case "rotation":
+                        case IGamaConcept.ITEM_ROTATION:
                             gamaAgent.rotation = vector3FromXmlNode(item.ChildNodes);
                             break;
-                        case "scale":
+                        case IGamaConcept.ITEM_SCALE:
                             gamaAgent.scale = vector3FromXmlNode(item.ChildNodes);
                             break;
-                        case "type":
+                        case IGamaConcept.ITEM_TYPE:
                             gamaAgent.type = listNode.Item(nbr).InnerText;
                             break;
-                        case "speed":
+                        case IGamaConcept.ITEM_SPEED:
                             gamaAgent.speed = float.Parse(listNode.Item(nbr).InnerText);
                             break;
-                        case "height":
+                        case IGamaConcept.ITEM_HEIGHT:
                             gamaAgent.height = float.Parse(listNode.Item(nbr).InnerText);
                             break;
-                        case "color":
+                        case IGamaConcept.ITEM_COLOR:
                             GamaColor color = new GamaColor();
                             XmlNode no = listNode.Item(nbr); Debug.Log("--> " + no.Name);
                             XmlNode nodeValue = listNode.Item(nbr).ChildNodes[0]; Debug.Log("--> " + nodeValue.Name);
@@ -312,19 +294,13 @@ namespace ummisco.gama.unity.utils
                         default:
 
                             break;
-
-
-
                     }
-
                 }
             }
-            //  gamaAgent.color = new GamaColor(value, falpha, name);
         }
 
         public static string getAgentGeometry(XmlElement elt)
         {
-
             string geo = elt.Attributes["class"].Value;
             if (geo != null)
             {
@@ -332,7 +308,7 @@ namespace ummisco.gama.unity.utils
                 /* 
                 if (elt.Attributes["class"].Value.Equals("com.vividsolutions.jts.geom.Polygon"))
                 {
-                    return "Polygon";
+                    return IGamaConcept.POLYGON;
                 }
                 if (elt.Attributes["class"].Value.Equals("com.vividsolutions.jts.geom.LineString"))
                 {
@@ -342,32 +318,29 @@ namespace ummisco.gama.unity.utils
             }
             else
             {
-                return "Sphere";
+                return IGamaConcept.SPHERE;
             }
 
         }
         public static Agent getAgent(XmlNode[] content)
         {
-
             Agent gamaAgent = new Agent();
 
             gamaAgent.geometry = getAgentGeometry((XmlElement)content.GetValue(1));
             Debug.Log("The agent geometry " + gamaAgent.geometry);
 
-            if (gamaAgent.geometry.Equals("Polygon"))
+            if (gamaAgent.geometry.Equals(IGamaConcept.POLYGON))
             {
                 getAgentBuildingInfo(gamaAgent, content);
-                
                 ajustPolygonCoordinatesList(gamaAgent.agentCoordinate.Points);
             }
-            if (gamaAgent.geometry.Equals("LineString"))
+            if (gamaAgent.geometry.Equals(IGamaConcept.LINE_STRING))
             {
                 getAgentLineStringInfo(gamaAgent, content);
             }
-            if (gamaAgent.geometry.Equals("Point"))
+            if (gamaAgent.geometry.Equals(IGamaConcept.POINT))
             {
                 getAgentPointInfo(gamaAgent, content);
-
                 ajustPointsList(gamaAgent.agentCoordinate.Points);
             }
             return gamaAgent;
@@ -389,12 +362,10 @@ namespace ummisco.gama.unity.utils
             }
         }
 
-
         public static void getAgentBuildingInfo(Agent gamaAgent, XmlNode[] content)
         {
             for (int i = 1; i < content.Length; i++)
             {
-
                 XmlElement elt = (XmlElement)content.GetValue(i);
                 XmlNodeList list = elt.ChildNodes;
 
@@ -402,31 +373,30 @@ namespace ummisco.gama.unity.utils
                 {
                     switch (item.Name)
                     {
-                        case "factory":
+                        case IGamaConcept.ITEM_FACTORY:
 
                             break;
-
-                        case "SRID":
+                        case IGamaConcept.ITEM_SRID:
 
                             break;
-                        case "shell":
-                            gamaAgent.agentCoordinate = getCoordinateSequence(item.GetElementsByTagName("msi.gama.metamodel.shape.GamaPoint"));
+                        case IGamaConcept.ITEM_SHELL:
+                            gamaAgent.agentCoordinate = getCoordinateSequence(item.GetElementsByTagName(IGamaConcept.GAMA_POINT_CLASS));
                             //Debug.Log("The agent coordinates ares " + gamaAgent.agentCoordinate.ToString());
                             break;
-                        case "holes":
+                        case IGamaConcept.ITEM_HOLES:
 
                             break;
-                        case "agentReference":
+                        case IGamaConcept.ITEM_AGENT_REFERENCE:
                             gamaAgent.agentName = getAgentName(item);
                             //Debug.Log("The agent name is " + gamaAgent.agentName);
                             break;
-                        case "keysType":
+                        case IGamaConcept.ITEM_KEYS_TYPE:
 
                             break;
-                        case "dataType":
+                        case IGamaConcept.ITEM_DATA_TYPE:
 
                             break;
-                        case "valuesMapReducer":
+                        case IGamaConcept.ITEM_VALUES_MAP_REDUCER:
                             getValuesMapReducerAttributes(gamaAgent, item);
                             getEntriesAttributes(gamaAgent, item);
                             Debug.Log("The agent color is is " + gamaAgent.color.ToString());
@@ -442,17 +412,14 @@ namespace ummisco.gama.unity.utils
 
                             break;
                     }
-
                 }
             }
         }
-
 
         public static void getAgentLineStringInfo(Agent gamaAgent, XmlNode[] content)
         {
             for (int i = 1; i < content.Length; i++)
             {
-
                 XmlElement elt = (XmlElement)content.GetValue(i);
                 XmlNodeList list = elt.ChildNodes;
 
@@ -460,32 +427,31 @@ namespace ummisco.gama.unity.utils
                 {
                     switch (item.Name)
                     {
-                        case "factory":
+                        case IGamaConcept.ITEM_FACTORY:
 
                             break;
-
-                        case "SRID":
+                        case IGamaConcept.ITEM_SRID:
 
                             break;
-                        case "points":
+                        case IGamaConcept.POINTS:
                             //Debug.Log("The agent coordinates are to compute");
-                            gamaAgent.agentCoordinate = getCoordinateSequence(item.GetElementsByTagName("msi.gama.metamodel.shape.GamaPoint"));
+                            gamaAgent.agentCoordinate = getCoordinateSequence(item.GetElementsByTagName(IGamaConcept.GAMA_POINT_CLASS));
                             //Debug.Log("The agent coordinates ares " + gamaAgent.agentCoordinate.ToString());
                             break;
-                        case "holes":
+                        case IGamaConcept.ITEM_HOLES:
 
                             break;
-                        case "agentReference":
+                        case IGamaConcept.ITEM_AGENT_REFERENCE:
                             gamaAgent.agentName = getAgentName(item);
                             //Debug.Log("The agent name is " + gamaAgent.agentName);
                             break;
-                        case "keysType":
+                        case IGamaConcept.ITEM_KEYS_TYPE:
 
                             break;
-                        case "dataType":
+                        case IGamaConcept.ITEM_DATA_TYPE:
 
                             break;
-                        case "valuesMapReducer":
+                        case IGamaConcept.ITEM_VALUES_MAP_REDUCER:
                             getValuesMapReducerAttributes(gamaAgent, item);
                             getEntriesAttributes(gamaAgent, item);
                             //Debug.Log("The agent color is is " + gamaAgent.color.ToString());
@@ -501,12 +467,9 @@ namespace ummisco.gama.unity.utils
 
                             break;
                     }
-
                 }
             }
         }
-
-
 
         public static void getAgentPointInfo(Agent gamaAgent, XmlNode[] content)
         {
@@ -522,33 +485,33 @@ namespace ummisco.gama.unity.utils
                     // Debug.Log("--- item "+item.Name);
                     switch (item.Name)
                     {
-                        case "factory":
+                        case IGamaConcept.ITEM_FACTORY:
 
                             break;
 
-                        case "SRID":
+                        case IGamaConcept.ITEM_SRID:
 
                             break;
-                        case "coordinates":
+                        case IGamaConcept.ITEM_COORDINATES:
                             //Debug.Log("The agent coordinates are to compute");
                             //gamaAgent.agentCoordinate = getCoordinateSequence(item.GetElementsByTagName("msi.gama.metamodel.shape.GamaPoint"));
                             gamaAgent.agentCoordinate = getCoordinateSequence(item.ChildNodes);
                             //Debug.Log("The agent coordinates ares " + gamaAgent.agentCoordinate.ToString());
                             break;
-                        case "holes":
+                        case IGamaConcept.ITEM_HOLES:
 
                             break;
-                        case "agentReference":
+                        case IGamaConcept.ITEM_AGENT_REFERENCE:
                             gamaAgent.agentName = getAgentName(item);
                             //Debug.Log("The agent name is " + gamaAgent.agentName);
                             break;
-                        case "keysType":
+                        case IGamaConcept.ITEM_KEYS_TYPE:
 
                             break;
-                        case "dataType":
+                        case IGamaConcept.ITEM_DATA_TYPE:
 
                             break;
-                        case "valuesMapReducer":
+                        case IGamaConcept.ITEM_VALUES_MAP_REDUCER:
                             getValuesMapReducerAttributes(gamaAgent, item);
                             getEntriesAttributes(gamaAgent, item);
                             Debug.Log("The agent color is is " + gamaAgent.color.ToString());
@@ -564,13 +527,9 @@ namespace ummisco.gama.unity.utils
 
                             break;
                     }
-
                 }
             }
         }
-
-
-
 
         public class AgentComponents
         {
@@ -579,7 +538,6 @@ namespace ummisco.gama.unity.utils
             public object agent { set; get; }
 
             public object attributes { set; get; }
-
 
             public AgentComponents()
             {
@@ -592,11 +550,6 @@ namespace ummisco.gama.unity.utils
                 this.agent = agent;
                 this.attributes = attributes;
             }
-
         }
-
-
     }
-
 }
-

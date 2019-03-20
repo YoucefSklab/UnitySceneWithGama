@@ -19,43 +19,42 @@ using System.Reflection;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using ummisco.gama.unity.notification;
+using ummisco.gama.unity.SceneManager;
 
 
 public class PlayerController : MonoBehaviour
 {
 
-	public int speed;
-	public Text countText;
-	public Text winText;
-	public Text receivedMqttMessage;
-	public GameObject gamaManager;
-	public GamaMethods gama = new GamaMethods ();
-	private Rigidbody rb;
-	public int count;
+    public int speed;
+    public Text countText;
+    public Text winText;
+    public Text receivedMqttMessage;
+    public GameObject gamaManager;
+    public GamaMethods gama = new GamaMethods();
+    private Rigidbody rb;
+    public int count;
 
-	public Shader shader;
-	public Texture texture;
-	public Color color;
+    public Shader shader;
+    public Texture texture;
+    public Color color;
 
-	UnityEvent m_MyEvent;
-
-
-	protected void Start ()
-	{
-		rb = GetComponent<Rigidbody> ();
-		count = 0;
-		SetCountText ();
-		winText.text = "";
-		receivedMqttMessage.text = "";
-		//MqttSetting.allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
-		//gamaManager = gama.getGameObjectByName ("GamaManager");
-		Console.WriteLine ("test");
+    UnityEvent m_MyEvent;
 
 
+    protected void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        count = 0;
+        SetCountText();
+        winText.text = "";
+        receivedMqttMessage.text = "";
+        //MqttSetting.allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
+        //gamaManager = gama.getGameObjectByName ("GamaManager");
+        Console.WriteLine("test");
 
-	//	Debug.DrawLine(new Vector3(-3,0,-3), new Vector3(3,0,3), Color.green, 20, false);
 
 
+        //	Debug.DrawLine(new Vector3(-3,0,-3), new Vector3(3,0,3), Color.green, 20, false);
 
 
 
@@ -63,7 +62,9 @@ public class PlayerController : MonoBehaviour
 
 
 
-		/*
+
+
+        /*
 
 		FieldInfo[] fieldInfoSet = gameObject.GetComponent<PlayerController> ().GetType ().GetFields ();
 
@@ -90,7 +91,7 @@ public class PlayerController : MonoBehaviour
 		*/
 
 
-		/*
+        /*
 
 		Component[] cs = (Component[])gameObject.GetComponents (typeof(Component));
 		foreach (Component c in cs) 
@@ -104,7 +105,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-		/*
+        /*
 
 		string property = "localScale";
 
@@ -149,132 +150,133 @@ public class PlayerController : MonoBehaviour
 
 		*/
 
-	
-		EventTrigger myEventTrigger = GetComponent<EventTrigger> (); //you need to have an EventTrigger component attached this gameObject
-		myEventTrigger.AddListener (EventTriggerType.Move, OnMoveEvent);
 
-	}
+        EventTrigger myEventTrigger = GetComponent<EventTrigger>(); //you need to have an EventTrigger component attached this gameObject
+        myEventTrigger.AddListener(EventTriggerType.Move, OnMoveEvent);
 
-
-	public void OnMoveEvent(AxisEventData data)
-	{
-		Debug.Log("OnMove called.");
-	}
-
-	public void OnDragEventExample()
-	{
-		Debug.Log("OnMove called.");
-	}
-
-	void onClickListener (PointerEventData eventData)
-	{
-		Debug.Log("onClickListener called.");
-	}
-
-	public Vector3 parseVector3(string sourceString) {
-
-		string outString;
-		Vector3 outVector3;
-		string[] splitString;//= new Array();
-
-		// Trim extranious parenthesis
-
-		outString = sourceString.Substring(1, sourceString.Length - 2);
-
-		// Split delimted values into an array
-
-		splitString = outString.Split("," [0]);
-
-		// Build new Vector3 from array elements
-
-		outVector3.x = float.Parse(splitString[0]);
-		outVector3.y = float.Parse(splitString[1]);
-		outVector3.z = float.Parse(splitString[2]);
-
-		return outVector3;
-
-	}
-
-	void Update()
-	{
-		
-
-	}
+    }
 
 
+    public void OnMoveEvent(AxisEventData data)
+    {
+        Debug.Log("OnMove called.");
+    }
 
-	void FixedUpdate ()
-	{
-		float moveHorizontal = Input.GetAxis ("Horizontal");
-		float moveVertical = Input.GetAxis ("Vertical");
+    public void OnDragEventExample()
+    {
+        Debug.Log("OnMove called.");
+    }
 
-		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
-		rb.AddForce (movement * speed);
-	}
+    void onClickListener(PointerEventData eventData)
+    {
+        Debug.Log("onClickListener called.");
+    }
 
-	public void UpdatePosition (float moveHorizontal, float moveVertical)
-	{
-		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
-		//rb.AddForce (movement * speed);
-		rb.MovePosition (movement);
-	}
+    public Vector3 parseVector3(string sourceString)
+    {
+
+        string outString;
+        Vector3 outVector3;
+        string[] splitString;//= new Array();
+
+        // Trim extranious parenthesis
+
+        outString = sourceString.Substring(1, sourceString.Length - 2);
+
+        // Split delimted values into an array
+
+        splitString = outString.Split(","[0]);
+
+        // Build new Vector3 from array elements
+
+        outVector3.x = float.Parse(splitString[0]);
+        outVector3.y = float.Parse(splitString[1]);
+        outVector3.z = float.Parse(splitString[2]);
+
+        return outVector3;
+
+    }
+
+    void Update()
+    {
+
+
+    }
 
 
 
-	void OnTriggerEnter (Collider other)
-	{
-		MqttSetting.allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
+    void FixedUpdate()
+    {
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
 
-		gamaManager = gama.getGameObjectByName (MqttSetting.GAMA_MANAGER_OBJECT_NAME);
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        rb.AddForce(movement * speed);
+    }
 
-		if (other.gameObject.CompareTag ("Pick Up")) {
-			other.gameObject.SetActive (false);
-			count = count + 1;
-			SetCountText ();
-			Debug.Log ("The game Object name is: " + gamaManager.name);
-
-			gamaManager.SendMessage ("sendGotBoxMsg");
-		}
-
-	}
-
-
-	public void SetCountText ()
-	{
-		countText.text = "Count: " + count.ToString ();
-		if (count >= 5) {
-			winText.text = "You Win!";
-		}
-	}
-
-	public void setReceivedText (string text)
-	{
-		receivedMqttMessage.text = text;
-	}
+    public void UpdatePosition(float moveHorizontal, float moveVertical)
+    {
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        //rb.AddForce (movement * speed);
+        rb.MovePosition(movement);
+    }
 
 
-	public void setWinText (string text)
-	{
-		winText.text = text;
-	}
 
-	public void setSpeed (int s)
-	{
-		this.speed = s;
-	}
+    void OnTriggerEnter(Collider other)
+    {
+        gamaManager = gama.getGameObjectByName(IGamaManager.GAMA_MANAGER);
 
-	public int getSpeed ()
-	{
-		return this.speed;
-	}
+        if (other.gameObject.CompareTag("Pick Up"))
+        {
+            other.gameObject.SetActive(false);
+            count = count + 1;
+            SetCountText();
+            Debug.Log("The game Object name is: " + gamaManager.name);
 
-	public void changeAllAttributes (object args)
-	{
-		object[] obj = (object[])args;
-		this.speed = Int32.Parse ((string)obj [0]);
-		this.countText.text = (string)obj [1];
-		this.winText.text = (string)obj [2];
- 	}
+            gamaManager.SendMessage("sendGotBoxMsg");
+        }
+
+    }
+
+
+    public void SetCountText()
+    {
+        countText.text = "Count: " + count.ToString();
+        if (count >= 5)
+        {
+            winText.text = "You Win!";
+        }
+    }
+
+    public void setReceivedText(string text)
+    {
+        receivedMqttMessage.text = text;
+    }
+
+
+    public void setWinText(string text)
+    {
+        winText.text = text;
+    }
+
+    public void setSpeed(int s)
+    {
+        this.speed = s;
+    }
+
+    public int getSpeed()
+    {
+        return this.speed;
+    }
+
+    public void changeAllAttributes(object args)
+    {
+        object[] obj = (object[])args;
+        this.speed = Int32.Parse((string)obj[0]);
+        this.countText.text = (string)obj[1];
+        this.winText.text = (string)obj[2];
+    }
 
 
 

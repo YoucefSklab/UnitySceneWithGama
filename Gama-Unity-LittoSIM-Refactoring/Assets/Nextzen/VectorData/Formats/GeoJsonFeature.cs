@@ -1,4 +1,5 @@
 ﻿using SimpleJSON;
+using ummisco.gama.unity.GamaConcepts;
 
 namespace Nextzen.VectorData.Formats
 {
@@ -65,7 +66,7 @@ namespace Nextzen.VectorData.Formats
                 case "MultiLineString":
                     return GeometryType.MultiLineString;
 
-                case "Polygon":
+                case IGamaConcept.POLYGON:
                     return GeometryType.Polygon;
 
                 case "MultiPolygon":

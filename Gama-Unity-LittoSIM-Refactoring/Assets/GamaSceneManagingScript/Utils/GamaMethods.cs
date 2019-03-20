@@ -20,11 +20,6 @@ namespace ummisco.gama.unity.utils
 		}
 
 
-		public GameObject[] getAllSceneGameObject ()
-		{
-			return MqttSetting.allObjects;
-		}
-
 		public GameObject getGameObjectByName (string objectName)
 		{
             return GameObject.Find(objectName);

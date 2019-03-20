@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using ummisco.gama.unity.GamaConcepts;
 
 namespace ummisco.gama.unity.messages
 {
 
-	[System.Xml.Serialization.XmlRoot ("ummisco.gama.unity.messages.CreateTopicMessage")]
+	[System.Xml.Serialization.XmlRoot (IGamaConcept.GAMA_CREATE_TOPIC_MESSAGE_CLASS)]
 	public class CreateTopicMessage : TopicMessage
 	{
 

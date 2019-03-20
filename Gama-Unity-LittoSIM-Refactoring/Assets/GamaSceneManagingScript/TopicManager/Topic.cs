@@ -9,77 +9,67 @@ using System.Xml;
 
 namespace ummisco.gama.unity.topics
 {
-	public class Topic : MonoBehaviour
-	{
+    public class Topic : MonoBehaviour
+    {
 
-		protected MsgSerialization msgDes = new MsgSerialization ();
-		protected GamaMethods gama = new GamaMethods ();
+        protected MsgSerialization msgDes = new MsgSerialization();
+        protected GamaMethods gama = new GamaMethods();
 
-		protected GameObject targetGameObject { get ; set; }
+        protected GameObject targetGameObject { get; set; }
 
-		protected MonoBehaviour[] scripts { get ; set ;}
+        protected MonoBehaviour[] scripts { get; set; }
 
-		void Awake ()
-		{
-			
-		}
+        void Awake()
+        {
 
-		// Use this for initialization
-		public virtual void Start ()
-		{
-			
-		}
+        }
 
-		// Update is called once per frame
-		public virtual void Update ()
-		{
+        // Use this for initialization
+        public virtual void Start()
+        {
 
-		}
+        }
 
-	
+        // Update is called once per frame
+        public virtual void Update()
+        {
 
-		public Topic (GameObject gameO)
-		{
-			this.targetGameObject = targetGameObject;
-			this.scripts = targetGameObject.GetComponents<MonoBehaviour>();
+        }
 
-		}
+        public Topic(GameObject gameO)
+        {
+            this.targetGameObject = targetGameObject;
+            this.scripts = targetGameObject.GetComponents<MonoBehaviour>();
 
+        }
 
+        public virtual MethodInfo[] getMethodsInfo(BindingFlags flags)
+        {
+            setScript();
+            return targetGameObject.GetComponent(scripts[0].GetType()).GetType().GetMethods(flags);
+        }
 
-		public virtual MethodInfo[] getMethodsInfo (BindingFlags flags)
-		{
-			setScript ();
-			return targetGameObject.GetComponent (scripts[0].GetType ()).GetType ().GetMethods (flags);
-		}
+        public virtual void setAllProperties(object args)
+        {
+            object[] obj = (object[])args;
+            this.targetGameObject = (GameObject)obj[0];
+            this.scripts = targetGameObject.GetComponents<MonoBehaviour>();
+        }
 
+        public void setScript()
+        {
+            this.scripts = targetGameObject.GetComponents<MonoBehaviour>();
+        }
 
-
-
-		public virtual void setAllProperties (object args)
-		{
-			object[] obj = (object[])args;
-			this.targetGameObject = (GameObject)obj [0];
-			this.scripts = targetGameObject.GetComponents<MonoBehaviour>();
-
-
-
-		}
-
-		public void setScript(){
-			this.scripts = targetGameObject.GetComponents<MonoBehaviour>();
-		}
-
-
-		/*
+        /*
 		public virtual void ProcessTopic (object obj){
 		
 		}
 */
 
-		//public abstract void sendTopic<T> (GameObject targetGameObject, string methodName, Dictionary<object, object> data)
-		//	where T : Component;
-		/*{
+        //public abstract void sendTopic<T> (GameObject targetGameObject, string methodName, Dictionary<object, object> data)
+        //	where T : Component;
+        /*{
 			setAllProperties (obj);
 
 			if (targetGameObject != null) {
@@ -123,8 +113,6 @@ namespace ummisco.gama.unity.topics
 			targetGameObject.SendMessage (methodName, Tools.convertParameter (obj, parameter [0]));
 		}
  */
-
-
-	}
+    }
 }
 

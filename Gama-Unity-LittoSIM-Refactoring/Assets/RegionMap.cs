@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using ummisco.gama.unity.utils;
+using ummisco.gama.unity.SceneManager;
 using UnityEngine;
 
 namespace Nextzen
@@ -464,15 +465,11 @@ namespace Nextzen
 
                     meshData.addGamaMeshData(Vertices, UVs, Submeshes, agent);
 
-
                     featureMesh.Mesh = meshData;
                     meshList.Add(featureMesh);
 
-
                 }
             }
-
-
 
             if (isNewAgentCreated)
             {
@@ -487,7 +484,6 @@ namespace Nextzen
                 features.AddRange(meshList);
                 regionMap = GameObject.Find(RegionName);
 
-
                 if (regionMap == null)
                 {
                     regionMap = new GameObject(RegionName);
@@ -497,12 +493,7 @@ namespace Nextzen
                 var sceneGraph = new SceneGraph(regionMap, GroupOptions, GameObjectOptions, features);
                 //sceneGraph
                 sceneGraph.DrawFromGama();
-
             }
         }
-
-
-
-
     }
 }
