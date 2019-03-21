@@ -9,6 +9,9 @@ namespace ummisco.gama.unity.SceneManager
         //Object's names'
         public const string GAMA_MANAGER= "GamaManager";
         public const string GAMA_MAIN_CAMERA = "MainCamera";
+        public const string CSV_READER = "CSVReader";
+
+
 
         public const string SET_TOPIC_MANAGER = "SetTopicManager";
         public const string GET_TOPIC_MANAGER = "GetTopicManager";

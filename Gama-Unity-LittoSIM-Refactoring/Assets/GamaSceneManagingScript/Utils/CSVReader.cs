@@ -13,72 +13,87 @@
 using UnityEngine;
 using System.Collections;
 using System.Linq;
+using System.IO;
+using System.Collections.Generic;
+using ummisco.gama.unity.littosim;
+using System;
 
 public class CSVReader : MonoBehaviour
 {
-    public TextAsset csvFile;
+    public string path = "Assets/ressources/langs_def.csv";
+    public Dictionary<string, Langue> langueDic = new Dictionary<string, Langue>();
+
     public void Start()
     {
-        string[,] grid = SplitCsvGrid("csvFile.text");
-        Debug.Log("size = " + (1 + grid.GetUpperBound(0)) + "," + (1 + grid.GetUpperBound(1)));
+        StreamReader reader = new StreamReader(path);
+        string fileContent = reader.ReadToEnd();
+        langueDic = GetInDictionnary(fileContent);
 
-        DebugOutputGrid(grid);
+        SetLangue("MSG_IMPOSSIBLE_DELETE_ADAPTED", "fr");
+        SetLangue("MSG_IMPOSSIBLE_DELETE_ADAPTED", "en");
     }
 
-    // outputs the content of a 2D array, useful for checking the importer
-    static public void DebugOutputGrid(string[,] grid)
+    public void loadCSVFile()
     {
-        string textOutput = "";
-        for (int y = 0; y < grid.GetUpperBound(1); y++)
-        {
-            for (int x = 0; x < grid.GetUpperBound(0); x++)
-            {
-
-                textOutput += grid[x, y];
-                textOutput += "|";
-            }
-            textOutput += "\n";
-        }
-        Debug.Log(textOutput);
+        StreamReader reader = new StreamReader(path);
+        string fileContent = reader.ReadToEnd();
+        langueDic = GetInDictionnary(fileContent);
     }
 
-    // splits a CSV file into a 2D string array
-    static public string[,] SplitCsvGrid(string csvText)
+    // get csv langue in dictionnary
+    static public Dictionary<string, Langue> GetInDictionnary(string csvText)
     {
         string[] lines = csvText.Split("\n"[0]);
+        Dictionary<string, Langue> langue = new Dictionary<string, Langue>();
 
-        // finds the max width of row
-        int width = 0;
+        string allFile = "";
+
         for (int i = 0; i < lines.Length; i++)
         {
-            string[] row = SplitCsvLine(lines[i]);
-            width = Mathf.Max(width, row.Length);
+            Langue langueElement = GetLangueElements(lines[i]);
+            //Debug.Log("----->  The langue element is  " + langueElement.ToString());
+            langue.Add(langueElement.Element, langueElement);
+            allFile += "public static string "+langueElement.Element + " = \"" + langueElement.Element_fr + "\"; \n";
         }
 
-        // creates new 2D string grid to output to
-        string[,] outputGrid = new string[width + 1, lines.Length + 1];
-        for (int y = 0; y < lines.Length; y++)
-        {
-            string[] row = SplitCsvLine(lines[y]);
-            for (int x = 0; x < row.Length; x++)
-            {
-                outputGrid[x, y] = row[x];
-
-                // This line was to replace "" with " in my output. 
-                // Include or edit it as you wish.
-                outputGrid[x, y] = outputGrid[x, y].Replace("\"\"", "\"");
-            }
-        }
-
-        return outputGrid;
+        //Debug.Log("----->  All is " + allFile);
+        //Debug.Log("----->  The lines length is " + lines.Length);
+       
+        return langue;
     }
 
-    // splits a CSV row 
-    static public string[] SplitCsvLine(string line)
+
+
+    public static Langue GetLangueElements(string line)
     {
-        return (from System.Text.RegularExpressions.Match m in System.Text.RegularExpressions.Regex.Matches(line,
-        @"(((?<x>(?=[,\r\n]+))|""(?<x>([^""]|"""")+)""|(?<x>[^,\r\n]+)),?)",
-        System.Text.RegularExpressions.RegexOptions.ExplicitCapture)
-                select m.Groups[1].Value).ToArray();
+        string langueElement = "";
+        string fr = "";
+        string en = "";
+
+        string[] splitString = line.Split(new string[] { ";"}, StringSplitOptions.None);
+
+        langueElement = splitString[0];
+        fr = splitString[1];
+        en = splitString[2];
+
+        return new Langue(langueElement, fr, en);
     }
+
+    public void SetLangue(string langueElement, string langue)
+    {
+        Langue tempElement = null;
+        if (langueDic.TryGetValue(langueElement, out tempElement))
+        {
+            if (langue.Equals("fr"))
+            {
+                Debug.Log("The element is : " + tempElement.Element + " and value is " + tempElement.Element_fr);
+            }
+            else if (langue.Equals("en"))
+            {
+                Debug.Log("The element is : " + tempElement.Element + " and value is " + tempElement.Element_en);
+            }
+
+        }
+    }
+
 }

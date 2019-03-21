@@ -5,10 +5,10 @@ using System.Collections.Generic;
 public class ReadDemo : MonoBehaviour
 {
 
-    public TextAsset csv;
+  //  public TextAsset csv;
 
     void Start()
     {
-        CSVReader.DebugOutputGrid(CSVReader.SplitCsvGrid("csv.text"));
+    //    CSVReader.DebugOutputGrid(CSVReader.SplitCsvGrid("csv.text"));
     }
 }

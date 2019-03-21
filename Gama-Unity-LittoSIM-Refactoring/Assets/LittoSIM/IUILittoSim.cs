@@ -49,10 +49,7 @@ namespace ummisco.gama.unity.littosim
 
         public static string MESSAGE_TITRE = "Message_Titre";
 
-        public const string UI_MANAGER_GAMEOBJECT = ("UIManager");
-
-
-     
+        public const string UI_MANAGER_GAMEOBJECT = "UIManager";
 
 
 
@@ -60,7 +57,22 @@ namespace ummisco.gama.unity.littosim
 
 
 
+        // Other UI Elements
 
+        public const string UI_TXT_Button_Amenagement = " Aménagement, PLU et habitat";
+        public const string UI_TXT_Button_Defense = " Aménagement, PLU et habitat";
+        public const string UI_LBL_Label_Ajouter = "Ajouter";
+        public const string UI_LBL_Label_Outil = "Outil";
+        public const string UI_IMG_Button_Urbanise = "Button_Urbanise";
+        public const string UI_IMG_Button_Densifie = "Button_Densifie";
+        public const string UI_IMG_Button_Zone_ur = "Button_Zone_ur";
+        public const string UI_IMG_Button_zone_ag = "Button_zone_ag";
+        public const string UI_IMG_Button_zone_na = "Button_zone_na";
+        public const string UI_IMG_Button_Info = "Button_Info";
+        public const string UI_LBL_Onglet_Action_Titre = "Actions envisagées"; 
+        public const string UI_LBL_Budget_Initial_Label = "Budget initial"; 
+        public const string UI_LBL_Budget_Restant_Label = "Budget restant";
+        public const string UI_LBL_Valider_Text = "Valider";
 
 
 

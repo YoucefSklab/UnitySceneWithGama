@@ -12,12 +12,14 @@ namespace ummisco.gama.unity.littosim
     public class LittosimManager : MonoBehaviour
     {
         // Use this for initialization
-        public int actionToDo = 0;
+        public static int actionToDo = 0;
         public static int gameNbr = 0;
 
         public GameObject ActionPanelPrefab;
         public GameObject ActionRecapPanelPrefab;
         public GameObject MessagePanelPrefab;
+
+        public GameObject ButtonActionPrefab;
 
         public List<GameObject> actionsList = new List<GameObject>();
         public List<GameObject> recapActionsList = new List<GameObject>();
@@ -53,9 +55,15 @@ namespace ummisco.gama.unity.littosim
             initialRecapPosition = new Vector3(2020.0f, -135.3f, 0.0f);
             lastRecapPosition = new Vector3(2020.0f, -135.3f, 0.0f);
 
-            uiManager = GameObject.Find(IUILittoSim.UI_MANAGER_GAMEOBJECT); 
-           
-           
+            uiManager = GameObject.Find(IUILittoSim.UI_MANAGER_GAMEOBJECT);
+
+            GameObject obj = Instantiate(ButtonActionPrefab);
+            obj = Instantiate(ButtonActionPrefab);
+            obj.name = "Action1";
+            obj = Instantiate(ButtonActionPrefab);
+            obj.name = "Action2";
+            obj = Instantiate(ButtonActionPrefab);
+            obj.name = "Action3";
 
             // initialPosition = GameObject.Find("IUILittoSim.ACTION_PANEL_PREFAB").transform.position;
             // lastPosition = initialPosition;
@@ -214,10 +222,7 @@ namespace ummisco.gama.unity.littosim
             }
         }
 
-        public void onAddButtonClicked(int actionId)
-        {
-            actionToDo = actionId;
-        }
+       
 
         public void sendGamaMessage(Vector3 position)
         {
