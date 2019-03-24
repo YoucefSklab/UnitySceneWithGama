@@ -55,6 +55,7 @@ GameObject:
   - component: {fileID: 224556874347962904}
   - component: {fileID: 222782813475509426}
   - component: {fileID: 114787446349225478}
+  - component: {fileID: 114153179811419708}
   m_Layer: 5
   m_Name: Action_Recap_Panel_Prefab
   m_TagString: Untagged
@@ -174,6 +175,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114153179811419708
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1283729833062342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74fe460da34f4507b458f9d4076f21c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114170710713847774
 MonoBehaviour:
   m_ObjectHideFlags: 1

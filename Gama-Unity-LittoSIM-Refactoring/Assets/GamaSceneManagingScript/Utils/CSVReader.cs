@@ -17,10 +17,11 @@ using System.IO;
 using System.Collections.Generic;
 using ummisco.gama.unity.littosim;
 using System;
+using ummisco.gama.unity.SceneManager;
 
 public class CSVReader : MonoBehaviour
 {
-    public string path = "Assets/ressources/langs_def.csv";
+    public string path = IGamaManager.RESOURCES_PATH+"langs_def.csv";
     public Dictionary<string, Langue> langueDic = new Dictionary<string, Langue>();
 
     public void Start()
@@ -44,6 +45,7 @@ public class CSVReader : MonoBehaviour
     static public Dictionary<string, Langue> GetInDictionnary(string csvText)
     {
         string[] lines = csvText.Split("\n"[0]);
+        Debug.Log("Langue file Total lines in files is " + lines.Length );
         Dictionary<string, Langue> langue = new Dictionary<string, Langue>();
 
         string allFile = "";
@@ -86,11 +88,11 @@ public class CSVReader : MonoBehaviour
         {
             if (langue.Equals("fr"))
             {
-                Debug.Log("The element is : " + tempElement.Element + " and value is " + tempElement.Element_fr);
+//                Debug.Log("The element is : " + tempElement.Element + " and value is " + tempElement.Element_fr);
             }
             else if (langue.Equals("en"))
             {
-                Debug.Log("The element is : " + tempElement.Element + " and value is " + tempElement.Element_en);
+  //              Debug.Log("The element is : " + tempElement.Element + " and value is " + tempElement.Element_en);
             }
 
         }

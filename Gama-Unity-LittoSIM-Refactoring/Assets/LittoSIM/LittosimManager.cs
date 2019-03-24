@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using ummisco.gama.unity.SceneManager;
+using ummisco.gama.unity.littosim.ActionPrefab;
 
 namespace ummisco.gama.unity.littosim
 {
@@ -18,7 +19,6 @@ namespace ummisco.gama.unity.littosim
         public GameObject ActionPanelPrefab;
         public GameObject ActionRecapPanelPrefab;
         public GameObject MessagePanelPrefab;
-
         public GameObject ButtonActionPrefab;
 
         public List<GameObject> actionsList = new List<GameObject>();
@@ -48,6 +48,7 @@ namespace ummisco.gama.unity.littosim
 
         public Canvas uiCanvas;
         private GameObject uiManager;
+        private GameObject main_canvas;
 
 
         void Start()
@@ -56,19 +57,42 @@ namespace ummisco.gama.unity.littosim
             lastRecapPosition = new Vector3(2020.0f, -135.3f, 0.0f);
 
             uiManager = GameObject.Find(IUILittoSim.UI_MANAGER_GAMEOBJECT);
+            main_canvas = GameObject.Find(IUILittoSim.MAIN_CANVAS);
 
-            GameObject obj = Instantiate(ButtonActionPrefab);
-            obj = Instantiate(ButtonActionPrefab);
-            obj.name = "Action1";
-            obj = Instantiate(ButtonActionPrefab);
-            obj.name = "Action2";
-            obj = Instantiate(ButtonActionPrefab);
-            obj.name = "Action3";
+      //      Debug.Log(" The position is: " + GameObject.Find("Button_Action_Prefab").transform.position);
+
+            /*
+
+            IActionButton.action_nbr = 10;
+
+            for (int i = 1; i <=10; i++)
+            {
+                if (i != 2) { 
+                GameObject obj = Instantiate(ButtonActionPrefab);
+                obj.name = "Action"+i;
+                Vector3 position = IActionButton.GetPosition(i);
+                obj.GetComponent<Button_Action_Prefab>().SetUp("actionName"+i, i, "help"+i, "I_naturel", "UA", IActionButton.GetPosition(i));
+                obj.transform.SetParent(main_canvas.transform);
+                }
+            }
+            */
+
+
+
+
+
+            //obj.GetComponent<Button_Action_Prefab>().code = 20;
+
+
+            //obj = Instantiate(ButtonActionPrefab);
+            //obj.name = "Action2";
+            //obj.GetComponent<ActionManager>().action = new Action("actionName2", 21, 23, 80f, "DEF_COTE", "This is help", "This is icon");
+
 
             // initialPosition = GameObject.Find("IUILittoSim.ACTION_PANEL_PREFAB").transform.position;
             // lastPosition = initialPosition;
 
-            Debug.Log("The hight of " + IUILittoSim.MESSAGE_PANEL_PREFAB + " is : " + GameObject.Find(IUILittoSim.MESSAGE_PANEL_PREFAB).GetComponent<RectTransform>().rect.height);
+//            Debug.Log("The hight of " + IUILittoSim.MESSAGE_PANEL_PREFAB + " is : " + GameObject.Find(IUILittoSim.MESSAGE_PANEL_PREFAB).GetComponent<RectTransform>().rect.height);
 
             initialMessagePosition = new Vector3(-836.3f, -136.2f, 0.0f);
             lastMessagePosition = initialMessagePosition;
@@ -222,7 +246,7 @@ namespace ummisco.gama.unity.littosim
             }
         }
 
-       
+
 
         public void sendGamaMessage(Vector3 position)
         {
@@ -494,7 +518,7 @@ namespace ummisco.gama.unity.littosim
 
             panelChild.transform.Find(IUILittoSim.ACTION_CYCLE).transform.Find(IUILittoSim.ACTION_CYCLE_VALUE).GetComponent<Text>().text = (delay);
             panelChild.transform.Find(IUILittoSim.ACTION_BUDGET).GetComponent<Text>().text = (montant);
-           
+
             updateValiderPosition();
 
             if (actionsList.Count >= 10)
