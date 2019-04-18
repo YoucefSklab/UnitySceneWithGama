@@ -20,6 +20,8 @@ namespace ummisco.gama.unity.littosim
         public GameObject ActionRecapPanelPrefab;
         public GameObject MessagePanelPrefab;
         public GameObject ButtonActionPrefab;
+        public GameObject UA;
+        public GameObject Def_Cote;
 
         public List<GameObject> actionsList = new List<GameObject>();
         public List<GameObject> recapActionsList = new List<GameObject>();
@@ -157,9 +159,17 @@ namespace ummisco.gama.unity.littosim
             Vector3 position = Input.mousePosition;
             Debug.Log("Mouse position is : " + position);
             position = uiManager.GetComponent<UIManager>().worldToUISpace(uiCanvas, position);
-            position.z = -zCoordinate;
+            position.z = -80;
             sendGamaMessage(position);
 
+            // To delete
+
+            GameObject panelChild = Instantiate(UA);
+            panelChild.name = "UA"+position.x+"_"+position.y;
+            panelChild.transform.position = position;
+            GameObject panelParent = GameObject.Find(IUILittoSim.ACTION_LIST_RECAP_PANEL);
+            panelChild.transform.SetParent(panelParent.transform);
+ 
             // to delete
             /*
             GameObject game = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -514,7 +524,7 @@ namespace ummisco.gama.unity.littosim
             panelChild.transform.position = getAtActionPanelPosition();
             panelChild.transform.SetParent(panelParent.transform);
             actionsList.Add(panelChild);
-            panelChild.transform.Find(IUILittoSim.ACTION_TITLE).GetComponent<Text>().text = (texte);
+            panelChild.transform.Find(IUILittoSim.ACTION_TITLE).GetComponent<Text>().text = texte;
 
             panelChild.transform.Find(IUILittoSim.ACTION_CYCLE).transform.Find(IUILittoSim.ACTION_CYCLE_VALUE).GetComponent<Text>().text = (delay);
             panelChild.transform.Find(IUILittoSim.ACTION_BUDGET).GetComponent<Text>().text = (montant);

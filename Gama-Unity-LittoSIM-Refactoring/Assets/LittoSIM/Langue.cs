@@ -3,20 +3,20 @@ namespace ummisco.gama.unity.littosim
 {
     public class Langue
     {
-        public string Element { get; set; }
-        public string Element_fr { get; set; }
-        public string Element_en { get; set; }
+        public string element;
+        public string value; 
+       
 
-        public Langue(string element, string fr, string en)
+        public Langue(string element, string value)
         {
-            this.Element = element;
-            this.Element_en = en;
-            this.Element_fr = fr;
+            this.element = element;
+            this.value = value;
+           
         }
 
         public string ToString()
         {
-            return ("Langue element: " + this.Element + " fr element: " + Element_fr + " en element: " + Element_en);
+            return ("Langue element: " + this.element + " value: " + this.value);
         }
 
     }

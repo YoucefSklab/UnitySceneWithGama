@@ -8,7 +8,7 @@ namespace ummisco.gama.unity.littosim
     {
         // Use this for initialization
 
-        public string activePanel = IUILittoSim.MAP_PANEL;
+        public string activePanel = IUILittoSim.UA_PANEL;
 
         public UIManager()
         {
@@ -16,7 +16,7 @@ namespace ummisco.gama.unity.littosim
         }
         void Awake()
         {
-            activePanel = IUILittoSim.MAP_PANEL;
+            activePanel = IUILittoSim.UA_PANEL;
         }
 
         void Start()
@@ -38,23 +38,23 @@ namespace ummisco.gama.unity.littosim
         {
             if (panelName.Equals(IUILittoSim.ONGLET_AMENAGEMENT))
             {
-                setCanvasVisible(IUILittoSim.MAP_PANEL);
-                setCanvasInvisible(IUILittoSim.DEFENSE_PANEL);
+                setCanvasVisible(IUILittoSim.UA_PANEL);
+                setCanvasInvisible(IUILittoSim.DEF_COTE_PANEL);
 
-                SetTargetInvisible(GameObject.Find(IUILittoSim.DEFENSE_PANEL));
-                SetTargetVisible(GameObject.Find(IUILittoSim.MAP_PANEL));
+                SetTargetInvisible(GameObject.Find(IUILittoSim.DEF_COTE_PANEL));
+                SetTargetVisible(GameObject.Find(IUILittoSim.UA_PANEL));
 
-                activePanel = IUILittoSim.MAP_PANEL;
+                activePanel = IUILittoSim.UA_PANEL;
             }
             else if (panelName.Equals(IUILittoSim.ONGLET_DEFENSE))
             {
-                setCanvasVisible(IUILittoSim.DEFENSE_PANEL);
-                setCanvasInvisible(IUILittoSim.MAP_PANEL);
+                setCanvasVisible(IUILittoSim.DEF_COTE_PANEL);
+                setCanvasInvisible(IUILittoSim.UA_PANEL);
 
-                SetTargetInvisible(GameObject.Find(IUILittoSim.MAP_PANEL));
-                SetTargetVisible(GameObject.Find(IUILittoSim.DEFENSE_PANEL));
+                SetTargetInvisible(GameObject.Find(IUILittoSim.UA_PANEL));
+                SetTargetVisible(GameObject.Find(IUILittoSim.DEF_COTE_PANEL));
 
-                activePanel = IUILittoSim.DEFENSE_PANEL;
+                activePanel = IUILittoSim.DEF_COTE_PANEL;
             }
         }
 

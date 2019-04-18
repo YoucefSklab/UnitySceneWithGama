@@ -1,0 +1,32 @@
+﻿<Properties StartupConfiguration="{3E28368B-C620-4A8E-7CA0-53AE4FC77846}|" RefactoringSettings.EnableRefactorings="True">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script Gama/Messaging/MsgSerialization.cs">
+    <Files>
+      <File FileName="Assets/Script Gama/Utils/MqttSetting.cs" Line="13" Column="56" />
+      <File FileName="Assets/Script CubeCollector/GamaManager.cs" Line="37" Column="1" />
+      <File FileName="Assets/Script Gama/Messaging/MsgSerialization.cs" Line="49" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="CubeCollector" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Script Gama" expanded="True">
+                <Node name="Messaging" expanded="True">
+                  <Node name="MsgSerialization.cs" selected="True" />
+                </Node>
+                <Node name="Utils" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

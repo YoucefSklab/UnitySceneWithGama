@@ -5,8 +5,8 @@ namespace ummisco.gama.unity.littosim
 {
     public static class IUILittoSim
     {
-        public static string MAP_PANEL = "Map_Panel";
-        public static string DEFENSE_PANEL = "Defense_Panel";
+        public static string UA_PANEL = "Ua_Panel";
+        public static string DEF_COTE_PANEL = "Def_Cote_Panel";
         public static string ONGLET_AMENAGEMENT = "Onglet_Amenagement";
         public static string ONGLET_DEFENSE = "Onglet_Defense";
 

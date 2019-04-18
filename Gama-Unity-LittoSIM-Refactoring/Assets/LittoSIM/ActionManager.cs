@@ -33,8 +33,7 @@ namespace ummisco.gama.unity.littosim
 
             Debug.Log("UA Actions total is " + us_actions_dic.Count);
 
-            //SetUpUAActions(us_actions_dic);
-
+            SetUpUAActions(us_actions_dic);
             SetUpDefCoteActions(def_cote_actions_dic);
 
 
@@ -106,32 +105,34 @@ namespace ummisco.gama.unity.littosim
         public void SetUpUAActions(Dictionary<string, Action>  actions)
         {
 
-            GameObject main_canvas = GameObject.Find(IUILittoSim.MAIN_CANVAS);
+            GameObject Ua_Panel = GameObject.Find(IUILittoSim.UA_PANEL);
 
             foreach (KeyValuePair<string, Action> act in actions)
             {
                 GameObject action_button = Instantiate(GameObject.Find(ILittoSimConcept.LITTOSIM_MANANGER).GetComponent<LittosimManager>().ButtonActionPrefab);
-                action_button.name = "UA"+act.Key;
+                action_button.name = "UA_"+act.Key;
                 Vector3 position = IActionButton.GetPosition(act.Value.UA_index);
-                action_button.GetComponent<Button_Action_Prefab>().SetUp("UA" + act.Key, act.Value.UA_index, act.Value.button_help_message, act.Value.button_icon_file, "UA", IActionButton.GetPosition(act.Value.UA_index));
-                action_button.transform.SetParent(main_canvas.transform);
+                action_button.GetComponent<Button_Action_Prefab>().SetUp("UA_" + act.Key, act.Value.UA_index, act.Value.button_help_message, act.Value.button_icon_file, "UA", IActionButton.GetPosition(act.Value.UA_index));
+                action_button.transform.SetParent(Ua_Panel.transform);
             }
         }
 
         public void SetUpDefCoteActions(Dictionary<string, Action> actions)
         {
 
-            GameObject main_canvas = GameObject.Find(IUILittoSim.MAIN_CANVAS);
+            GameObject Def_Cote_Panel = GameObject.Find(IUILittoSim.DEF_COTE_PANEL);
 
             foreach (KeyValuePair<string, Action> act in actions)
             {
                 GameObject action_button = Instantiate(GameObject.Find(ILittoSimConcept.LITTOSIM_MANANGER).GetComponent<LittosimManager>().ButtonActionPrefab);
-                action_button.name = "Def_Cote" + act.Key;
+                action_button.name = "Def_Cote_" + act.Key;
                 Vector3 position = IActionButton.GetPosition(act.Value.def_cote_index);
-                action_button.GetComponent<Button_Action_Prefab>().SetUp("Def_Cote" + act.Key, act.Value.def_cote_index, act.Value.button_help_message, act.Value.button_icon_file, "Def_Cote", IActionButton.GetPosition(act.Value.def_cote_index));
-                action_button.transform.SetParent(main_canvas.transform);
+                action_button.GetComponent<Button_Action_Prefab>().SetUp("Def_Cote_" + act.Key, act.Value.def_cote_index, act.Value.button_help_message, act.Value.button_icon_file, "Def_Cote", IActionButton.GetPosition(act.Value.def_cote_index));
+                action_button.transform.SetParent(Def_Cote_Panel.transform);
             }
         }
+
+      
 
     }
 }

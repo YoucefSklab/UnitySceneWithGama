@@ -7,7 +7,7 @@ using ummisco.gama.unity.GamaConcepts;
 
 namespace ummisco.gama.unity.GamaAgent
 {
-    public class Agent
+    public class Agent : MonoBehaviour
     {
         private string _geometry;
 

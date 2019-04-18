@@ -1,125 +1,152 @@
 ﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+
 namespace ummisco.gama.unity.littosim
 {
     public class ILangue
     {
-        public static string ACTION_REPAIR_DIKE = "Renover une digue";
-        public static string ACTION_CREATE_DIKE = "Construire une digue";
-        public static string ACTION_DESTROY_DIKE = "Dementeler une digue";
-        public static string ACTION_RAISE_DIKE = "Rehausser une digue";
-        public static string ACTION_INSTALL_GANIVELLE = "Installer des ganivelles";
-        public static string ACTION_MODIFY_LAND_COVER_AU = "Changer en zone a urbaniser";
-        public static string ACTION_MODIFY_LAND_COVER_A = "Changer en zone agricole";
-        public static string ACTION_MODIFY_LAND_COVER_U = "Cliquez sur la cellule a modifier";
-        public static string ACTION_MODIFY_LAND_COVER_N = "Changer en zone naturelle";
-        public static string ACTON_MODIFY_LAND_COVER_FROM_AU_TO_N = "Changer une zone a urbaniser en zone naturelle";
-        public static string ACTON_MODIFY_LAND_COVER_FROM_A_TO_N = "Changer une zone agricole en zone naturelle";
-        public static string ACTION_MODIFY_LAND_COVER_AUs = "Changer en zone a urbaniser adaptee";
-        public static string ACTION_MODIFY_LAND_COVER_Us = "Transformer en Us";
-        public static string ACTION_MODIFY_LAND_COVER_Ui = "Inciter a la densification";
-        public static string ACTION_EXPROPRIATION = "Cliquez sur la cellule a modifier";
-        public static string ACTION_MODIFY_LAND_COVER_AUs_SUBSIDY = "Changer en zone a urbaniser adaptee avec subvention";
-        public static string ACTION_MODIFY_LAND_COVER_Us_SUBSIDY = "Changer en zone urbanisee adaptee avec subvention";
-        public static string ACTION_INSPECT_LAND_USE = "Inspecter une unite d'amenagement";
-        public static string ACTION_INSPECT_DIKE = "Inspecter un ouvrage de defense";
-        public static string ACTION_DISPLAY_PROTECTED_AREA = "Afficher les zones protegees";
-        public static string ACTION_DISPLAY_FLOODED_AREA = "Afficher les zones innondees";
-        public static string MSG_NEW_ROUND = "Nouveau tour de jeu";
-        public static string MSG_GAME_DONE = "Termine";
-        public static string MSG_LOG_USER_ACTION = "Enregistrer les actions utilisateur";
-        public static string MSG_CONNECT_ACTIVMQ = "Connecter ActiveMQ";
-        public static string MSG_SIM_NOT_STARTED = "La simulation n'a pas encore commence";
-        public static string MSG_NO_FLOOD_FILE_EVENT = "Il n'y a pas de fichier de resultat Lisflood pour cet evenement";
-        public static string MSG_OK_CONTINUE = "Cliquez sur OK pour continuer";
-        public static string MSG_SUBMERSION_NUMBER = "Indiquer le numero de la submersion que vous voulez reafficher";
-        public static string MSG_NUMBER = "Numero";
-        public static string HELP_MSG_REPAIR_DIKE = "Cliquez sur la digue a renover";
-        public static string HELP_MSG_CREATE_DIKE = "Cliquez aux deux extremites du lineaire de digue";
-        public static string HELP_MSG_DESTROY_DIKE = "Cliquez sur la digue a dementeler";
-        public static string HELP_MSG_RAISE_DIKE = "Cliquer sur la digue a rehausser";
-        public static string HELP_MSG_INSTALL_GANIVELLE = "Cliquez sur la dune pour installer une ganivelle";
-        public static string HELP_MSG_MODIFY_LAND_COVER_AU = "Cliquez sur la cellule a modifier";
-        public static string HELP_MSG_MODIFY_LAND_COVER_A = "Cliquez sur la cellule a modifier";
-        public static string HELP_MSG_MODIFY_LAND_COVER_U = "Cliquez sur la cellule a modifier";
-        public static string HELP_MSG_MODIFY_LAND_COVER_N = "Cliquez sur la cellule a modifier";
-        public static string HELP_MSG_MODIFY_LAND_COVER_FROM_AU_TO_N = "Cliquez sur la cellule a modifier";
-        public static string HELP_MSG_MODIFY_LAND_COVER_FROM_A_TO_N = "Cliquez sur la cellule a modifier";
-        public static string HELP_MSG_MODIFY_LAND_COVER_AUs = "Cliquez sur la cellule a modifier";
-        public static string HELP_MSG_MODIFY_LAND_COVER_Us = "Cliquez sur la cellule a modifier";
-        public static string HELP_MSG_MODIFY_LAND_COVER_Ui = "Cliquez sur la cellule a modifier";
-        public static string HELP_MSG_EXPROPRIATION = "Cliquez sur la cellule a modifier";
-        public static string HELP_MSG_MODIFY_LAND_COVER_AUs_SUBSIDY = "Cliquez sur la cellule a modifier";
-        public static string HELP_MSG_MODIFY_LAND_COVER_Us_SUBSIDY = "Cliquez sur la cellule a modifier";
-        public static string HELP_MSG_INSPECT_LAND_USE = "Glissez le pointeur sur les cellules a inspecter";
-        public static string HELP_MSG_INSPECT_DIKE = "Glissez le pointeur sur les digues et dunes";
-        public static string LDR_MSG_SEND_MONEY = "Envoyer de l'argent";
-        public static string LDR_MSG_WITHDRAW_MONEY = "Prelever de l'argent";
-        public static string LDR_MSG_SEND_MONEY_TO = "Envoyer de l'argent a";
-        public static string LDR_MSG_TAKE_MONEY_FROM = "Prelever de l'argent a";
-        public static string LDR_MSG_SEND_MSG = "Envoyer un message";
-        public static string LDR_MSG_SEND_MSG_TO = "Envoyer un message a";
-        public static string LDR_MSG_AMOUNT_REVENUE = "Montant de la recette";
-        public static string LDR_MSG_AMOUNT_SUBSIDY = "Montant de la subvention";
-        public static string BTN_TAKE_MONEY_MSG1 = "Les autorites reorientent leur politique: vos actions vous coutent plus cher que prevu. Vous etes preleve de";
-        public static string BTN_TAKE_MONEY_MSG2 = "Les couts dans le BTP augmentent considerablement et votre budget en est impacté. Vous etes preleve de";
-        public static string BTN_TAKE_MONEY_MSG3 = "L’agence du risque preleve une amende en raison de vos actions de gestion des risques. Vous etes preleve de";
-        public static string BTN_TAKE_MONEY_MSG4 = "Indiquer le montant preleve a ";
-        public static string MSG_CHOOSE_MSG_TO_SEND = "Choix du message envoye au joueur";
-        public static string MSG_TYPE_CUSTOMIZED_MSG = "Ou tapez votre message personnalise sans utiliser de guillemets";
-        public static string MSG_TO_CANCEL = "pour annuler";
-        public static string BTN_GIVE_MONEY_MSG1 = "L’agence du risque finance une partie de vos pratiques de gestion integree des risques. Vous recevez";
-        public static string BTN_GIVE_MONEY_MSG2 = "Les autorités subventionnent vos actions de gestion des risques. Vous recevez";
-        public static string BTN_GIVE_MONEY_MSG3 = "Vos efforts en matiere de gestion des risques sont financierement encourages. Vous recevez";
-        public static string BTN_GIVE_MONEY_MSG4 = "Indiquer le montant envoye a ";
-        public static string MSG_AMOUNT = "Montant";
-        public static string MSG_123_OR_CUSTOMIZED = "Message (1,2,3 ou message personnalise)";
-        public static string BTN_SEND_MSG_MSG0 = "Indiquer le message envoye a";
-        public static string BTN_SEND_MSG_MSG1 = "Un renforcement de la loi Littoral retarde vos mesures de gestion du risque";
-        public static string BTN_SEND_MSG_MSG2 = "L’agence du risque desapprouve votre gestion du risque : vos dossiers sont retardes";
-        public static string BTN_SEND_MSG_MSG3 = "L’agence du risque facilite vos pratiques alternatives de gestion des risques et active vos dossiers";
-        public static string BTN_SEND_MSG_MSG4 = "Un changement legislatif est opere en faveur de vos pratiques de gestion des risques : vous etes encourages a poursuivre votre strategie";
-        public static string BTN_EMPTY_MSG_TO_CANCEL = "message vide pour annuler";
-        public static string BTN_GET_REVENUE_MSG1 = "Vous allez prelever une recette en provenance de ";
-        public static string BTN_GET_REVENUE_MSG2 = "Mettre un montant de 0 pour annuler";
-        public static string BTN_GET_REVENUE_MSG3 = "Montant de la recette";
-        public static string BTN_SUBSIDIZE_MSG1 = "Vous allez subventionner la commune de ";
-        public static string BTN_SUBSIDIZE_MSG3 = "Montant de la subvention";
-        public static string MSG_WARNING = "Avertissement";
-        public static string PLR_OVERFLOW_WARNING = "Vous avez atteint la capacite maximum de votre panier. Veuillez valider votre panier avant de continuer";
-        public static string PLR_EMPTY_BASKET = "Votre panier est vide";
-        public static string PLR_INSUFFICIENT_BUDGET = "Vous ne disposez pas du budget suffisant pour realiser toutes ces actions";
-        public static string PLR_VALIDATE_BASKET = "Vous etes sur le point de valider votre panier";
-        public static string PLR_CHECK_BOX_VALIDATE = "Cocher la case pour accepter le panier et valider";
-        public static string MSG_COST_APPLIED_PARCEL = "Cout si applique a une parcelle";
-        public static string MSG_COST_ACTION = "Cout de l'action";
-        public static string MSG_COST_EXPROPRIATION = "cout d'expropriation";
-        public static string LEGEND_UNAM = "Amenagement, PLU et habitat";
-        public static string LEGEND_DYKE = "Defense des cotes";
-        public static string LEGEND_NAME_ACTIONS = "€   Actions envisagees";
-        public static string MSG_INITIAL_BUDGET = "Budget initial";
-        public static string MSG_REMAINING_BUDGET = "Budget restant";
-        public static string MSG_SIM_STARTED_ROUND1 = "La simulation demarre. C'est le tour 1";
-        public static string MSG_POSSIBLE_REGLEMENTATION_DELAY = "La zone de travaux est soumise a des contraintes reglementaires.\nLe dossier est susceptible d’etre retarde.\nSouhaitez vous poursuivre ?";
-        public static string MSG_ITS_ROUND = "C'est le tour";
-        public static string MSG_THE_ROUND = "Le tour";
-        public static string MSG_HAS_STARTED = "a commence";
-        public static string MSG_TAXES_RECEIVED_FROM = "Vous avez perçu des impots de";
-        public static string MSG_DISTRICT_RECEIVE = "Votre commune accueille";
-        public static string MSG_NEW_COMERS = "nouveaux arrivants";
-        public static string MSG_DISTRICT_POPULATION = "La population de votre commune est de";
-        public static string MSG_INHABITANTS = "habitants";
-        public static string MSG_EXPROPRIATION_PROCEDURE = "Vous allez entamer une procedure d'expropriation.\nSouhaitez-vous continuer ?";
-        public static string MSG_IMPOSSIBLE_DELETE_ADAPTED = "Impossible de supprimer un habitat adapte";
-        public static string MSG_ROUND = "Tour";
-        public static string MSG_IMPOSSIBLE_NORMALLY = "impossible normalement";
-        public static string MSG_FLOODED_AREA_DISTRICT = "Surface inondee par commune";
-        public static string MSG_START_SENDER = "Demarrer le sender";
-        public static string MSG_SEND_DATA_TO = "Envoyer les donnees... a";
-        public static string MSG_SEND_TO = "Envoyer a";
-        public static string MSG_SIMULATION_CHOICE = "choix simulation";
-        public static string MSG_SEND_MSG_LEADER = "envoyer un message au leader";
-        public static string MSG_READ_MESSAGE = "lire message";
+        public static Dictionary<string, string> current_langue = new Dictionary<string, string>();
 
+        public static string ACTION_REPAIR_DIKE = "ACTION_REPAIR_DIKE";
+        public static string ACTION_CREATE_DIKE = "ACTION_CREATE_DIKE";
+        public static string ACTION_DESTROY_DIKE = "ACTION_DESTROY_DIKE";
+        public static string ACTION_RAISE_DIKE = "ACTION_RAISE_DIKE";
+        public static string ACTION_INSTALL_GANIVELLE = "ACTION_INSTALL_GANIVELLE";
+        public static string ACTION_MODIFY_LAND_COVER_AU = "ACTION_MODIFY_LAND_COVER_AU";
+        public static string ACTION_MODIFY_LAND_COVER_A = "ACTION_MODIFY_LAND_COVER_A";
+        public static string ACTION_MODIFY_LAND_COVER_U = "ACTION_MODIFY_LAND_COVER_U";
+        public static string ACTION_MODIFY_LAND_COVER_N = "ACTION_MODIFY_LAND_COVER_N";
+        public static string ACTON_MODIFY_LAND_COVER_FROM_AU_TO_N = "ACTON_MODIFY_LAND_COVER_FROM_AU_TO_N";
+        public static string ACTON_MODIFY_LAND_COVER_FROM_A_TO_N = "ACTON_MODIFY_LAND_COVER_FROM_A_TO_N";
+        public static string ACTION_MODIFY_LAND_COVER_AUs = "ACTION_MODIFY_LAND_COVER_AUs";
+        public static string ACTION_MODIFY_LAND_COVER_Us = "ACTION_MODIFY_LAND_COVER_Us";
+        public static string ACTION_MODIFY_LAND_COVER_Ui = "ACTION_MODIFY_LAND_COVER_Ui";
+        public static string ACTION_EXPROPRIATION = "ACTION_EXPROPRIATION";
+        public static string ACTION_MODIFY_LAND_COVER_AUs_SUBSIDY = "ACTION_MODIFY_LAND_COVER_AUs_SUBSIDY";
+        public static string ACTION_MODIFY_LAND_COVER_Us_SUBSIDY = "ACTION_MODIFY_LAND_COVER_Us_SUBSIDY";
+        public static string ACTION_INSPECT_LAND_USE = "ACTION_INSPECT_LAND_USE";
+        public static string ACTION_INSPECT_DIKE = "ACTION_INSPECT_DIKE";
+        public static string ACTION_DISPLAY_PROTECTED_AREA = "ACTION_DISPLAY_PROTECTED_AREA";
+        public static string ACTION_DISPLAY_FLOODED_AREA = "ACTION_DISPLAY_FLOODED_AREA";
+        public static string MSG_NEW_ROUND = "MSG_NEW_ROUND";
+        public static string MSG_GAME_DONE = "MSG_GAME_DONE";
+        public static string MSG_LOG_USER_ACTION = "MSG_LOG_USER_ACTION";
+        public static string MSG_CONNECT_ACTIVMQ = "MSG_CONNECT_ACTIVMQ";
+        public static string MSG_SIM_NOT_STARTED = "MSG_SIM_NOT_STARTED";
+        public static string MSG_NO_FLOOD_FILE_EVENT = "MSG_NO_FLOOD_FILE_EVENT";
+        public static string MSG_OK_CONTINUE = "MSG_OK_CONTINUE";
+        public static string MSG_SUBMERSION_NUMBER = "MSG_SUBMERSION_NUMBER";
+        public static string MSG_NUMBER = "MSG_NUMBER";
+        public static string HELP_MSG_REPAIR_DIKE = "HELP_MSG_REPAIR_DIKE";
+        public static string HELP_MSG_CREATE_DIKE = "HELP_MSG_CREATE_DIKE";
+        public static string HELP_MSG_DESTROY_DIKE = "HELP_MSG_DESTROY_DIKE";
+        public static string HELP_MSG_RAISE_DIKE = "HELP_MSG_RAISE_DIKE";
+        public static string HELP_MSG_INSTALL_GANIVELLE = "HELP_MSG_INSTALL_GANIVELLE";
+        public static string HELP_MSG_MODIFY_LAND_COVER_AU = "HELP_MSG_MODIFY_LAND_COVER_AU";
+        public static string HELP_MSG_MODIFY_LAND_COVER_A = "HELP_MSG_MODIFY_LAND_COVER_A";
+        public static string HELP_MSG_MODIFY_LAND_COVER_U = "HELP_MSG_MODIFY_LAND_COVER_U";
+        public static string HELP_MSG_MODIFY_LAND_COVER_N = "HELP_MSG_MODIFY_LAND_COVER_N";
+        public static string HELP_MSG_MODIFY_LAND_COVER_FROM_AU_TO_N = "HELP_MSG_MODIFY_LAND_COVER_FROM_AU_TO_N";
+        public static string HELP_MSG_MODIFY_LAND_COVER_FROM_A_TO_N = "HELP_MSG_MODIFY_LAND_COVER_FROM_A_TO_N";
+        public static string HELP_MSG_MODIFY_LAND_COVER_AUs = "HELP_MSG_MODIFY_LAND_COVER_AUs";
+        public static string HELP_MSG_MODIFY_LAND_COVER_Us = "HELP_MSG_MODIFY_LAND_COVER_Us";
+        public static string HELP_MSG_MODIFY_LAND_COVER_Ui = "HELP_MSG_MODIFY_LAND_COVER_Ui";
+        public static string HELP_MSG_EXPROPRIATION = "HELP_MSG_EXPROPRIATION";
+        public static string HELP_MSG_MODIFY_LAND_COVER_AUs_SUBSIDY = "HELP_MSG_MODIFY_LAND_COVER_AUs_SUBSIDY";
+        public static string HELP_MSG_MODIFY_LAND_COVER_Us_SUBSIDY = "HELP_MSG_MODIFY_LAND_COVER_Us_SUBSIDY";
+        public static string HELP_MSG_INSPECT_LAND_USE = "HELP_MSG_INSPECT_LAND_USE";
+        public static string HELP_MSG_INSPECT_DIKE = "HELP_MSG_INSPECT_DIKE";
+        public static string LDR_MSG_SEND_MONEY = "LDR_MSG_SEND_MONEY";
+        public static string LDR_MSG_WITHDRAW_MONEY = "LDR_MSG_WITHDRAW_MONEY";
+        public static string LDR_MSG_SEND_MONEY_TO = "LDR_MSG_SEND_MONEY_TO";
+        public static string LDR_MSG_TAKE_MONEY_FROM = "LDR_MSG_TAKE_MONEY_FROM";
+        public static string LDR_MSG_SEND_MSG = "LDR_MSG_SEND_MSG";
+        public static string LDR_MSG_SEND_MSG_TO = "LDR_MSG_SEND_MSG_TO";
+        public static string LDR_MSG_AMOUNT_REVENUE = "LDR_MSG_AMOUNT_REVENUE";
+        public static string LDR_MSG_AMOUNT_SUBSIDY = "LDR_MSG_AMOUNT_SUBSIDY";
+        public static string BTN_TAKE_MONEY_MSG1 = "BTN_TAKE_MONEY_MSG1";
+        public static string BTN_TAKE_MONEY_MSG2 = "BTN_TAKE_MONEY_MSG2";
+        public static string BTN_TAKE_MONEY_MSG3 = "BTN_TAKE_MONEY_MSG3";
+        public static string BTN_TAKE_MONEY_MSG4 = "BTN_TAKE_MONEY_MSG4";
+        public static string MSG_CHOOSE_MSG_TO_SEND = "MSG_CHOOSE_MSG_TO_SEND";
+        public static string MSG_TYPE_CUSTOMIZED_MSG = "MSG_TYPE_CUSTOMIZED_MSG";
+        public static string MSG_TO_CANCEL = "MSG_TO_CANCEL";
+        public static string BTN_GIVE_MONEY_MSG1 = "BTN_GIVE_MONEY_MSG1";
+        public static string BTN_GIVE_MONEY_MSG2 = "BTN_GIVE_MONEY_MSG2";
+        public static string BTN_GIVE_MONEY_MSG3 = "BTN_GIVE_MONEY_MSG3";
+        public static string BTN_GIVE_MONEY_MSG4 = "BTN_GIVE_MONEY_MSG4";
+        public static string MSG_AMOUNT = "MSG_AMOUNT";
+        public static string MSG_123_OR_CUSTOMIZED = "MSG_123_OR_CUSTOMIZED";
+        public static string BTN_SEND_MSG_MSG0 = "BTN_SEND_MSG_MSG0";
+        public static string BTN_SEND_MSG_MSG1 = "BTN_SEND_MSG_MSG1";
+        public static string BTN_SEND_MSG_MSG2 = "BTN_SEND_MSG_MSG2";
+        public static string BTN_SEND_MSG_MSG3 = "BTN_SEND_MSG_MSG3";
+        public static string BTN_SEND_MSG_MSG4 = "BTN_SEND_MSG_MSG4";
+        public static string BTN_EMPTY_MSG_TO_CANCEL = "BTN_EMPTY_MSG_TO_CANCEL";
+        public static string BTN_GET_REVENUE_MSG1 = "BTN_GET_REVENUE_MSG1";
+        public static string BTN_GET_REVENUE_MSG2 = "BTN_GET_REVENUE_MSG2";
+        public static string BTN_GET_REVENUE_MSG3 = "BTN_GET_REVENUE_MSG3";
+        public static string BTN_SUBSIDIZE_MSG1 = "BTN_SUBSIDIZE_MSG1";
+        public static string BTN_SUBSIDIZE_MSG3 = "BTN_SUBSIDIZE_MSG3";
+        public static string MSG_WARNING = "MSG_WARNING";
+        public static string PLR_OVERFLOW_WARNING = "PLR_OVERFLOW_WARNING";
+        public static string PLR_EMPTY_BASKET = "PLR_EMPTY_BASKET";
+        public static string PLR_INSUFFICIENT_BUDGET = "PLR_INSUFFICIENT_BUDGET";
+        public static string PLR_VALIDATE_BASKET = "PLR_VALIDATE_BASKET";
+        public static string PLR_CHECK_BOX_VALIDATE = "PLR_CHECK_BOX_VALIDATE";
+        public static string MSG_COST_APPLIED_PARCEL = "MSG_COST_APPLIED_PARCEL";
+        public static string MSG_COST_ACTION = "MSG_COST_ACTION";
+        public static string MSG_COST_EXPROPRIATION = "MSG_COST_EXPROPRIATION";
+        public static string LEGEND_UNAM = "LEGEND_UNAM";
+        public static string LEGEND_DYKE = "LEGEND_DYKE";
+        public static string LEGEND_NAME_ACTIONS = "LEGEND_NAME_ACTIONS";
+        public static string MSG_INITIAL_BUDGET = "MSG_INITIAL_BUDGET";
+        public static string MSG_REMAINING_BUDGET = "MSG_REMAINING_BUDGET";
+        public static string MSG_SIM_STARTED_ROUND1 = "MSG_SIM_STARTED_ROUND1";
+        public static string MSG_POSSIBLE_REGLEMENTATION_DELAY = "MSG_POSSIBLE_REGLEMENTATION_DELAY";
+        public static string MSG_ITS_ROUND = "MSG_ITS_ROUND";
+        public static string MSG_THE_ROUND = "MSG_THE_ROUND";
+        public static string MSG_HAS_STARTED = "MSG_HAS_STARTED";
+        public static string MSG_TAXES_RECEIVED_FROM = "MSG_TAXES_RECEIVED_FROM";
+        public static string MSG_DISTRICT_RECEIVE = "MSG_DISTRICT_RECEIVE";
+        public static string MSG_NEW_COMERS = "MSG_NEW_COMERS";
+        public static string MSG_DISTRICT_POPULATION = "MSG_DISTRICT_POPULATION";
+        public static string MSG_INHABITANTS = "MSG_INHABITANTS";
+        public static string MSG_EXPROPRIATION_PROCEDURE = "MSG_EXPROPRIATION_PROCEDURE";
+        public static string MSG_IMPOSSIBLE_DELETE_ADAPTED = "MSG_IMPOSSIBLE_DELETE_ADAPTED";
+        public static string MSG_ROUND = "MSG_ROUND";
+        public static string MSG_IMPOSSIBLE_NORMALLY = "MSG_IMPOSSIBLE_NORMALLY";
+        public static string MSG_FLOODED_AREA_DISTRICT = "MSG_FLOODED_AREA_DISTRICT";
+        public static string MSG_START_SENDER = "MSG_START_SENDER";
+        public static string MSG_SEND_DATA_TO = "MSG_SEND_DATA_TO";
+        public static string MSG_SEND_TO = "MSG_SEND_TO";
+        public static string MSG_SIMULATION_CHOICE = "MSG_SIMULATION_CHOICE";
+        public static string MSG_SEND_MSG_LEADER = "MSG_SEND_MSG_LEADER";
+        public static string MSG_READ_MESSAGE = "MSG_READ_MESSAGE";
+
+
+
+        public static string GetLangueElement(string lng)
+        {
+            string langue_value = "!!";
+            current_langue.TryGetValue(lng, out langue_value);
+            Debug.Log("-----------_>>>> search for " + lng);
+            return langue_value;
+        }
+
+
+        public static void GetAllAsVariables()
+        {
+            string all = "";
+            foreach (KeyValuePair<string, string> lng in current_langue)
+            {
+
+                all += "\n public static string " + lng.Key + " = \"" + lng.Key + "\";";
+            }
+
+            Debug.Log(all);
+        }
 
         public ILangue()
         {

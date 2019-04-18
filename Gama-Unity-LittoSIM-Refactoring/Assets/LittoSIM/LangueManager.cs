@@ -18,20 +18,24 @@ namespace ummisco.gama.unity.littosim
 
         void Start()
         {
-            string lng = "en";
+            string lng = "fr";
             GameObject obj = null;
             obj = GameObject.Find(IGamaManager.CSV_READER);
+            obj.GetComponent<CSVReader>().lng = lng;
             obj.SendMessage("loadCSVFile");
             langueDic = obj.GetComponent<CSVReader>().langueDic;
-           
+            SetUpLangueDictionnary();
+
             //Debug.Log("The disctionnary length is " + langueDic.Count);
             //Debug.Log(" -------------------------------> " + GetLangueElementValue(langueDic, ILangue.MSG_INITIAL_BUDGET, "en", ILangue.MSG_INITIAL_BUDGET));
 
-            GameObject.Find(ILittoSimConcept.MSG_INITIAL_BUDGET).GetComponent<Text>().text = GetLangueElementValue(langueDic, "MSG_INITIAL_BUDGET", lng,  ILangue.MSG_INITIAL_BUDGET);
-            GameObject.Find(ILittoSimConcept.MSG_REMAINING_BUDGET).GetComponent<Text>().text = GetLangueElementValue(langueDic, "MSG_REMAINING_BUDGET", lng, ILangue.MSG_REMAINING_BUDGET);
-            GameObject.Find(ILittoSimConcept.LEGEND_UNAM).GetComponentInChildren<Text>().text = "  "+GetLangueElementValue(langueDic, "LEGEND_UNAM", lng, ILangue.LEGEND_UNAM);
-            GameObject.Find(ILittoSimConcept.LEGEND_DYKE).GetComponentInChildren<Text>().text = "  " + GetLangueElementValue(langueDic, "LEGEND_DYKE", lng, ILangue.LEGEND_DYKE);
-            GameObject.Find(ILittoSimConcept.LEGEND_NAME_ACTIONS).GetComponent<Text>().text = GetLangueElementValue(langueDic, "LEGEND_NAME_ACTIONS", lng, ILangue.LEGEND_NAME_ACTIONS);
+            GameObject.Find(ILittoSimConcept.MSG_INITIAL_BUDGET).GetComponent<Text>().text = ILangue.GetLangueElement(ILangue.MSG_INITIAL_BUDGET);
+            GameObject.Find(ILittoSimConcept.MSG_REMAINING_BUDGET).GetComponent<Text>().text = ILangue.GetLangueElement(ILangue.MSG_REMAINING_BUDGET); 
+            GameObject.Find(ILittoSimConcept.LEGEND_UNAM).GetComponentInChildren<Text>().text = "  " + ILangue.GetLangueElement(ILangue.LEGEND_UNAM);
+            GameObject.Find(ILittoSimConcept.LEGEND_DYKE).GetComponentInChildren<Text>().text = "  " + ILangue.GetLangueElement(ILangue.LEGEND_DYKE);
+            GameObject.Find(ILittoSimConcept.LEGEND_NAME_ACTIONS).GetComponent<Text>().text = ILangue.GetLangueElement(ILangue.LEGEND_NAME_ACTIONS);
+
+            ILangue.GetAllAsVariables();
 
         }
 
@@ -42,15 +46,27 @@ namespace ummisco.gama.unity.littosim
             {
                 if (langue.Equals("fr"))
                 {
-                    return tempElement.Element_fr;
+                    return tempElement.value;
                 }
                 else if (langue.Equals("en"))
                 {
-                    return tempElement.Element_en;
+                    return tempElement.value;
                 }
             }
- 
             return defaultName;
+        }
+
+        public void SetUpLangueDictionnary()
+        {
+            ILangue.current_langue.Clear();
+            foreach (KeyValuePair<string, Langue> lng in langueDic)
+            {
+                ILangue.current_langue.Add(lng.Key, lng.Value.value);
+                Debug.Log("Langue element added is : " + lng.Key + " it's value is "+ lng.Value.value);
+            }
+
+            Debug.Log("The dic size is " + ILangue.current_langue.Count);
+
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using ummisco.gama.unity.utils;
 using ummisco.gama.unity.SceneManager;
 using UnityEngine;
+using ummisco.gama.unity.GamaConcepts;
 
 namespace Nextzen
 {
@@ -431,7 +432,7 @@ namespace Nextzen
                     Triangulator triangulator = new Triangulator(vertices2D);
                     triangulator.setAllPoints(triangulator.get2dVertices());
                     float elevation = this.elevation;
-                    if (agent.geometry.Equals("LineString"))
+                    if (agent.geometry.Equals(IGamaConcept.LINE_STRING))
                     {
                         elevation = 0.0f;
                     }
