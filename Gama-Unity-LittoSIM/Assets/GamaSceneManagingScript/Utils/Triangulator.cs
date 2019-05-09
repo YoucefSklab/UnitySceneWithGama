@@ -313,7 +313,7 @@ namespace ummisco.gama.unity.utils
                 triangles[i + 0] = tris[i + 0];
                 triangles[i + 1] = tris[i + 1];
                 triangles[i + 2] = tris[i + 2];
-
+                 
                 //----
                 // triangles[i + 0] = tris[i + 2];
                 // triangles[i + 1] = tris[i + 1];
