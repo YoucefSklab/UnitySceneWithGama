@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
 			SetCountText ();
 			Debug.Log ("The game Object name is: " + gamaManager.name);
 
-			gamaManager.SendMessage ("sendGotBoxMsg");
+		//	gamaManager.SendMessage ("sendGotBoxMsg");
 		}
 		/*
 		testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
