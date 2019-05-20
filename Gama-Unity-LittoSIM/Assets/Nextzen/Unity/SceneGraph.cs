@@ -337,19 +337,22 @@ namespace Nextzen.Unity
                             mesh.SetTriangles(meshBucket.Submeshes[s].Indices, s);
 
                         }
+
+                        mesh = clockwiseMesh(mesh);
                         // Automatic Uvs Calculator
                         // meshBucket.setUvs();
 
                         // For Android Build
-                        //Unwrapping.GeneratePerTriangleUV(mesh);
-                        //Unwrapping.GenerateSecondaryUVSet(mesh);
+                        Unwrapping.GeneratePerTriangleUV(mesh);
+                        Unwrapping.GenerateSecondaryUVSet(mesh);
 
                         mesh.RecalculateNormals();
                         mesh.RecalculateBounds();
+                        //  mesh.vertices.
 
                         // For Android Build
-                        //MeshUtility.Optimize(mesh);
-
+                        MeshUtility.Optimize(mesh);
+                        //mesh.triangles.
                         // Associate the mesh filter and mesh renderer components with this game object
 
 
@@ -441,16 +444,102 @@ namespace Nextzen.Unity
             m.triangles = triangles;
 
             // For Android Build
-            //Unwrapping.GenerateSecondaryUVSet(m);
+            Unwrapping.GenerateSecondaryUVSet(m);
 
             m.RecalculateNormals();
             m.RecalculateBounds();
 
             // For Android Build
-            //MeshUtility.Optimize(m);
+            MeshUtility.Optimize(m);
             
             Debug.Log("Triangles are: " + triangles.ToString());
             return m;
         }
+
+
+
+
+        public Mesh clockwiseMesh(Mesh mesh)
+        {
+            Debug.Log("--------> All vertices are: ->   " + mesh.vertices);
+            for (int i = 0; i < mesh.vertices.Length; i++)
+            {
+                Debug.Log(" \t\t\t -> P"+i+ "  ["+mesh.vertices[i].x+", "+ mesh.vertices[i].y+", "+ mesh.vertices[i].z+"]");
+            }
+
+            for (int i = 0; i < mesh.vertices.Length-3; i += 3)
+            {
+                Vector3 v0 = mesh.vertices[i + 0]; Vector3 v1 = mesh.vertices[i + 1]; Vector3 v2 = mesh.vertices[i + 2];
+                if (!IsClockwise(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]))
+                {
+                    v0 = mesh.vertices[i + 0];
+                    v1 = mesh.vertices[i + 1];
+                    v2 = mesh.vertices[i + 2];
+                    mesh.vertices[i + 0] = v0;
+                    mesh.vertices[i + 1] = v2;
+                    mesh.vertices[i + 2] = v1;
+                    if (!IsClockwise(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]))
+                    {
+                        v0 = mesh.vertices[i + 0];
+                        v1 = mesh.vertices[i + 1];
+                        v2 = mesh.vertices[i + 2];
+                        mesh.vertices[i + 0] = v1;
+                        mesh.vertices[i + 1] = v2;
+                        mesh.vertices[i + 2] = v0;
+                        if (!IsClockwise(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]))
+                        {
+                            v0 = mesh.vertices[i + 0];
+                            v1 = mesh.vertices[i + 1];
+                            v2 = mesh.vertices[i + 2];
+                            mesh.vertices[i + 0] = v1;
+                            mesh.vertices[i + 1] = v0;
+                            mesh.vertices[i + 2] = v2;
+                            if (!IsClockwise(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]))
+                            {
+                                v0 = mesh.vertices[i + 0];
+                                v1 = mesh.vertices[i + 1];
+                                v2 = mesh.vertices[i + 2];
+                                mesh.vertices[i + 0] = v2;
+                                mesh.vertices[i + 1] = v1;
+                                mesh.vertices[i + 2] = v0;
+                                if (!IsClockwise(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]))
+                                {
+                                    v0 = mesh.vertices[i + 0];
+                                    v1 = mesh.vertices[i + 1];
+                                    v2 = mesh.vertices[i + 2];
+                                    mesh.vertices[i + 0] = v2;
+                                    mesh.vertices[i + 1] = v0;
+                                    mesh.vertices[i + 2] = v1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return mesh;
+        }
+
+
+
+        public bool IsClockwise(Vector3 p1, Vector3 p2, Vector3 p3)
+        {
+            bool isClockWise = true;
+
+            float determinant = p1.x * p2.y + p3.x * p1.y + p2.x * p3.y - p1.x * p3.y - p3.x * p2.y - p2.x * p1.y;
+            if (determinant >= 0f)
+            {
+                isClockWise = false;
+                Debug.Log("--> No IT IS NOT CLOCKWISE --------------------------->>> [" + p1 + ";" + p2 + ";" + p3 + "] ->  " + determinant);
+            }
+            else
+            {
+                Debug.Log("--> YES IT IS CLOCKWISE ------------------------------>>> [" + p1 + ";" + p2 + ";" + p3 + "] ->  " + determinant);
+            }
+            return isClockWise;
+        }
+
+
+
     }
 }

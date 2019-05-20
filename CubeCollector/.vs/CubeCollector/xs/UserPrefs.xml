@@ -1,14 +1,14 @@
 ﻿<Properties StartupConfiguration="{3E28368B-C620-4A8E-7CA0-53AE4FC77846}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/GamaSceneManagingScript/Utils/Triangulator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/GamaSceneManagingScript/SceneManager/GamaManager.cs">
     <Files>
       <File FileName="Assets/CubeGenerator.cs" Line="36" Column="34" />
       <File FileName="Assets/GamaSceneManagingScript/Utils/ConvertType.cs" Line="118" Column="5" />
-      <File FileName="Assets/GamaSceneManagingScript/SceneManager/GamaManager.cs" Line="127" Column="15" />
+      <File FileName="Assets/GamaSceneManagingScript/SceneManager/GamaManager.cs" Line="383" Column="81" />
       <File FileName="Assets/GamaSceneManagingScript/Messaging/MsgSerialization.cs" Line="49" Column="44" />
       <File FileName="Assets/GamaSceneManagingScript/Messaging/MoveTopicMessage.cs" Line="2" Column="1" />
       <File FileName="Assets/GamaSceneManagingScript/DataType/GamaPoint.cs" Line="11" Column="20" />
       <File FileName="Assets/GamaSceneManagingScript/TopicScriptManager/PropertyTopic.cs" Line="70" Column="1" />
-      <File FileName="Assets/GamaSceneManagingScript/Messaging/PropertyTopicMessage.cs" Line="21" Column="18" />
+      <File FileName="Assets/GamaSceneManagingScript/Messaging/PropertyTopicMessage.cs" Line="13" Column="18" />
       <File FileName="Assets/GamaSceneManagingScript/Messaging/TopicMessage.cs" Line="9" Column="15" />
       <File FileName="Assets/GamaSceneManagingScript/Messaging/PositionTopicMessage.cs" Line="1" Column="32" />
       <File FileName="Assets/GamaSceneManagingScript/Messaging/CreateTopicMessage.cs" Line="4" Column="32" />
@@ -27,11 +27,11 @@
                 <Node name="DataType" expanded="True" />
                 <Node name="GamaAgent" expanded="True" />
                 <Node name="Messaging" expanded="True" />
-                <Node name="SceneManager" expanded="True" />
-                <Node name="TopicScriptManager" expanded="True" />
-                <Node name="Utils" expanded="True">
-                  <Node name="Triangulator.cs" selected="True" />
+                <Node name="SceneManager" expanded="True">
+                  <Node name="GamaManager.cs" selected="True" />
                 </Node>
+                <Node name="TopicScriptManager" expanded="True" />
+                <Node name="Utils" expanded="True" />
               </Node>
               <Node name="MqttScript" expanded="True" />
               <Node name="Script CubeCollector" expanded="True" />

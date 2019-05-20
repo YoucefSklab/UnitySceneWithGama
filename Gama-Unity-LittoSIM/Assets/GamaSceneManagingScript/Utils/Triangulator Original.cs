@@ -4,16 +4,13 @@ using System.Linq;
 
 namespace ummisco.gama.unity.utils
 {
-    public class Triangulator
+    public class TriangulatorOrigin
     {
-        public static int triangles_nbr = 1;
-
-        // liste des verticies du polygon (2D)
         public List<Vector2> m_points = new List<Vector2>();
 
         public List<Vector2> all_points = new List<Vector2>();
 
-        public Triangulator(Vector2[] points)
+        public TriangulatorOrigin(Vector2[] points)
         {
             m_points = new List<Vector2>(points);
         }
@@ -27,7 +24,6 @@ namespace ummisco.gama.unity.utils
         {
             all_points = new List<Vector2>(points);
         }
-
 
         public int[] Triangulate()
         {
@@ -150,8 +146,7 @@ namespace ummisco.gama.unity.utils
             {
                 vertices[i].x = m_points[i].x;
                 vertices[i].y = m_points[i].y;
-                vertices[i].z = -elevation;
-                // front vertex
+                vertices[i].z = -elevation; // front vertex
                 vertices[i + m_points.Count].x = m_points[i].x;
                 vertices[i + m_points.Count].y = m_points[i].y;
                 vertices[i + m_points.Count].z = elevation;  // back vertex   
@@ -187,7 +182,6 @@ namespace ummisco.gama.unity.utils
         public List<Vector3> get3dVerticesList(float elevation)
         {
             Vector3[] vertices = new Vector3[m_points.Count * 2];
-
             for (int i = 0; i < m_points.Count; i++)
             {
                 vertices[i].x = m_points[i].x;
@@ -195,9 +189,8 @@ namespace ummisco.gama.unity.utils
                 vertices[i].z = - elevation; // front vertex
                 vertices[i + m_points.Count].x = m_points[i].x;
                 vertices[i + m_points.Count].y = m_points[i].y;
-                vertices[i + m_points.Count].z = 0; // elevation;  // back vertex    
+                vertices[i + m_points.Count].z =  0; //elevation;  // back vertex    
             }
-
             return vertices.OfType<Vector3>().ToList();
         }
 
@@ -225,8 +218,6 @@ namespace ummisco.gama.unity.utils
                 triangles[count_tris + i] = tris[i + 2] + m_points.Count;
                 triangles[count_tris + i + 1] = tris[i + 1] + m_points.Count;
                 triangles[count_tris + i + 2] = tris[i] + m_points.Count;
-
-
             } // back vertices
             count_tris += tris.Length;
             for (int i = 0; i < m_points.Count; i++)
@@ -243,7 +234,6 @@ namespace ummisco.gama.unity.utils
                 triangles[count_tris + 3] = n;
                 triangles[count_tris + 4] = n + m_points.Count;
                 triangles[count_tris + 5] = i + m_points.Count;
-
                 count_tris += 6;
             }
             return triangles;
@@ -265,59 +255,12 @@ namespace ummisco.gama.unity.utils
 
             float determinant = p1.x * p2.y + p3.x * p1.y + p2.x * p3.y - p1.x * p3.y - p3.x * p2.y - p2.x * p1.y;
 
-           // determinant = (p2.y - p1.y) * (p3.x - p2.x) - (p2.x - p1.x) * (p3.y - p2.y);
-
-            if (determinant >= 0f)
+            if (determinant > 0f)
             {
                 isClockWise = false;
-                Debug.Log(" No IT IS NOT CLOCKWISE --------------------------->>> ["+p1+ ";"+p2+";"+p3+"] ->  " + determinant);
-                Debug.Log(" Total triangles are: ---->>> " + triangles_nbr);
             }
-            else
-            {
-                Debug.Log(" YES IT IS CLOCKWISE ------------------------------>>> ["+p1+ ";"+p2+";"+p3+"] ->  "  + determinant);
-                Debug.Log(" Total triangles are: ---->>> " + triangles_nbr);
-                triangles_nbr++;
-            }
-           return isClockWise;
-        }
 
-
-        public bool IsClockwise(Vector3 p1, Vector3 p2, Vector3 p3)
-        {
-            bool isClockWise = true;
-
-            float determinant = p1.x * p2.y + p3.x * p1.y + p2.x * p3.y - p1.x * p3.y - p3.x * p2.y - p2.x * p1.y;
-            if (determinant >= 0f)
-            {
-                isClockWise = false;
-                Debug.Log(" No IT IS NOT CLOCKWISE --------------------------->>> [" + p1 + ";" + p2 + ";" + p3 + "] ->  " + determinant);
-                Debug.Log(" Total triangles are: ---->>> " + triangles_nbr);
-            }
-            else
-            {
-                Debug.Log(" YES IT IS CLOCKWISE ------------------------------>>> [" + p1 + ";" + p2 + ";" + p3 + "] ->  " + determinant);
-                Debug.Log(" Total triangles are: ---->>> " + triangles_nbr);
-                triangles_nbr++;
-            }
             return isClockWise;
-        }
-
-
-        // To find orientation of ordered triplet (p1, p2, p3). 
-        // The function returns following values 
-        // 0 --> p, q and r are colinear 
-        // 1 --> Clockwise 
-        // 2 --> Counterclockwise 
-        public int orientation(Vector2 p1, Vector2 p2, Vector2 p3)
-        {
-            // See 10th slides from following link for derivation 
-            // of the formula 
-            float val = (p2.y - p1.y) * (p3.x - p2.x) - (p2.x - p1.x) * (p3.y - p2.y);
-
-            if (val == 0) return 0;  // colinear 
-
-            return (val > 0) ? 1 : 2; // clock or counterclock wise 
         }
 
 
@@ -335,7 +278,6 @@ namespace ummisco.gama.unity.utils
                 if (IsTriangleOrientedClockwise(p1, p2, p3))
                 {
                     // Debug.Log("Yes it is ClockWise ->- {" + tr[i + 0] + "},{" + tr[i + 1] + "},{" + tr[i + 2] + "}");
-                   
                 }
                 else
                 {
@@ -382,6 +324,7 @@ namespace ummisco.gama.unity.utils
                         triangles[i + 0] = tris[i + 0];
                         triangles[i + 1] = tris[i + 2];
                         triangles[i + 2] = tris[i + 1];
+
                         if (!IsTriangleOrientedClockwise(m_points[triangles[i]], m_points[triangles[i + 1]], m_points[triangles[i + 2]]))
                         {
                             triangles[i + 0] = tris[i + 1];
@@ -407,6 +350,7 @@ namespace ummisco.gama.unity.utils
                             }
                         }
                     }
+
             }
 
             // Compute triangules of back vertices
@@ -423,31 +367,31 @@ namespace ummisco.gama.unity.utils
                 triangles[count_tris + i + 2] = tris[i + 2] + m_points.Count;
 
                 if (1 == 1)
-                    if (!IsTriangleOrientedClockwise(all_points[triangles[count_tris + i + 0]], all_points[triangles[count_tris + i + 1]], all_points[triangles[count_tris + i + 2]]))
+                    if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + i + 0]], all_points[triangles[count_tris + i + 1]], all_points[triangles[count_tris + i + 2]]))
                     {
                         //Debug.Log("Back Triangle not  Clockwise > ");
                         triangles[count_tris + i + 0] = tris[i + 0] + m_points.Count;
                         triangles[count_tris + i + 1] = tris[i + 2] + m_points.Count;
                         triangles[count_tris + i + 2] = tris[i + 1] + m_points.Count;
-                        if (!IsTriangleOrientedClockwise(all_points[triangles[count_tris + i + 0]], all_points[triangles[count_tris + i + 1]], all_points[triangles[count_tris + i + 2]]))
+                        if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + i + 0]], all_points[triangles[count_tris + i + 1]], all_points[triangles[count_tris + i + 2]]))
                         {
                             //    Debug.Log("Back Triangle again not  Clockwise > ");
                             triangles[count_tris + i + 0] = tris[i + 1] + m_points.Count;
                             triangles[count_tris + i + 1] = tris[i + 2] + m_points.Count;
                             triangles[count_tris + i + 2] = tris[i + 0] + m_points.Count;
-                            if (!IsTriangleOrientedClockwise(all_points[triangles[count_tris + i + 0]], all_points[triangles[count_tris + i + 1]], all_points[triangles[count_tris + i + 2]]))
+                            if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + i + 0]], all_points[triangles[count_tris + i + 1]], all_points[triangles[count_tris + i + 2]]))
                             {
                                 //    Debug.Log("Back Triangle again not  Clockwise > ");
                                 triangles[count_tris + i + 0] = tris[i + 1] + m_points.Count;
                                 triangles[count_tris + i + 1] = tris[i + 0] + m_points.Count;
                                 triangles[count_tris + i + 2] = tris[i + 2] + m_points.Count;
-                                if (!IsTriangleOrientedClockwise(all_points[triangles[count_tris + i + 0]], all_points[triangles[count_tris + i + 1]], all_points[triangles[count_tris + i + 2]]))
+                                if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + i + 0]], all_points[triangles[count_tris + i + 1]], all_points[triangles[count_tris + i + 2]]))
                                 {
                                     //    Debug.Log("Back Triangle again not  Clockwise > ");
                                     triangles[count_tris + i + 0] = tris[i + 2] + m_points.Count;
                                     triangles[count_tris + i + 1] = tris[i + 1] + m_points.Count;
                                     triangles[count_tris + i + 2] = tris[i + 0] + m_points.Count;
-                                    if (!IsTriangleOrientedClockwise(all_points[triangles[count_tris + i + 0]], all_points[triangles[count_tris + i + 1]], all_points[triangles[count_tris + i + 2]]))
+                                    if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + i + 0]], all_points[triangles[count_tris + i + 1]], all_points[triangles[count_tris + i + 2]]))
                                     {
                                         //    Debug.Log("Back Triangle again not  Clockwise > ");
                                         triangles[count_tris + i + 0] = tris[i + 2] + m_points.Count;
@@ -474,32 +418,32 @@ namespace ummisco.gama.unity.utils
                 triangles[count_tris + 2] = n;
 
                 if (1 == 1)
-                    if (!IsTriangleOrientedClockwise(all_points[triangles[count_tris + 0]], all_points[triangles[count_tris + 1]], all_points[triangles[count_tris + 2]]))
+                    if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + 0]], all_points[triangles[count_tris + 1]], all_points[triangles[count_tris + 2]]))
                     {
                         triangles[count_tris + 0] = n;
                         triangles[count_tris + 1] = i + m_points.Count;
                         triangles[count_tris + 2] = i;
-                        if (!IsTriangleOrientedClockwise(all_points[triangles[count_tris + 0]], all_points[triangles[count_tris + 1]], all_points[triangles[count_tris + 2]]))
+                        if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + 0]], all_points[triangles[count_tris + 1]], all_points[triangles[count_tris + 2]]))
                         {
                             triangles[count_tris + 0] = n;
                             triangles[count_tris + 2] = i + m_points.Count;
                             triangles[count_tris + 1] = i;
-                            if (!IsTriangleOrientedClockwise(all_points[triangles[count_tris + 0]], all_points[triangles[count_tris + 1]], all_points[triangles[count_tris + 2]]))
+                            if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + 0]], all_points[triangles[count_tris + 1]], all_points[triangles[count_tris + 2]]))
                             {
                                 triangles[count_tris + 1] = n;
                                 triangles[count_tris + 2] = i + m_points.Count;
                                 triangles[count_tris + 0] = i;
-                                if (!IsTriangleOrientedClockwise(all_points[triangles[count_tris + 0]], all_points[triangles[count_tris + 1]], all_points[triangles[count_tris + 2]]))
+                                if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + 0]], all_points[triangles[count_tris + 1]], all_points[triangles[count_tris + 2]]))
                                 {
                                     triangles[count_tris + 1] = n;
                                     triangles[count_tris + 0] = i + m_points.Count;
                                     triangles[count_tris + 2] = i;
-                                    if (!IsTriangleOrientedClockwise(all_points[triangles[count_tris + 0]], all_points[triangles[count_tris + 1]], all_points[triangles[count_tris + 2]]))
+                                    if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + 0]], all_points[triangles[count_tris + 1]], all_points[triangles[count_tris + 2]]))
                                     {
                                         triangles[count_tris + 2] = n;
                                         triangles[count_tris + 1] = i + m_points.Count;
                                         triangles[count_tris + 0] = i;
-                                        if (!IsTriangleOrientedClockwise(all_points[triangles[count_tris + 0]], all_points[triangles[count_tris + 1]], all_points[triangles[count_tris + 2]]))
+                                        if (IsTriangleOrientedClockwise(all_points[triangles[count_tris + 0]], all_points[triangles[count_tris + 1]], all_points[triangles[count_tris + 2]]))
                                         {
                                             triangles[count_tris + 2] = n;
                                             triangles[count_tris + 0] = i + m_points.Count;
@@ -681,70 +625,6 @@ namespace ummisco.gama.unity.utils
             }
             return triangles;
         }
-
-
-
-
-
-        public Mesh clockwiseMesh(Mesh mesh)
-        {
-           
-          // Mesh mesh = new Mesh();
-
-            for (int i = 0; i < mesh.vertices.Length; i += 3)
-            {
-                Vector3 v0 = mesh.vertices[i + 0]; Vector3 v1 = mesh.vertices[i + 1]; Vector3 v2 = mesh.vertices[i + 2];
-                if (!IsClockwise(mesh.vertices[i], mesh.vertices[i+1], mesh.vertices[i + 2]))
-                    {
-                    v0 = mesh.vertices[i + 0]; 
-                    v1 = mesh.vertices[i + 1]; 
-                    v2 = mesh.vertices[i + 2];
-                    mesh.vertices[i + 0] = v0;
-                    mesh.vertices[i + 1] = v2;
-                    mesh.vertices[i + 2] = v1;
-                        if (!IsClockwise(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]))
-                    {
-                        v0 = mesh.vertices[i + 0];
-                        v1 = mesh.vertices[i + 1];
-                        v2 = mesh.vertices[i + 2];
-                        mesh.vertices[i + 0] = v1;
-                        mesh.vertices[i + 1] = v2;
-                        mesh.vertices[i + 2] = v0;
-                    if (!IsClockwise(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]))
-                        {
-                            v0 = mesh.vertices[i + 0];
-                            v1 = mesh.vertices[i + 1];
-                            v2 = mesh.vertices[i + 2];
-                            mesh.vertices[i + 0] = v1;
-                            mesh.vertices[i + 1] = v0;
-                            mesh.vertices[i + 2] = v2;
-                            if (!IsClockwise(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]))
-                            {
-                                v0 = mesh.vertices[i + 0];
-                                v1 = mesh.vertices[i + 1];
-                                v2 = mesh.vertices[i + 2];
-                                mesh.vertices[i + 0] = v2;
-                                mesh.vertices[i + 1] = v1;
-                                mesh.vertices[i + 2] = v0;
-                                if (!IsClockwise(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]))
-                                {
-                                    v0 = mesh.vertices[i + 0];
-                                    v1 = mesh.vertices[i + 1];
-                                    v2 = mesh.vertices[i + 2];
-                                    mesh.vertices[i + 0] = v2;
-                                    mesh.vertices[i + 1] = v0;
-                                    mesh.vertices[i + 2] = v1;
-                                }
-                                }
-                            }
-                        }
-                    }
-            }
-
-            return mesh;
-        }
-
-
 
 
 

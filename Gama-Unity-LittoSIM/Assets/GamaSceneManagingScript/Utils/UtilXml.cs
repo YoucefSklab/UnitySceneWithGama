@@ -202,7 +202,7 @@ namespace ummisco.gama.unity.utils
             {
                 XmlNodeList points = item.ChildNodes;
                 Point coordinates = ConvertType.pointFromXmlElement(points);
-                coordinates.Y =  coordinates.Y;
+                coordinates.Y = - coordinates.Y;
                 listPoints.Add(coordinates);
 
             }

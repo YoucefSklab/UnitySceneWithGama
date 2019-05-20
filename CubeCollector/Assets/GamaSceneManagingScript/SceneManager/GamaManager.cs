@@ -384,8 +384,8 @@ public class GamaManager : MonoBehaviour
                    // propertyTopicMessage = (PropertyTopicMessage) xstream.FromXml(receivedMsg);
                     propertyTopicMessage = (PropertyTopicMessage)MsgSerialization.deserialization(receivedMsg, new PropertyTopicMessage());
 
-                    Debug.Log("---- - >  Deserealized  \n ");
-                    Debug.Log("-> Target game object Value: " + propertyTopicMessage.value);
+                    Debug.Log("---77777 - >  Deserealized  \n ");
+                   // Debug.Log("-> Target game object Value: " + propertyTopicMessage.value);
 
 
                     GamaPoint gp = (GamaPoint)propertyTopicMessage.value;

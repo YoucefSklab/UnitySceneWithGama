@@ -262,13 +262,13 @@ public class Triangulate : MonoBehaviour
         m.triangles = triangles;
        
         // For Android Build
-        //Unwrapping.GenerateSecondaryUVSet(m);
+        Unwrapping.GenerateSecondaryUVSet(m);
         
         m.RecalculateNormals();
         m.RecalculateBounds();
         
         // For Android Build
-        //MeshUtility.Optimize(m);
+        MeshUtility.Optimize(m);
         Debug.Log("Triangles are: " + triangles.ToString());
         return m;
     }
@@ -295,12 +295,12 @@ public class Triangulate : MonoBehaviour
         m.triangles = triangulator.get3DTriangulesFrom2D();
 
         // For Android Build
-        //Unwrapping.GenerateSecondaryUVSet(m);
+        Unwrapping.GenerateSecondaryUVSet(m);
 
         m.RecalculateNormals();
         m.RecalculateBounds();
         // For Android Build
-        //MeshUtility.Optimize(m);
+        MeshUtility.Optimize(m);
 
         //Debug.Log("After -> " + m.uv.Length);
 

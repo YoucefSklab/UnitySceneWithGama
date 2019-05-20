@@ -416,19 +416,11 @@ namespace Nextzen
                     MeshData.Submesh submesh = new MeshData.Submesh();
 
                     Vector2[] vertices2D = agent.agentCoordinate.getVector2Coordinates();
-                    /* 
-                    // To delete. This is dealt in the UtilXml Class
-                    List<Vector2> vect = new List<Vector2>();
-                    vect = vertices2D.ToList();
-                    if (agent.geometry.Equals("Polygon"))
-                    {
-                      //  vect.RemoveAt(vect.Count - 1);
-                    }
-                    vertices2D = vect.ToArray();
-                    */
 
                     Triangulator triangulator = new Triangulator(vertices2D);
+
                     triangulator.setAllPoints(triangulator.get2dVertices());
+                    triangulator.Triangulate();
                     float elevation = this.elevation;
                     if (agent.geometry.Equals("LineString"))
                     {
@@ -436,7 +428,10 @@ namespace Nextzen
                     }
                     //Vertices = triangulator.get3dVerticesList(elevation);
                     Vertices = triangulator.get3dVerticesList(agent.height);
+
+
                     Debug.Log("-------------->>>>  " + agent.agentName + " hight is ---------------> " + agent.height);
+
                     Indices = triangulator.getTriangulesList();
                     Vector3[] VerticesArray = Vertices.ToArray();
                     Vector2[] UvArray = UvCalculator.CalculateUVs(VerticesArray, 100);

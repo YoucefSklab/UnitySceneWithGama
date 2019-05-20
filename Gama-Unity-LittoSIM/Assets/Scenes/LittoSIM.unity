@@ -190,6 +190,61 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1314261724
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1314261726}
+  - component: {fileID: 1314261725}
+  m_Layer: 0
+  m_Name: GamaManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1314261725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1314261724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3239ccae0e7b4a369fcff48f85d8acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  receivedMsg: 
+  clientId: 
+  allObjects: []
+  gamaManager: {fileID: 0}
+  targetGameObject: {fileID: 0}
+  topicGameObject: {fileID: 0}
+  plane: {fileID: 0}
+  objectsList: []
+  planeMaterial: {fileID: 0}
+  polygonMaterial: {fileID: 0}
+  lineMaterial: {fileID: 0}
+  setTopicManager: {fileID: 0}
+  getTotpicManager: {fileID: 0}
+  moveTopicManager: {fileID: 0}
+  notificationTopicManager: {fileID: 0}
+--- !u!4 &1314261726
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1314261724}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 223.94473, y: 580.01843, z: 396.50912}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1725572212
 GameObject:
   m_ObjectHideFlags: 0
